@@ -2,16 +2,20 @@
   <div id="app">
 
     <router-view/>
-    <router-link to="/personal">personal</router-link>
-    <mt-tabbar :selected.sync="selected">
-      <mt-tab-item id="信息查询">
-        <img slot="icon" src="./assets/search.png">
+
+    <mt-tabbar>
+      <router-link style="width: 100%; height: 100%" to="/">
+        <mt-tab-item>
+          <img slot="icon" src="./assets/search.png">
           信息查询
-      </mt-tab-item>
-      <mt-tab-item id="个人中心">
-        <img slot="icon" src="./assets/us.png">
-        个人中心
-      </mt-tab-item>
+        </mt-tab-item>
+      </router-link>
+      <router-link style="width: 100%; height: 100%;" to="/personal">
+        <mt-tab-item>
+          <img slot="icon" src="./assets/us.png">
+          个人中心
+        </mt-tab-item>
+      </router-link>
     </mt-tabbar>
 
   </div>
@@ -23,7 +27,7 @@
       name: 'App',
       data() {
           return {
-              selected:''
+
           }
       },
       components:{
@@ -35,7 +39,14 @@
 </script>
 
 <style>
-#app {
+* {
   margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration:none;
+}
+.mint-tab-item-label {
+  color: #409EFF;
 }
 </style>
