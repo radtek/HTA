@@ -21,7 +21,6 @@
     .mint-tab-item-label{
         color: #409EFF;
     }
-
 </style>
 <script>
     import { Header,Tabbar, TabItem } from 'mint-ui';
