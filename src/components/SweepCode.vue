@@ -10,11 +10,10 @@
                 <el-input
                    placeholder="请输入内容"
                    prefix-icon="el-icon-search"
-                   v-model="input21" style="width: 68%; float:left;">
+                   v-model="objName" style="width: 68%; float:left;">
                  </el-input>
                  <el-button type="primary" icon="el-icon-search" style="float:right;">搜索</el-button>
-                 <div class="clear">
-                 </div>
+                 <div class="clear"></div>
             </div>
 
             <div style="height: 70vh; overflow:scroll;">
@@ -29,7 +28,9 @@
                                         <div>{{ item }}</div>
                                     </li>
                                 </ul>
-                    </router-link>
+                            </router-link>
+                        </li>
+                    </ul>
                 </v-loadmore>
             </div>
         </div>
@@ -158,7 +159,7 @@
             },
         },
         mounted(){
-          this.loadPageList();
+          // this.loadPageList();
         },
     }
 </script>
