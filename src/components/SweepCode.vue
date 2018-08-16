@@ -5,7 +5,7 @@
               <img slot="icon" src="../assets/shao.png" style="width: 23px;">
           </mt-button>
         </mt-header>
-        <div class="" style="padding:0 7%; overflow:scroll;" >
+        <div class="" style="padding:0 7%;" >
             <div class="demo-input-suffix">
                 <el-input
                    placeholder="请输入内容"
@@ -16,41 +16,23 @@
                  <el-button type="primary" icon="el-icon-search">搜索</el-button>
             </div>
 
-            <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-                <router-link to="/ListContent">
-                     <ul class="list" v-for="item in pageList">
-                          <li>
-                              <div>{{ item }}</div>
-                          </li>
-                     </ul>
-              </router-link>
-           </v-loadmore>
-
-            <!-- <ul>
-              <li v-for="item in list">
-                <div class="list">
-                    <div class="cont">
-                        <h3>{{ item.name }}</h3>
-                        <p>{{ item.name }}</p>
-                    </div>
-                    <div class="link">
-                        <router-link to="/ListContent" style="">
-                            <img src="../assets/return.png" alt="width:20px;">
-                        </router-link>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-              </li>
-            </ul> -->
+            <div style="height: 70vh; overflow:scroll;">
+                <v-loadmore :bottom-method="loadBottom"
+                            bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
+                            :bottom-all-loaded="allLoaded" :auto-fill="true" ref="loadmore">
+                    <ul class="list" v-for="item in pageList">
+                        <li>
+                            <router-link to="/ListContent">
+                                <div>{{ item }}</div>
+                            </router-link>
+                        </li>
+                    </ul>
+                </v-loadmore>
+            </div>
         </div>
     </div>
-
-
 </template>
 <style media="screen">
-    body{
-
-    }
     .mint-tab-item-label{
         color: #409EFF;
     }
@@ -119,11 +101,6 @@
             'v-loadmore':Loadmore
         },
         methods: {
-            loadTop:function() { //组件提供的下拉触发方法
-                //下拉加载
-                this.loadPageList();
-                this.$refs.loadmore.onTopLoaded();// 固定方法，查询完要调用一次，用于重新定位
-            },
             loadBottom:function() {
                 // 上拉加载
                 this.more();// 上拉触发的分页查询
