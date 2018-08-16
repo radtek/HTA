@@ -10,9 +10,11 @@
                 <el-input
                    placeholder="请输入内容"
                    prefix-icon="el-icon-search"
-                   v-model.trim="objName" style="width: 69%;">
-                </el-input>
-                <el-button type="primary" icon="el-icon-search">搜索</el-button>
+                   v-model="input21" style="width: 68%; float:left;">
+                 </el-input>
+                 <el-button type="primary" icon="el-icon-search" style="float:right;">搜索</el-button>
+                 <div class="clear">
+                 </div>
             </div>
 
             <div style="height: 70vh; overflow:scroll;">
@@ -22,10 +24,12 @@
                     <ul class="list" v-for="item in pageList">
                         <li>
                             <router-link to="/ListContent">
-                                <div>{{ item }}</div>
-                            </router-link>
-                        </li>
-                    </ul>
+                                <ul class="list" v-for="item in pageList">
+                                    <li>
+                                        <div>{{ item }}</div>
+                                    </li>
+                                </ul>
+                    </router-link>
                 </v-loadmore>
             </div>
         </div>
