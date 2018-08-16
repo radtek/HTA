@@ -55,5 +55,10 @@ export default new Router({
         name: 'CheckRecord',
         component: resolve => void(require(['../components/CheckRecord.vue'], resolve))
     },
+    {
+      path: '/sweep',
+      name: 'Sweep',
+      component: resolve => void(require(['../components/Sweep.vue'], resolve))
+    },
   ]
 })
