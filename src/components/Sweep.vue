@@ -1,9 +1,11 @@
 <template>
     <div>
         <mt-header title="扫描二维码">
-            <mt-button slot="left" icon="back" >
-                <div style="width: 23px;"></div>
-            </mt-button>
+            <router-link to="/sweep" slot="left">
+                <mt-button slot="left" icon="back" >
+                    <div style="width: 23px;"></div>
+                </mt-button>
+            </router-link>
         </mt-header>
         <div id="bcid" style="height: 100vh; width: 100%; background-color: #3a8ee6">
 
@@ -64,7 +66,7 @@
             },
         },
         mounted(){
-            this.startRecognize();
+            // this.startRecognize();
         },
     }
 </script>

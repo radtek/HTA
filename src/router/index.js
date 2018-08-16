@@ -55,8 +55,11 @@ export default new Router({
         name: 'CheckRecord',
         component: resolve => void(require(['../components/CheckRecord.vue'], resolve))
     },
-
-
+    {
+      path: '/sweep',
+      name: 'Sweep',
+      component: resolve => void(require(['../components/Sweep.vue'], resolve))
+    },
     // 商户app列表路径
     {
       path: '/sh/ListContent',
