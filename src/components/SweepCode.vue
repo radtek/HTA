@@ -10,8 +10,9 @@
                 <el-input
                    placeholder="请输入内容"
                    prefix-icon="el-icon-search"
-                   v-model.trim="objName">
-                 </el-input>
+                   v-model.trim="objName" style="width: 69%;">
+                </el-input>
+                <el-button type="primary" icon="el-icon-search">搜索</el-button>
             </div>
 
             <div style="height: 70vh; overflow:scroll;">
