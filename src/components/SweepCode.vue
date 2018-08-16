@@ -6,6 +6,14 @@
           </mt-button>
         </mt-header>
     </div>
+    <div class="demo-input-suffix">
+        <el-input
+           placeholder="请输入内容"
+           prefix-icon="el-icon-search"
+           v-model="input21">
+         </el-input>
+    </div>
+    
 </template>
 <style media="screen">
     .mint-tab-item-label{
