@@ -1,0 +1,37 @@
+<template>
+    <div>
+        <mt-header title="消息提醒">
+            <router-link to="" slot="left">
+                <mt-button icon="back" @click="$router.go(-1)">&nbsp;&nbsp;</mt-button>
+            </router-link>
+        </mt-header>
+        <div style="padding: 0 7%">
+
+        </div>
+    </div>
+</template>
+
+<script>
+    import { Header,Cell,Toast,Button  } from 'mint-ui';
+    export default {
+        name: 'message',
+        data() {
+            return {
+
+            }
+        },
+        components:{
+            Header,
+            Cell,
+        },
+        methods: {
+
+        },
+        mounted() {
+
+        }
+    }
+</script>
+<style scoped>
+
+</style>

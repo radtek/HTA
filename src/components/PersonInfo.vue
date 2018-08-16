@@ -1,46 +1,24 @@
 <template>
     <div>
-        <mt-header title="个人中心"></mt-header>
+        <mt-header title="个人信息">
+            <router-link to="" slot="left">
+                <mt-button icon="back" @click="$router.go(-1)">&nbsp;&nbsp;</mt-button>
+            </router-link>
+        </mt-header>
         <div style="padding: 0 7%">
-            <div class="info">
-                <img class="infoImg" src="../assets/logo.png" alt="">
-                <p>{{ personInfo.relName }}</p>
-            </div>
-
-            <mt-cell title="个人信息" to="/personInfo" is-link>
-                <img slot="icon" src="../assets/logo.png" width="24" height="24">
-            </mt-cell>
-            <mt-cell title="消息提醒" to="/message" is-link>
-                <img slot="icon" src="../assets/logo.png" width="24" height="24">
-            </mt-cell>
-            <mt-cell title="修改密码" to="/resetPassword" is-link>
-                <img slot="icon" src="../assets/logo.png" width="24" height="24">
-            </mt-cell>
-            <mt-button type="danger" style="width: 100%;margin-top: 20px">退出登录</mt-button>
+            <mt-cell title="姓名" :value="personInfo.relName"></mt-cell>
+            <mt-cell title="手机号" :value="personInfo.phone"></mt-cell>
+            <mt-cell title="职位" :value="personInfo.sysRole"></mt-cell>
+            <mt-cell title="部门" :value="personInfo.deptId"></mt-cell>
+            <mt-button type="primary" @click="$router.go(-1)" style="width: 100%;margin-top: 20px">返回</mt-button>
         </div>
     </div>
 </template>
-<style>
-    .info{
-        width: 100%;
-        text-align: center;
-        padding-bottom: 10px;
-    }
-    .infoImg{
-        width: 100px;
-        height: 100px;
-    }
-    .mint-cell-wrapper,.mint-cell:last-child{
-        background-image: none !important;
-    }
-    .mint-cell-wrapper {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    }
-</style>
+
 <script>
     import { Header,Cell,Toast,Button  } from 'mint-ui';
     export default {
-        name: 'home',
+        name: 'person-info',
         data() {
             return {
                 personInfo:{
@@ -84,3 +62,7 @@
         }
     }
 </script>
+
+<style scoped>
+
+</style>
