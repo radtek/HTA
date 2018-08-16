@@ -10,18 +10,20 @@
                 <el-input
                    placeholder="请输入内容"
                    prefix-icon="el-icon-search"
-                   v-model="input21">
+                   v-model="input21" style="width: 69%;">
+
                  </el-input>
+                 <el-button type="primary" icon="el-icon-search">搜索</el-button>
             </div>
 
             <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-             <ul class="list" v-for="item in pageList">
-               <li>
-                  <router-link to="/ListContent">
-                      <div>{{ item }}</div>
-                  </router-link>
-               </li>
-             </ul>
+                <router-link to="/ListContent">
+                     <ul class="list" v-for="item in pageList">
+                          <li>
+                              <div>{{ item }}</div>
+                          </li>
+                     </ul>
+              </router-link>
            </v-loadmore>
 
             <!-- <ul>
