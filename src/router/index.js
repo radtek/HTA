@@ -15,5 +15,25 @@ export default new Router({
       name: 'Personal',
       component: resolve => void(require(['../components/Personal.vue'], resolve))
     },
+    {
+      path: '/ListContent',
+      name: 'ListContent',
+      component: resolve => void(require(['../components/ListContent.vue'], resolve))
+    },
+    {
+      path: '/EnterpriseInfor',
+      name: 'EnterpriseInfor',
+      component: resolve => void(require(['../components/EnterpriseInfor.vue'], resolve))
+    },
+    {
+      path: '/CleanRecord',
+      name: 'CleanRecord',
+      component: resolve => void(require(['../components/CleanRecord.vue'], resolve))
+    },
+    {
+      path: '/FieldExplor',
+      name: 'FieldExplor',
+      component: resolve => void(require(['../components/FieldExplor.vue'], resolve))
+    },
   ]
 })
