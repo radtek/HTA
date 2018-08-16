@@ -5,7 +5,7 @@
               <img slot="icon" src="../assets/shao.png" style="width: 23px;">
           </mt-button>
         </mt-header>
-        <div class="" style="padding:0 7%;">
+        <div class="" style="padding:0 7%; overflow:scroll;" >
             <div class="demo-input-suffix">
                 <el-input
                    placeholder="请输入内容"
@@ -13,18 +13,33 @@
                    v-model="input21">
                  </el-input>
             </div>
-            <div class="list">
-                <div class="cont">
-                    <h3>{{ title }}</h3>
-                    <p>{{ data }}</p>
+
+            <v-loadmore :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+             <ul class="list" v-for="item in pageList">
+               <li>
+                  <router-link to="/ListContent">
+                      <div>{{ item }}</div>
+                  </router-link>
+               </li>
+             </ul>
+           </v-loadmore>
+
+            <!-- <ul>
+              <li v-for="item in list">
+                <div class="list">
+                    <div class="cont">
+                        <h3>{{ item.name }}</h3>
+                        <p>{{ item.name }}</p>
+                    </div>
+                    <div class="link">
+                        <router-link to="/ListContent" style="">
+                            <img src="../assets/return.png" alt="width:20px;">
+                        </router-link>
+                    </div>
+                    <div class="clear"></div>
                 </div>
-                <div class="link">
-                    <router-link to="/ListContent" style="">
-                        <img src="../assets/return.png" alt="width:20px;">
-                    </router-link>
-                </div>
-                <div class="clear"></div>
-            </div>
+              </li>
+            </ul> -->
         </div>
     </div>
 
@@ -78,21 +93,58 @@
     }
 </style>
 <script>
-    import { Header,Tabbar, TabItem } from 'mint-ui';
+    import { Header,Tabbar, TabItem,Loadmore } from 'mint-ui';
     export default {
         name: 'home',
         data() {
             return {
-                selected:'',
                 input21:'',
                 title:'新乡海滨有限公司',
-                data:'行政区划分：好几百的后视镜到哪里好几百的后视镜到哪里'
+                data:'行政区划分：好几百的后视镜到哪里好几百的后视镜到哪里',
+                searchCondition:{  //分页属性
+                  pageNo:"1",
+                  pageSize:"10"
+                },
+                pageList:[],
+                allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
+                scrollMode:"auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
             }
         },
         components:{
             Header,
             Tabbar,
-            TabItem
-        }
+            TabItem,
+            'v-loadmore':Loadmore
+        },
+        methods: {
+            loadTop:function() { //组件提供的下拉触发方法
+                //下拉加载
+                this.loadPageList();
+                this.$refs.loadmore.onTopLoaded();// 固定方法，查询完要调用一次，用于重新定位
+            },
+            loadBottom:function() {
+                // 上拉加载
+                this.more();// 上拉触发的分页查询
+                this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
+            },
+            loadPageList:function (){
+                this.pageList = [
+                    {name:'weiyalin'},
+                    {name:'weiyalin'}
+                ];
+            },
+            more:function (){
+                // 分页查询
+                this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
+
+                this.pageList = this.pageList.concat([
+                    {name:'weiyalin'+this.searchCondition.pageNo},
+                    {name:'weiyalin'+this.searchCondition.pageNo}
+                ]);
+            },
+        },
+        mounted(){
+          this.loadPageList();
+        },
     }
 </script>

@@ -21,8 +21,31 @@
                 </mt-radio>
             </div>
             <footer>
-                
+                <div class="demo-input-suffix">
+                  联系人：
+                  <el-input
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="input">
+                  </el-input>
+                </div>
+                <div class="demo-input-suffix">
 
+                  陪同人：
+                  <el-input
+                    placeholder="请输入内容"
+                    prefix-icon="el-icon-search"
+                    v-model="input">
+                  </el-input>
+                </div>
+                <div class="demo-input-suffix">
+                    检查时间：
+                    <el-input
+                        placeholder="请选择日期"
+                        suffix-icon="el-icon-date"
+                        v-model="input2">
+                    </el-input>
+                </div>
             </footer>
         </div>
     </div>
@@ -39,6 +62,9 @@
         display: block;
         color: #303133;
     }
+    .demo-input-suffix{
+        margin: 20px 0;
+    }
 </style>
 <script>
     import { Header, Radio  } from 'mint-ui';
@@ -47,7 +73,9 @@
         data() {
             return {
                 selected:'',
-                value: ''
+                value: '',
+                input: '',
+                input2:''
             }
         },
         components:{

@@ -50,5 +50,10 @@ export default new Router({
         name: 'Message',
         component: resolve => void(require(['../components/Message.vue'], resolve))
     },
+    {
+        path: '/CheckRecord',
+        name: 'CheckRecord',
+        component: resolve => void(require(['../components/CheckRecord.vue'], resolve))
+    },
   ]
 })
