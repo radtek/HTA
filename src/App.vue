@@ -47,6 +47,6 @@ a {
   text-decoration:none;
 }
 .mint-tab-item-label {
-  color: #409EFF;
+  color: #409EFF !important;
 }
 </style>
