@@ -20,6 +20,10 @@
                   :options="['是', '否']">
                 </mt-radio>
             </div>
+            <footer>
+                
+
+            </footer>
         </div>
     </div>
 

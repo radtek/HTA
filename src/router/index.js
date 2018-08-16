@@ -34,6 +34,8 @@ export default new Router({
       path: '/FieldExplor',
       name: 'FieldExplor',
       component: resolve => void(require(['../components/FieldExplor.vue'], resolve))
+    },
+    {
         path: '/personInfo',
         name: 'PersonInfo',
         component: resolve => void(require(['../components/PersonInfo.vue'], resolve))
