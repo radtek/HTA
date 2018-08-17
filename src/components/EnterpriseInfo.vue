@@ -1,8 +1,8 @@
 <template>
     <div>
         <mt-header title="企业信息">
-          <router-link to="/ListContent" slot="left">
-            <mt-button icon="back"></mt-button>
+          <router-link to="" slot="left">
+            <mt-button icon="back" @click="$router.go(-1);"></mt-button>
           </router-link>
         </mt-header>
         <div style="padding:0 7%;">
@@ -28,7 +28,7 @@
         name: 'home',
         data() {
             return {
-                selected:'',
+                id:'',
             }
         },
         components:{
@@ -36,7 +36,8 @@
             Tabbar,
             TabItem
         },
-        methods: {
-        },
+        mounted(){
+            this.id = this.$route.params.id;
+        }
     }
 </script>

@@ -1,8 +1,8 @@
 <template>
     <div>
         <mt-header title="检查记录">
-          <router-link to="/ListContent" slot="left">
-            <mt-button icon="back"></mt-button>
+          <router-link to="" slot="left">
+            <mt-button icon="back" @click="$router.go(-1);"></mt-button>
           </router-link>
         </mt-header>
         <div style="padding:0 7%;">
@@ -23,8 +23,6 @@
             </div>
         </div>
     </div>
-
-
 </template>
 <style media="screen">
     .content{
@@ -49,13 +47,15 @@
         name: 'home',
         data() {
             return {
-                selected:'',
-                value: ''
+                id:''
             }
         },
         components:{
             Header,
             Radio
+        },
+        mounted(){
+            this.id = this.$route.params.id;
         }
     }
 </script>

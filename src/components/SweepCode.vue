@@ -1,36 +1,37 @@
 <template>
     <div>
-        <mt-header title="信息查询">
-          <mt-button slot="right">
-              <img slot="icon" src="../assets/shao.png" style="width: 23px;">
-          </mt-button>
+        <mt-header title="企业列表">
+            <router-link to="/Sweep" slot="right">
+                <mt-button>
+                    <img slot="icon" src="../assets/shao.png" style="width: 23px;">
+                </mt-button>
+                扫码
+            </router-link>
         </mt-header>
         <div class="" style="padding:0 7%;">
             <div class="demo-input-suffix">
-                <el-input
-                   placeholder="请输入内容"
-                   prefix-icon="el-icon-search"
-                   v-model="objName" style="width: 68%; float:left;">
-                 </el-input>
-                 <el-button type="primary" icon="el-icon-search" style="float:right;">搜索</el-button>
-                 <div class="clear"></div>
+                <el-input placeholder="请输入内容" v-model="objName" class="input-with-select">
+                    <el-button slot="append" icon="el-icon-search" @click="loadPageList"></el-button>
+                </el-input>
             </div>
 
             <div style="height: 70vh; overflow:scroll;">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-                    <ul class="list" v-for="item in pageList">
-                        <li>
-                            <router-link to="/ListContent">
-                                <ul class="list" v-for="item in pageList">
-                                    <li>
-                                        <div>{{ item }}</div>
-                                    </li>
-                                </ul>
-                            </router-link>
-                        </li>
-                    </ul>
+                    <div class="list" v-for="item in pageList">
+                        <router-link :to="{ name: 'ListContent', params: { id: item.id}}" class="clearBoth">
+                            <div class="cont">
+                                <h3> {{ item.objName }} </h3>
+                                <p>  {{ item.busiAddr }} </p>
+                                <p>  {{ item.localAddr }} </p>
+                            </div>
+                            <div class="link">
+                                <img src="../assets/return.png" alt="">
+                            </div>
+                        </router-link>
+
+                    </div>
                 </v-loadmore>
             </div>
         </div>
@@ -55,29 +56,33 @@
     .list h3{
         font-size: 16px;
         color: #606266;
-        padding: 10px;
     }
     .list p{
         font-size: 13px;
         color: #909399;
-        padding: 0 0 0 10px;
         width: 76%;
     }
     .cont{
-        width: 85%;
+        width: 80%;
         float: left;
+        padding-left: 10px;
+        height: 100%;
+    }
+    .cont * {
+        margin-top: 6px;
     }
     .link{
-        float:left;
+        float:right;
         width:15%;
-        margin:28px 0;
+        margin-top: 25px;
     }
     .link img{
-        width: 26px;
+        width: 30px;
     }
-    .clear{
-        content: '';
+    .clearBoth:after{
+        content: "";
         clear: both;
+        display: block;
     }
 </style>
 <script>
@@ -105,18 +110,73 @@
             'v-loadmore':Loadmore
         },
         methods: {
-            loadBottom:function() {
+            loadBottom() {
                 // 上拉加载
                 this.more();// 上拉触发的分页查询
                 this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
             },
-            loadPageList:function (){
+            loadPageList(){
                 this.pageList = [
-                    {name:'weiyalin'},
-                    {name:'weiyalin'},
-                    {name:'weiyalin'},
-                    {name:'weiyalin'},
-                    {name:'weiyalin'}
+                    {
+                        "id":"201",
+                        // "regionCode":"开发区街道",
+                        "objName":"XXX餐馆",
+                        "busiAddr":"科隆大道与牧野路交叉口",
+                        "localAddr":"XXX街道",
+                        // "fuzeren":"张三",
+                        // "fuzerenPhone":"13612341234",
+                        // "jianguanren":"李四",
+                        // "jiangguanPhone":"1232123131231",
+                        // "seatNum":"50",
+                        // "caotouNum":"4",
+                        // "guimo":"50",
+                        // "yyjhqNum":"4"
+                    },
+                    {
+                        "id":"201",
+                        // "regionCode":"开发区街道",
+                        "objName":"XXX餐馆",
+                        "busiAddr":"科隆大道与牧野路交叉口",
+                        "localAddr":"XXX街道",
+                        // "fuzeren":"张三",
+                        // "fuzerenPhone":"13612341234",
+                        // "jianguanren":"李四",
+                        // "jiangguanPhone":"1232123131231",
+                        // "seatNum":"50",
+                        // "caotouNum":"4",
+                        // "guimo":"50",
+                        // "yyjhqNum":"4"
+                    },
+                    {
+                        "id":"201",
+                        // "regionCode":"开发区街道",
+                        "objName":"XXX餐馆",
+                        "busiAddr":"科隆大道与牧野路交叉口",
+                        "localAddr":"XXX街道",
+                        // "fuzeren":"张三",
+                        // "fuzerenPhone":"13612341234",
+                        // "jianguanren":"李四",
+                        // "jiangguanPhone":"1232123131231",
+                        // "seatNum":"50",
+                        // "caotouNum":"4",
+                        // "guimo":"50",
+                        // "yyjhqNum":"4"
+                    },
+                    {
+                        "id":"201",
+                        // "regionCode":"开发区街道",
+                        "objName":"XXX餐馆",
+                        "busiAddr":"科隆大道与牧野路交叉口",
+                        "localAddr":"XXX街道",
+                        // "fuzeren":"张三",
+                        // "fuzerenPhone":"13612341234",
+                        // "jianguanren":"李四",
+                        // "jiangguanPhone":"1232123131231",
+                        // "seatNum":"50",
+                        // "caotouNum":"4",
+                        // "guimo":"50",
+                        // "yyjhqNum":"4"
+                    }
                 ];
 
                 if (this.pageList) return;
@@ -137,7 +197,7 @@
                     }
                 });
             },
-            more:function (){
+            more(){
                 // 分页查询
                 this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
 
@@ -159,7 +219,7 @@
             },
         },
         mounted(){
-          // this.loadPageList();
+          this.loadPageList();
         },
     }
 </script>

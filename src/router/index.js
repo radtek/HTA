@@ -11,22 +11,22 @@ export default new Router({
       component: resolve => void(require(['../components/SweepCode.vue'], resolve))
     },
     {
-      path: '/personal',
+      path: '/Personal',
       name: 'Personal',
       component: resolve => void(require(['../components/Personal.vue'], resolve))
     },
     {
-      path: '/ListContent',
+      path: '/ListContent/:id',
       name: 'ListContent',
       component: resolve => void(require(['../components/ListContent.vue'], resolve))
     },
     {
-      path: '/EnterpriseInfor',
-      name: 'EnterpriseInfor',
-      component: resolve => void(require(['../components/EnterpriseInfor.vue'], resolve))
+      path: '/EnterpriseInfo/:id',
+      name: 'EnterpriseInfo',
+      component: resolve => void(require(['../components/EnterpriseInfo.vue'], resolve))
     },
     {
-      path: '/CleanRecord',
+      path: '/CleanRecord/:id',
       name: 'CleanRecord',
       component: resolve => void(require(['../components/CleanRecord.vue'], resolve))
     },
@@ -36,65 +36,65 @@ export default new Router({
       component: resolve => void(require(['../components/FieldExplor.vue'], resolve))
     },
     {
-        path: '/personInfo',
+        path: '/PersonInfo',
         name: 'PersonInfo',
         component: resolve => void(require(['../components/PersonInfo.vue'], resolve))
     },
     {
-        path: '/resetPassword',
+        path: '/ResetPassword',
         name: 'ResetPassword',
         component: resolve => void(require(['../components/ResetPassword.vue'], resolve))
     },
     {
-        path: '/message',
+        path: '/Message',
         name: 'Message',
         component: resolve => void(require(['../components/Message.vue'], resolve))
     },
     {
-        path: '/CheckRecord',
+        path: '/CheckRecord/:id',
         name: 'CheckRecord',
         component: resolve => void(require(['../components/CheckRecord.vue'], resolve))
     },
     {
-      path: '/sweep',
+      path: '/Sweep',
       name: 'Sweep',
       component: resolve => void(require(['../components/Sweep.vue'], resolve))
     },
     // 商户app列表路径
     {
-      path: '/sh/ListContent',
-      name: 'ListContent',
-      component: resolve => void(require(['../components/shanghu/ListContent.vue'], resolve))
+      path: '/sh/ComListContent',
+      name: 'ComListContent',
+      component: resolve => void(require(['../components/shanghu/ComListContent.vue'], resolve))
     },
     // 商户app消息提醒路径
     {
-        path: '/sh/message',
-        name: 'Message',
-        component: resolve => void(require(['../components/shanghu/Message.vue'], resolve))
+        path: '/sh/ComMessage',
+        name: 'ComMessage',
+        component: resolve => void(require(['../components/shanghu/ComMessage.vue'], resolve))
     },
     //商户app企业信息路径
     {
-      path: '/sh/EnterpriseInfor',
-      name: 'EnterpriseInfor',
-      component: resolve => void(require(['../components/shanghu/EnterpriseInfor.vue'], resolve))
+      path: '/sh/ComEnterpriseInfo',
+      name: 'ComEnterpriseInfo',
+      component: resolve => void(require(['../components/shanghu/ComEnterpriseInfo.vue'], resolve))
     },
     //商户app清洗记录路径
     {
-      path: '/sh/CleanRecord',
-      name: 'CleanRecord',
-      component: resolve => void(require(['../components/shanghu/CleanRecord.vue'], resolve))
+      path: '/sh/ComCleanRecord',
+      name: 'ComCleanRecord',
+      component: resolve => void(require(['../components/shanghu/ComCleanRecord.vue'], resolve))
     },
     //商户app修改负责人路径
     {
-      path: '/sh/modifyLeader',
-      name: 'modifyLeader',
-      component: resolve => void(require(['../components/shanghu/modifyLeader.vue'], resolve))
+      path: '/sh/ComModifyLeader',
+      name: 'ComModifyLeader',
+      component: resolve => void(require(['../components/shanghu/ComModifyLeader.vue'], resolve))
     },
     //商户app我要上报路径
     {
-      path: '/sh/Report',
-      name: 'Report',
-      component: resolve => void(require(['../components/shanghu/Report.vue'], resolve))
+      path: '/sh/ComReport',
+      name: 'ComReport',
+      component: resolve => void(require(['../components/shanghu/ComReport.vue'], resolve))
     },
   ]
 })

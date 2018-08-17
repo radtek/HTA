@@ -1,8 +1,8 @@
 <template>
     <div>
         <mt-header title="现场勘查">
-          <router-link to="/ListContent" slot="left">
-            <mt-button icon="back"></mt-button>
+          <router-link to="" slot="left">
+            <mt-button icon="back" @click="$router.go(-1);"></mt-button>
           </router-link>
         </mt-header>
         <div style="padding:0 7%;">

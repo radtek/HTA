@@ -7,13 +7,13 @@
                 <p>{{ personInfo.relName }}</p>
             </div>
 
-            <mt-cell title="个人信息" to="/personInfo" is-link>
+            <mt-cell title="个人信息" to="/PersonInfo" is-link>
                 <img slot="icon" src="../assets/logo.png" width="24" height="24">
             </mt-cell>
-            <mt-cell title="消息提醒" to="/message" is-link>
+            <mt-cell title="消息提醒" to="/Message" is-link>
                 <img slot="icon" src="../assets/logo.png" width="24" height="24">
             </mt-cell>
-            <mt-cell title="修改密码" to="/resetPassword" is-link>
+            <mt-cell title="修改密码" to="/ResetPassword" is-link>
                 <img slot="icon" src="../assets/logo.png" width="24" height="24">
             </mt-cell>
             <mt-button type="danger" style="width: 100%;margin-top: 20px">退出登录</mt-button>
