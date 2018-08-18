@@ -51,7 +51,8 @@
                         sessionStorage.setItem('personInfo', data);
                         self.personInfo = data;
                     }else if(data.statusCode == 310){
-                        window.location.href = "index.html";
+                        localStorage.clear();
+                        window.location.href = "login.html";
                     }else{
                         Toast(data.message);
                     }

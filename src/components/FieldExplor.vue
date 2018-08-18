@@ -6,51 +6,21 @@
           </router-link>
         </mt-header>
         <div style="padding:0 7%;">
-            <div class="content">
-                <mt-radio
-                  title="1 油烟净化机是否能正常使用"
-                  v-model="value"
-                  :options="['是', '否']">
-                </mt-radio>
+            <div style="height: 85vh; overflow:scroll;">
+                <div class="content" v-for="item in problems">
+                    <mt-radio
+                            :title="'【必选】'+item.inspDesc"
+                            v-model="answer[item.inspCode]"
+                            :options="item.replyOption.split(',')">
+                    </mt-radio>
+                </div>
+                <mt-field label="其他" placeholder="请输入内容，可不填" type="textarea" rows="4" v-model="other"></mt-field>
+                <hr style="border-color: rgba(0,0,0,0.1);border-top: 0;">
+                <mt-field label="【必填】姓名" placeholder="请输入陪同人姓名" v-model.trim="officerName"></mt-field>
+                <mt-button type="primary" style="width: 100%;margin: 20px 0" @click="sub">提交</mt-button>
             </div>
-            <div class="content">
-                <mt-radio
-                  title="2 油烟净化机是否能定期清洗"
-                  v-model="value"
-                  :options="['是', '否']">
-                </mt-radio>
-            </div>
-            <footer>
-                <div class="demo-input-suffix">
-                  联系人：
-                  <el-input
-                    placeholder="请输入内容"
-                    prefix-icon="el-icon-search"
-                    v-model="input">
-                  </el-input>
-                </div>
-                <div class="demo-input-suffix">
-
-                  陪同人：
-                  <el-input
-                    placeholder="请输入内容"
-                    prefix-icon="el-icon-search"
-                    v-model="input">
-                  </el-input>
-                </div>
-                <div class="demo-input-suffix">
-                    检查时间：
-                    <el-input
-                        placeholder="请选择日期"
-                        suffix-icon="el-icon-date"
-                        v-model="input2">
-                    </el-input>
-                </div>
-            </footer>
         </div>
     </div>
-
-
 </template>
 <style media="screen">
     .content{
@@ -67,20 +37,103 @@
     }
 </style>
 <script>
-    import { Header, Radio  } from 'mint-ui';
+    import { Header, Radio ,Toast } from 'mint-ui';
     export default {
         name: 'home',
         data() {
             return {
-                selected:'',
+                id:'',
+                other:'',
+                officerName:'',
                 value: '',
-                input: '',
-                input2:''
+                answer:[],
+                problems:[
+                    {
+                        "id":"123",
+                        "inspCode":"302728",
+                        "inspType":"餐饮油烟检查",
+                        "inspDesc":"油烟净化器是否正常使用",
+                        "replyOption":"是,否"
+                    },
+                    {
+                        "id":"123",
+                        "inspCode":"302729",
+                        "inspType":"餐饮油烟检查",
+                        "inspDesc":"油烟净化器是否正常使用",
+                        "replyOption":"是,否"
+                    },
+                    {
+                        "id":"123",
+                        "inspCode":"302730",
+                        "inspType":"餐饮油烟检查",
+                        "inspDesc":"油烟净化器是否正常使用",
+                        "replyOption":"是,否"
+                    },
+                    {
+                        "id":"123",
+                        "inspCode":"302731",
+                        "inspType":"餐饮油烟检查",
+                        "inspDesc":"油烟净化器是否正常使用",
+                        "replyOption":"是,否"
+                    }
+                ]
             }
         },
         components:{
             Header,
             Radio
+        },
+        methods: {
+            sub(){
+                this.answer.forEach(function (value,index) {
+                    if(value == ''){
+                        Toast('有选项未选择！');
+                        return;
+                    }
+                    console.log(index+":"+value);
+                });
+                return;
+                let self = this;
+                $.post(realmName + 'sf_zhzf/msys/inspnotes/add',{
+                    //TODO::不知道怎么传参数
+                },function(data,status){
+                    if(data.statusCode == 200){
+                        Toast('提交成功');
+                        self.$router.push({ name: 'CleanRecord', params: { id: self.id }})
+                    }else if(data.statusCode == 310){
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }else{
+                        Toast(data.message);
+                    }
+                });
+            },
+            getProblem(){
+                let self = this;
+                $.post(realmName + 'sf_zhzf/msys/inspstandard/list',{
+                    inspType:'待确定'
+                },function(data,status){
+                    if(data.statusCode == 200){
+                        self.problems = data.list;
+                        self.problems.forEach(function (value) {
+                            self.answer[value.inspCode] = '';
+                        });
+                    }else if(data.statusCode == 310){
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }else{
+                        Toast(data.message);
+                    }
+                });
+            },
+        },
+        mounted() {
+            this.id = this.$route.params.id;
+            // this.getProblem();
+            let self = this;
+            this.problems.forEach(function (value) {
+                self.answer[value.inspCode] = '';
+            });
         }
     }
 </script>

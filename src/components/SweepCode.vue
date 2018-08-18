@@ -18,7 +18,7 @@
             <div style="height: 70vh; overflow:scroll;">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
-                            :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
+                            :bottom-all-loaded="allLoaded" :auto-fill="true" ref="loadmore">
                     <div class="list" v-for="item in pageList">
                         <router-link :to="{ name: 'ListContent', params: { id: item.id}}" class="clearBoth">
                             <div class="cont">
@@ -191,13 +191,80 @@
                     if(data.statusCode == 200){
                         self.pageList = data.list;
                     }else if(data.statusCode == 310){
-                        window.location.href = "index.html";
+                        localStorage.clear();
+                        window.location.href = "login.html";
                     }else{
                         Toast(data.message);
                     }
                 });
             },
             more(){
+
+                this.pageList = this.pageList.concat([
+                    {
+                        "id":"201",
+                        // "regionCode":"开发区街道",
+                        "objName":"XXX餐馆",
+                        "busiAddr":"科隆大道与牧野路交叉口",
+                        "localAddr":"XXX街道",
+                        // "fuzeren":"张三",
+                        // "fuzerenPhone":"13612341234",
+                        // "jianguanren":"李四",
+                        // "jiangguanPhone":"1232123131231",
+                        // "seatNum":"50",
+                        // "caotouNum":"4",
+                        // "guimo":"50",
+                        // "yyjhqNum":"4"
+                    },
+                    {
+                        "id":"201",
+                        // "regionCode":"开发区街道",
+                        "objName":"XXX餐馆",
+                        "busiAddr":"科隆大道与牧野路交叉口",
+                        "localAddr":"XXX街道",
+                        // "fuzeren":"张三",
+                        // "fuzerenPhone":"13612341234",
+                        // "jianguanren":"李四",
+                        // "jiangguanPhone":"1232123131231",
+                        // "seatNum":"50",
+                        // "caotouNum":"4",
+                        // "guimo":"50",
+                        // "yyjhqNum":"4"
+                    },
+                    {
+                        "id":"201",
+                        // "regionCode":"开发区街道",
+                        "objName":"XXX餐馆",
+                        "busiAddr":"科隆大道与牧野路交叉口",
+                        "localAddr":"XXX街道",
+                        // "fuzeren":"张三",
+                        // "fuzerenPhone":"13612341234",
+                        // "jianguanren":"李四",
+                        // "jiangguanPhone":"1232123131231",
+                        // "seatNum":"50",
+                        // "caotouNum":"4",
+                        // "guimo":"50",
+                        // "yyjhqNum":"4"
+                    },
+                    {
+                        "id":"201",
+                        // "regionCode":"开发区街道",
+                        "objName":"XXX餐馆",
+                        "busiAddr":"科隆大道与牧野路交叉口",
+                        "localAddr":"XXX街道",
+                        // "fuzeren":"张三",
+                        // "fuzerenPhone":"13612341234",
+                        // "jianguanren":"李四",
+                        // "jiangguanPhone":"1232123131231",
+                        // "seatNum":"50",
+                        // "caotouNum":"4",
+                        // "guimo":"50",
+                        // "yyjhqNum":"4"
+                    }
+                ]);
+
+                return;
+
                 // 分页查询
                 this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
 
@@ -209,9 +276,10 @@
                     numPerPage:self.searchCondition.pageSize
                 },function(data,status){
                     if(data.statusCode == 200){
-                        self.pageList = this.pageList.concat(data.list);
+                        self.pageList = self.pageList.concat(data.list);
                     }else if(data.statusCode == 310){
-                        window.location.href = "index.html";
+                        localStorage.clear();
+                        window.location.href = "login.html";
                     }else{
                         Toast(data.message);
                     }

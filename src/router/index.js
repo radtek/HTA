@@ -31,7 +31,7 @@ export default new Router({
       component: resolve => void(require(['../components/CleanRecord.vue'], resolve))
     },
     {
-      path: '/FieldExplor',
+      path: '/FieldExplor/:id',
       name: 'FieldExplor',
       component: resolve => void(require(['../components/FieldExplor.vue'], resolve))
     },
