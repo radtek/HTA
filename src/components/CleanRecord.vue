@@ -191,8 +191,8 @@
                 let self = this;
                 $.post(realmName + 'sf_zhzf/msys/cleanhist/list',{
                     execobjId   : self.id,
-                    pageNum     :self.searchCondition.pageNo,
-                    numPerPage  :self.searchCondition.pageSize
+                    pageNum     : self.searchCondition.pageNo,
+                    numPerPage  : self.searchCondition.pageSize
                 },function(data,status){
                     if(data.statusCode == 200){
                         self.pageList = self.pageList.concat(data.list);

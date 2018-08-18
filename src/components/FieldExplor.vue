@@ -14,9 +14,9 @@
                             :options="item.replyOption.split(',')">
                     </mt-radio>
                 </div>
-                <mt-field label="其他" placeholder="请输入内容，可不填" type="textarea" rows="4" v-model="other"></mt-field>
+                <mt-field label="其他" placeholder="请输入内容，可不填" type="textarea" rows="4" v-model.trim="other"></mt-field>
                 <hr style="border-color: rgba(0,0,0,0.1);border-top: 0;">
-                <mt-field label="【必填】姓名" placeholder="请输入陪同人姓名" v-model.trim="officerName"></mt-field>
+                <mt-field label="【必填】姓名" :attr="{ maxlength: 10 }" placeholder="请输入陪同人姓名" v-model.trim="officerName"></mt-field>
                 <mt-button type="primary" style="width: 100%;margin: 20px 0" @click="sub">提交</mt-button>
             </div>
         </div>
@@ -90,9 +90,11 @@
                         Toast('有选项未选择！');
                         return;
                     }
-                    console.log(index+":"+value);
                 });
+                //TODO::记得删除
+                this.$router.push({ name: 'CleanRecord', params: { id: this.id }})
                 return;
+
                 let self = this;
                 $.post(realmName + 'sf_zhzf/msys/inspnotes/add',{
                     //TODO::不知道怎么传参数

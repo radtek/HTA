@@ -10,7 +10,7 @@
         </mt-header>
         <div class="" style="padding:0 7%;">
             <div class="demo-input-suffix">
-                <el-input placeholder="请输入内容" v-model="objName" class="input-with-select">
+                <el-input maxlength="10" clearable placeholder="请输入内容" v-model.trim="objName" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search" @click="loadPageList"></el-button>
                 </el-input>
             </div>
@@ -91,7 +91,7 @@
         name: 'home',
         data() {
             return {
-                objName:'',
+                objName:"",
                 title:'新乡海滨有限公司',
                 data:'行政区划分：好几百的后视镜到哪里好几百的后视镜到哪里',
                 searchCondition:{  //分页属性

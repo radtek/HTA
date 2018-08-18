@@ -5,66 +5,27 @@
                 <mt-button icon="back" @click="$router.go(-1)">&nbsp;&nbsp;</mt-button>
             </router-link>
         </mt-header>
-        <div style="padding: 0 3%">
-            <div class="form" style="padding: 40px 5% 0 0">
-                <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-                      <el-form-item label="密码" prop="pass">
-                        <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
-                      </el-form-item>
-                      <el-form-item label="确认密码" prop="checkPass">
-                        <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
-                      </el-form-item>
-                      <el-form-item>
-                        <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
-                        <el-button @click="resetForm('ruleForm2')">重置</el-button>
-                      </el-form-item>
-                </el-form>
-            </div>
+        <div style="padding: 0 7%">
+            <mt-field label="原密码" :attr="{ maxlength: 15 }" placeholder="请输入原密码" v-model.trim="originalPassword"></mt-field>
+            <mt-field label="新密码" :attr="{ maxlength: 15 }" placeholder="请输入新密码" v-model.trim="newPassword"></mt-field>
+            <mt-field label="确认密码" :attr="{ maxlength: 15 }" placeholder="请输入确认密码" v-model.trim="affirmPassword"></mt-field>
+            <mt-button type="primary" style="width: 100%;margin: 20px 0" @click="submitForm">确认修改</mt-button>
         </div>
     </div>
 </template>
+<style>
 
+</style>
 <script>
     import { Header,Cell,Toast,Button  } from 'mint-ui';
     export default {
         name: 'reset-password',
         data() {
-
-             var validatePass = (rule, value, callback) => {
-               if (value === '') {
-                 callback(new Error('请输入密码'));
-               } else {
-                 if (this.ruleForm2.checkPass !== '') {
-                   this.$refs.ruleForm2.validateField('checkPass');
-                 }
-                 callback();
-               }
-             };
-             var validatePass2 = (rule, value, callback) => {
-               if (value === '') {
-                 callback(new Error('请再次输入密码'));
-               } else if (value !== this.ruleForm2.pass) {
-                 callback(new Error('两次输入密码不一致!'));
-               } else {
-                 callback();
-               }
-             };
-             return {
-               ruleForm2: {
-                 pass: '',
-                 checkPass: '',
-                 age: ''
-               },
-               rules2: {
-                 pass: [
-                   { validator: validatePass, trigger: 'blur' }
-                 ],
-                 checkPass: [
-                   { validator: validatePass2, trigger: 'blur' }
-                 ]
-               }
-
-             };
+            return {
+                originalPassword:'',
+                newPassword     :'',
+                affirmPassword  :''
+            }
         },
         components:{
             Header,
@@ -72,25 +33,37 @@
         },
         methods: {
               submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                  if (valid) {
-                    alert('submit!');
-                  } else {
-                    console.log('error submit!!');
-                    return false;
+                  let self = this;
+                  if(self.originalPassword.length == 0){
+                      Toast('原密码为空！'); return;
                   }
-                });
-              },
-              resetForm(formName) {
-                this.$refs[formName].resetFields();
-              }
-          },
-        mounted() {
+                  if(self.newPassword.length == 0){
+                      Toast('新密码为空！'); return;
+                  }
+                  if(self.affirmPassword.length == 0){
+                      Toast('确认密码为空！'); return;
+                  }
+                  if(self.newPassword != self.affirmPassword){
+                      Toast('新密码与确认密码不一致！'); return;
+                  }
 
-        }
+                  //TODO::记得删除
+                  self.$router.go(-1);
+
+                  $.post(realmName + 'sf_zhzf/msys/user/resetpwd',{
+                      oldpass:self.originalPassword,
+                      newpass:self.newPassword
+                  },function(data,status){
+                      if(data.statusCode == 200){
+                          self.$router.go(-1);
+                      }else if(data.statusCode == 310){
+                          localStorage.clear();
+                          window.location.href = "login.html";
+                      }else{
+                          Toast(data.message);
+                      }
+                  });
+              }
+          }
     }
 </script>
-
-<style scoped>
-
-</style>
