@@ -14,8 +14,7 @@
                     <el-button slot="append" icon="el-icon-search" @click="loadPageList"></el-button>
                 </el-input>
             </div>
-
-            <div style="height: 70vh; overflow:scroll;">
+            <div id="myScr" style="height: 70vh; overflow:scroll;">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="true" ref="loadmore">
@@ -287,7 +286,8 @@
             },
         },
         mounted(){
-          this.loadPageList();
-        },
+            this.loadPageList();
+            check();
+        }
     }
 </script>

@@ -6,7 +6,7 @@
           </router-link>
         </mt-header>
         <div style="padding:0 7%;">
-            <div style="height: 85vh; overflow:scroll;">
+            <div id="myScr" style="height: 85vh; overflow:scroll;">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="true" ref="loadmore">
@@ -208,6 +208,7 @@
         mounted(){
             this.id = this.$route.params.id;
             this.loadPageList();
+            check();
         }
     }
 </script>

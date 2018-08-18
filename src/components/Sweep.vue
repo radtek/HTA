@@ -104,7 +104,7 @@
                     self.$router.push({ name: 'ListContent', params: { id: result }});
 
                     //TODO::组件传参
-                    self.closeScan();
+                    self.back();
                     // Toast(self.execobjId);
                     // $.post( realmName + 'sf_zhzf/msys/enterprise/qrcode',{
                     //     code : result

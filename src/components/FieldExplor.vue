@@ -113,7 +113,7 @@
             getProblem(){
                 let self = this;
                 $.post(realmName + 'sf_zhzf/msys/inspstandard/list',{
-                    inspType:'待确定'
+                    inspType: inspType
                 },function(data,status){
                     if(data.statusCode == 200){
                         self.problems = data.list;
