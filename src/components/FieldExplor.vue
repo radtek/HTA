@@ -92,7 +92,7 @@
                     }
                 });
                 //TODO::记得删除
-                this.$router.push({ name: 'CleanRecord', params: { id: this.id }})
+                this.$router.push({ name: 'CheckRecord', params: { id: this.id }});
                 return;
 
                 let self = this;
@@ -101,7 +101,7 @@
                 },function(data,status){
                     if(data.statusCode == 200){
                         Toast('提交成功');
-                        self.$router.push({ name: 'CleanRecord', params: { id: self.id }})
+                        self.$router.push({ name: 'CheckRecord', params: { id: self.id }});
                     }else if(data.statusCode == 310){
                         localStorage.clear();
                         window.location.href = "login.html";

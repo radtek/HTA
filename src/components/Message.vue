@@ -73,13 +73,12 @@
     }
     .mint-popup{
         width: 100%;
-        background-color: rgba(0,0,0,0);
+        background-color: rgba(0,0,0,0) !important;
     }
     .myBox{
         width: 80%;
         margin:0 auto;
         padding: 10px;
-        min-height: 10vh;
         background: #EBEEF5;
         border: 2px solid rgba(0,0,0,0.2);
         border-radius: 5px;
@@ -104,7 +103,7 @@
         data() {
             return {
                 unread:1, //未读为1
-                read:0, //未读为1
+                read:2, //已读为2
                 showPopup:false,
                 popupContent:'',
                 searchCondition:{  //分页属性
