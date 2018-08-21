@@ -17,7 +17,7 @@
             <div id="myScr" style="height: 70vh; overflow:scroll;">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
-                            :bottom-all-loaded="allLoaded" :auto-fill="true" ref="loadmore">
+                            :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
                     <div class="list" v-for="item in pageList">
                         <router-link :to="{ name: 'ListContent', params: { id: item.id}}" class="clearBoth">
                             <div class="cont">
@@ -98,7 +98,7 @@
                   pageSize:"5"
                 },
                 pageList:[],
-                allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
+                allLoaded: true, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
                 scrollMode:"auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
             }
         },
@@ -198,7 +198,6 @@
                 });
             },
             more(){
-
                 this.pageList = this.pageList.concat([
                     {
                         "id":"201",
@@ -271,8 +270,8 @@
                 let self = this;
                 $.post(realmName + '',{
                     objName:self.objName,
-                    pageNum:self.searchCondition.pageNo,
-                    numPerPage:self.searchCondition.pageSize
+                    // pageNum:self.searchCondition.pageNo,
+                    // numPerPage:self.searchCondition.pageSize
                 },function(data,status){
                     if(data.statusCode == 200){
                         self.pageList = self.pageList.concat(data.list);

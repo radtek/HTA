@@ -96,8 +96,29 @@
                 return;
 
                 let self = this;
+
+                let inspCodes  = '';
+                let inspResult = '';
+                let inspStatus = '';
+                self.answer.forEach(function (value, index) {
+                    inspCodes += index+',';
+                    inspResult += value+',';
+
+                    if(value == '是'){
+                        inspStatus += '1'+',';
+                    }else if(value == '否'){
+                        inspStatus += '2'+',';
+                    }
+                });
+                inspCodes = inspCodes.substring(0,inspCodes.length-1);
+                inspResult = inspResult.substring(0,inspResult.length-1);
+                inspStatus = inspStatus.substring(0,inspStatus.length-1);
+
                 $.post(realmName + 'sf_zhzf/msys/inspnotes/add',{
                     //TODO::不知道怎么传参数
+                    inspCode : inspCodes,
+                    inspResult:inspResult,
+                    inspStatus:inspStatus
                 },function(data,status){
                     if(data.statusCode == 200){
                         Toast('提交成功');

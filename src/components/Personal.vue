@@ -12,11 +12,12 @@
             </mt-cell>
             <mt-cell title="消息提醒" to="/Message" is-link>
                 <img slot="icon" src="../assets/comment.png" width="24" height="24">
+                <mt-badge type="error" v-if="unreadMessageCount != 0">{{ unreadMessageCount }}</mt-badge>
             </mt-cell>
             <mt-cell title="修改密码" to="/ResetPassword" is-link>
                 <img slot="icon" src="../assets/write_fill.png" width="24" height="24">
             </mt-cell>
-            <mt-button type="danger" style="width: 100%;margin-top: 20px">退出登录</mt-button>
+            <mt-button type="danger" style="width: 100%;margin-top: 20px" @click="loginOut()">退出登录</mt-button>
         </div>
     </div>
 </template>
@@ -43,6 +44,7 @@
         name: 'home',
         data() {
             return {
+                unreadMessageCount:0,
                 personInfo:{
                     "statusCode":"200",
                     "message"   :"OK",
@@ -78,10 +80,39 @@
                     }
                 });
             },
+            getMessageCount(){
+                let self = this;
+                $.post(realmName + 'sf_zhzf/msys/notice/unreadcnt',{
+
+                },function(data,status){
+                    if(data.statusCode == 200){
+                        self.unreadMessageCount = data.count;
+                    }else if(data.statusCode == 310){
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }else{
+                        Toast(data.message);
+                    }
+                });
+            },
+            loginOut(){
+                let self = this;
+                $.post(realmName + 'sf_zhzf/msys/user/logout',{
+
+                },function(data,status){
+                    if(data.statusCode == 200 || data.statusCode == 310){
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }else{
+                        Toast(data.message);
+                    }
+                });
+            }
         },
         mounted() {
             // this.personInfo = sessionStorage.getItem('personInfo');
             this.getInfo();
+            this.getMessageCount();
         }
     }
 </script>

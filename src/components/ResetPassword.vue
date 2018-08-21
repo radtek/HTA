@@ -51,8 +51,8 @@
                   self.$router.go(-1);
 
                   $.post(realmName + 'sf_zhzf/msys/user/resetpwd',{
-                      oldpass:self.originalPassword,
-                      newpass:self.newPassword
+                      oldpass: hex_md5(self.originalPassword),
+                      newpass: hex_md5(self.newPassword)
                   },function(data,status){
                       if(data.statusCode == 200){
                           self.$router.go(-1);
