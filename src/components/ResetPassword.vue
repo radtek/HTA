@@ -32,38 +32,38 @@
             Cell,
         },
         methods: {
-              submitForm(formName) {
-                  let self = this;
-                  if(self.originalPassword.length == 0){
-                      Toast('原密码为空！'); return;
-                  }
-                  if(self.newPassword.length == 0){
-                      Toast('新密码为空！'); return;
-                  }
-                  if(self.affirmPassword.length == 0){
-                      Toast('确认密码为空！'); return;
-                  }
-                  if(self.newPassword != self.affirmPassword){
-                      Toast('新密码与确认密码不一致！'); return;
-                  }
+            submitForm(formName) {
+                let self = this;
+                if(self.originalPassword.length == 0){
+                  Toast('原密码为空！'); return;
+                }
+                if(self.newPassword.length == 0){
+                  Toast('新密码为空！'); return;
+                }
+                if(self.affirmPassword.length == 0){
+                  Toast('确认密码为空！'); return;
+                }
+                if(self.newPassword != self.affirmPassword){
+                  Toast('新密码与确认密码不一致！'); return;
+                }
 
-                  //TODO::记得删除
-                  self.$router.go(-1);
+                //TODO::记得删除
+                self.$router.go(-1);
 
-                  $.post(realmName + 'sf_zhzf/msys/user/resetpwd',{
-                      oldpass: hex_md5(self.originalPassword),
-                      newpass: hex_md5(self.newPassword)
-                  },function(data,status){
-                      if(data.statusCode == 200){
-                          self.$router.go(-1);
-                      }else if(data.statusCode == 310){
-                          localStorage.clear();
-                          window.location.href = "login.html";
-                      }else{
-                          Toast(data.message);
-                      }
-                  });
-              }
-          }
+                $.post(realmName + 'sf_zhzf/msys/user/resetpwd',{
+                    oldpass: hex_md5(self.originalPassword),
+                    newpass: hex_md5(self.newPassword)
+                },function(data,status){
+                    if(data.statusCode == 200){
+                      self.$router.go(-1);
+                    }else if(data.statusCode == 310){
+                      localStorage.clear();
+                      window.location.href = "login.html";
+                    }else{
+                      Toast(data.message);
+                    }
+                });
+            },
+        },
     }
 </script>

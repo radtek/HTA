@@ -45,17 +45,7 @@
         data() {
             return {
                 unreadMessageCount:0,
-                personInfo:{
-                    "statusCode":"200",
-                    "message"   :"OK",
-                    "ukey"      :"1",
-                    "login"     :"zhagnsan",
-                    "relName"   :"张三",
-                    "phone"     :"13812341234",
-                    "sysRole"   :"科员",
-                    "deptId"    :"食药监",
-                    "lastsend"  :"12345123451234512345"
-                },
+                personInfo:{},
             }
         },
         components:{
@@ -66,7 +56,7 @@
             getInfo(){
                 let self = this;
                 if(self.personInfo.statusCode == 200) return;
-                $.post(realmName + 'sf_zhzf/msys/user/getinfo',{
+                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
 
                 },function(data,status){
                     if(data.statusCode == 200){
@@ -78,14 +68,15 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             },
             getMessageCount(){
                 let self = this;
-                $.post(realmName + 'sf_zhzf/msys/notice/unreadcnt',{
+                $.get(getUrl('sf_zhzf/msys/notice/unreadcnt'),{
 
                 },function(data,status){
                     if(data.statusCode == 200){
+                        console.log(data);
                         self.unreadMessageCount = data.count;
                     }else if(data.statusCode == 310){
                         localStorage.clear();
@@ -93,11 +84,11 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             },
             loginOut(){
                 let self = this;
-                $.post(realmName + 'sf_zhzf/msys/user/logout',{
+                $.get(getUrl('sf_zhzf/msys/user/logout'),{
 
                 },function(data,status){
                     if(data.statusCode == 200 || data.statusCode == 310){
@@ -106,11 +97,11 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             }
         },
         mounted() {
-            // this.personInfo = sessionStorage.getItem('personInfo');
+            this.personInfo = sessionStorage.getItem('personInfo');
             this.getInfo();
             this.getMessageCount();
         }

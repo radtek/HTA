@@ -23,17 +23,7 @@
         name: 'person-info',
         data() {
             return {
-                personInfo:{
-                    "statusCode":"200",
-                    "message"   :"OK",
-                    "ukey"      :"1",
-                    "login"     :"zhagnsan",
-                    "relName"   :"张三",
-                    "phone"     :"13812341234",
-                    "sysRole"   :"科员",
-                    "deptId"    :"食药监",
-                    "lastsend"  :"12345123451234512345"
-                },
+                personInfo:{},
             }
         },
         components:{
@@ -44,7 +34,7 @@
             getInfo(){
                 let self = this;
                 if(self.personInfo.statusCode == 200) return;
-                $.post(realmName + 'sf_zhzf/msys/user/getinfo',{
+                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
 
                 },function(data,status){
                     if(data.statusCode == 200){
@@ -56,11 +46,11 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             },
         },
         mounted() {
-            // this.personInfo = sessionStorage.getItem('personInfo');
+            this.personInfo = sessionStorage.getItem('personInfo');
             this.getInfo();
         }
     }

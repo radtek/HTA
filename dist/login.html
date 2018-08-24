@@ -9,9 +9,11 @@
     <link href="login/bootstrap/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript">
         document.addEventListener('plusready', function(){});
-        var realmName = 'root/';
+        function getUrl(url) {return 'http://www.iotshifang.com/' + url + '?jsonp=?';}
     </script>
+    <script type="text/javascript" src="login/jquery/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="login/js/checkToken.js"></script>
+    <script type="text/javascript" src="login/md5/md5.js"></script>
 </head>
 <body>
 
@@ -33,7 +35,6 @@
     </div>
 </form>
 
-<script type="text/javascript" src="login/jquery/jquery-3.3.1.js"></script>
 <script type="text/javascript" src="login/bootstrap/bootstrap.min.js"></script>
 <script type="text/javascript" src="login/js/login.js"></script>
 </body>

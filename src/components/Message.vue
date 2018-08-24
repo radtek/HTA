@@ -10,7 +10,7 @@
             <div id="myScr" style="height: 85vh; overflow:scroll; background-color: rgba(0,0,0,0);">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
-                            :bottom-all-loaded="allLoaded" :auto-fill="true" ref="loadmore">
+                            :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
                     <div class="message-list" v-for="(item,index) in pageList">
                         <a v-on:click="show(index,item.id,item.msgStatus)" style="height: 100%;width: 100%;display: block">
                             <el-badge v-if="item.msgStatus == unread" is-dot class="item">
@@ -129,50 +129,13 @@
             loadPageList(){
                 let self = this;
 
-
-                this.pageList = [
-                    {
-                        "id":"123",
-                        "title":"油烟超期未清理",
-                        "content":"XXXX餐馆，1超过10天未提交清理信息",
-                        "msgStatus":"1",
-                        "cretime":"2018-08-12 14:12:23"
-                    },
-                    {
-                        "id":"123",
-                        "title":"油烟超期未清理",
-                        "content":"XXXX餐馆，2超过10天未提交清理信息",
-                        "msgStatus":"1",
-                        "cretime":"2018-08-12 14:12:23"
-                    },
-                    {
-                        "id":"123",
-                        "title":"油烟超期未清理",
-                        "content":"XXXX餐馆，3超过10天未提交清理信息",
-                        "msgStatus":"0",
-                        "cretime":"2018-08-12 14:12:23"
-                    },
-                    {
-                        "id":"123",
-                        "title":"油烟超期未清理",
-                        "content":"XXXX餐馆，4超过10天未提交清理信息",
-                        "msgStatus":"1",
-                        "cretime":"2018-08-12 14:12:23"
-                    }
-                ];
-
-                if (this.pageList) return;
-                //TODO::删去前面的
-
-                $.post( realmName + 'sf_zhzf/msys/notice/list',{
-                    pageNum     : self.searchCondition.pageNo,
-                    numPerPage  : self.searchCondition.pageSize
+                $.get( getUrl('sf_zhzf/msys/notice/list'),{
+                    // pageNum     : self.searchCondition.pageNo,
+                    // numPerPage  : self.searchCondition.pageSize
                 },function(data,status){
+                    console.log(data);
                     if(data.statusCode == 200){
                         self.pageList = data.list;
-                        self.pageList.forEach(function (value) {
-                            self.showPopups[value.id] = false;
-                        });
                     }else if(data.statusCode == 310){
                         //登录超时
                         localStorage.clear();
@@ -180,50 +143,16 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             },
             more(){
-
-                this.pageList = this.pageList.concat([
-                    {
-                        "id":"123",
-                        "title":"油烟超期未清理",
-                        "content":"XXXX餐馆，超过10天未提交清理信息",
-                        "msgStatus":"1",
-                        "cretime":"2018-08-12 14:12:23"
-                    },
-                    {
-                        "id":"123",
-                        "title":"油烟超期未清理",
-                        "content":"XXXX餐馆，超过10天未提交清理信息",
-                        "msgStatus":"1",
-                        "cretime":"2018-08-12 14:12:23"
-                    },
-                    {
-                        "id":"123",
-                        "title":"油烟超期未清理",
-                        "content":"XXXX餐馆，超过10天未提交清理信息",
-                        "msgStatus":"1",
-                        "cretime":"2018-08-12 14:12:23"
-                    },
-                    {
-                        "id":"123",
-                        "title":"油烟超期未清理",
-                        "content":"XXXX餐馆，超过10天未提交清理信息",
-                        "msgStatus":"1",
-                        "cretime":"2018-08-12 14:12:23"
-                    }
-                ]);
-
-                return;
-
                 //分页查询
                 this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
 
                 let self = this;
-                $.post(realmName + 'sf_zhzf/msys/notice/list',{
-                    pageNum     :self.searchCondition.pageNo,
-                    numPerPage  :self.searchCondition.pageSize
+                $.get(getUrl('sf_zhzf/msys/notice/list'),{
+                    // pageNum     :self.searchCondition.pageNo,
+                    // numPerPage  :self.searchCondition.pageSize
                 },function(data,status){
                     if(data.statusCode == 200){
                         self.pageList = self.pageList.concat(data.list);
@@ -233,20 +162,16 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             },
             show(index,id,msgStatus){
                 let self = this;
                 self.popupContent = self.pageList[index].content;
                 self.showPopup = true;
 
-                //TODO::记得删除
-                self.pageList[index].msgStatus = self.read;
-                return;
-
                 //发消息
                 if(msgStatus == self.unread){
-                    $.post(realmName + 'sf_zhzf/msys/notice/reading',{
+                    $.get(getUrl('sf_zhzf/msys/notice/reading'),{
                         id : id
                     },function(data,status){
                         if(data.statusCode == 200){
@@ -259,7 +184,7 @@
                         }else{
                             Toast(data.message);
                         }
-                    });
+                    },'json');
                 }
             }
         },
