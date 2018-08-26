@@ -8,7 +8,7 @@
         <div style="padding:0 7%;">
             <div style="height: 85vh; overflow:scroll;">
                 <div class="content" v-for="item in problems">
-                    <mt-radio
+                    <mt-radio v-if="item.inspCode != '1240005'"
                             :title="'【必选】'+item.inspDesc"
                             v-model="answer[item.inspCode]"
                             :options="item.replyOption.split(',')">
@@ -43,40 +43,13 @@
         data() {
             return {
                 id:'',
+                good:'1',
+                bad:'2',
                 other:'',
                 officerName:'',
                 value: '',
                 answer:[],
-                problems:[
-                    {
-                        "id":"123",
-                        "inspCode":"302728",
-                        "inspType":"餐饮油烟检查",
-                        "inspDesc":"油烟净化器是否正常使用",
-                        "replyOption":"是,否"
-                    },
-                    {
-                        "id":"123",
-                        "inspCode":"302729",
-                        "inspType":"餐饮油烟检查",
-                        "inspDesc":"油烟净化器是否正常使用",
-                        "replyOption":"是,否"
-                    },
-                    {
-                        "id":"123",
-                        "inspCode":"302730",
-                        "inspType":"餐饮油烟检查",
-                        "inspDesc":"油烟净化器是否正常使用",
-                        "replyOption":"是,否"
-                    },
-                    {
-                        "id":"123",
-                        "inspCode":"302731",
-                        "inspType":"餐饮油烟检查",
-                        "inspDesc":"油烟净化器是否正常使用",
-                        "replyOption":"是,否"
-                    }
-                ]
+                problems:[]
             }
         },
         components:{
@@ -91,12 +64,15 @@
                         return;
                     }
                 });
-                //TODO::记得删除
-                this.$router.push({ name: 'CheckRecord', params: { id: this.id }});
-                return;
+                if(this.officerName == ''){
+                    Toast('请填写陪同人！');
+                    return;
+                }
+
+                //中文逗号替换为英文逗号
+                this.answer['1240005'] = this.other.replace(/,/g,'，');
 
                 let self = this;
-
                 let inspCodes  = '';
                 let inspResult = '';
                 let inspStatus = '';
@@ -104,21 +80,27 @@
                     inspCodes += index+',';
                     inspResult += value+',';
 
-                    if(value == '是'){
-                        inspStatus += '1'+',';
-                    }else if(value == '否'){
-                        inspStatus += '2'+',';
+                    if(index == '1240003' || index == '1240004'){
+                        value == '是' && (inspStatus += self.bad +',');
+                        value == '否' && (inspStatus += self.good +',');
+                    }else{
+                        value == '是' && (inspStatus += self.good +',');
+                        value == '否' && (inspStatus += self.bad +',');
                     }
                 });
                 inspCodes = inspCodes.substring(0,inspCodes.length-1);
                 inspResult = inspResult.substring(0,inspResult.length-1);
                 inspStatus = inspStatus.substring(0,inspStatus.length-1);
-
-                $.post(realmName + 'sf_zhzf/msys/inspnotes/add',{
-                    //TODO::不知道怎么传参数
-                    inspCode : inspCodes,
-                    inspResult:inspResult,
-                    inspStatus:inspStatus
+// console.log(inspCodes);
+// console.log(inspResult);
+// console.log(inspStatus);
+// console.log(self.officerName);
+                $.get(getUrl('sf_zhzf/msys/inspnotes/syjadd1'),{
+                    execObjId  : self.id,
+                    inspCode   : inspCodes,
+                    inspResult : inspResult,
+                    inspStatus : inspStatus,
+                    officerName: self.officerName
                 },function(data,status){
                     if(data.statusCode == 200){
                         Toast('提交成功');
@@ -129,11 +111,11 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             },
             getProblem(){
                 let self = this;
-                $.post(realmName + 'sf_zhzf/msys/inspstandard/list',{
+                $.get(getUrl('sf_zhzf/msys/inspnotes/inspstandard'),{
                     inspType: inspType
                 },function(data,status){
                     if(data.statusCode == 200){
@@ -147,12 +129,12 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             },
         },
         mounted() {
             this.id = this.$route.params.id;
-            // this.getProblem();
+            this.getProblem();
             let self = this;
             this.problems.forEach(function (value) {
                 self.answer[value.inspCode] = '';

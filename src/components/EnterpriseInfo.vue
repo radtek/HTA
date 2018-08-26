@@ -6,14 +6,21 @@
           </router-link>
         </mt-header>
         <div style="padding:0 7%;">
-            <mt-cell title="企业名称" :value="data.objName"></mt-cell>
-            <mt-cell title="busiAddr" :value="data.busiAddr"></mt-cell>
-            <mt-cell title="localAddr" :value="data.localAddr"></mt-cell>
-            <mt-cell title="负责人" :value="data.fuzeren"></mt-cell>
-            <mt-cell title="负责人电话" :value="data.fuzerenPhone"></mt-cell>
-            <mt-cell title="监管人" :value="data.jianguanren"></mt-cell>
-            <mt-cell title="监管人电话" :value="data.jiangguanPhone"></mt-cell>
-            <mt-button type="primary" style="width: 100%;margin-top: 20px" @click="$router.go(-1);">返回上一级</mt-button>
+            <div id="myScr" style="height: 85vh; overflow:scroll;">
+                <mt-cell title="县（市、区）" :value="data.regionCode"></mt-cell>
+                <mt-cell title="企业名称" :value="data.objName"></mt-cell>
+                <mt-cell title="企业位置" :value="data.busiAddr"></mt-cell>
+                <mt-cell title="所属街道办" :value="data.json.localAddr"></mt-cell>
+                <mt-cell title="负责人" :value="data.fuzeren"></mt-cell>
+                <mt-cell title="负责人电话" :value="data.fuzerenPhone"></mt-cell>
+                <mt-cell title="监管人" :value="data.saferen"></mt-cell>
+                <mt-cell title="监管人电话" :value="data.saferenPhone"></mt-cell>
+                <mt-cell title="座位数" :value="data.json.seatNum"></mt-cell>
+                <mt-cell title="灶头数" :value="data.json.zaotouNum"></mt-cell>
+                <mt-cell title="规模" :value="data.json.guimo"></mt-cell>
+                <mt-cell title="油烟净化器个数" :value="data.json.yyjhqNum"></mt-cell>
+                <mt-button type="primary" style="width: 100%;margin-top: 20px" @click="$router.go(-1);">返回上一级</mt-button>
+            </div>
         </div>
     </div>
 </template>
@@ -24,6 +31,10 @@
     .mint-cell-wrapper {
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
+    .mint-cell-value {
+        max-width: 60%;
+        padding: 10px 0;
+    }
 </style>
 <script>
     import { Header,Toast } from 'mint-ui';
@@ -33,21 +44,13 @@
             return {
                 id:'',
                 data:{
-                    "id":"201",
-                    "regionCode":"开发区街道",
-                    "objName":"XXX餐馆",
-                    "busiAddr":"科隆大道与牧野路交叉口",
-                    "localAddr":"XXX街道",
-                    "fuzeren":"张三",
-                    "fuzerenPhone":"13612341234",
-                    "jianguanren":"李四",
-                    "jiangguanPhone":"1232123131231",
-                    "seatNum":"50",
-                    "caotouNum":"4",
-                    "guimo":"50",
-                    "yyjhqNum":"4",
-                    "statusCode":"200",
-                    "message":"OK"
+                    json:{
+                        localAddr:'',
+                        seatNum:'',
+                        zaotouNum:'',
+                        guimo:'',
+                        yyjhqNum:'',
+                    }
                 }
             }
         },
@@ -58,26 +61,23 @@
         methods: {
             getData(){
                 let self = this;
-                $.post( realmName + 'sf_zhzf/msys/enterprise/qrcode',{
+                $.get( getUrl('sf_zhzf/msys/enterprise/qrcode'),{
                     code : self.id
                 },function(data,status){
-                    //成功直接返回企业信息，失败时statusCode为300/310
-                    if(data.statusCode){    //失败
-                        if(data.statusCode == 310){
-                            localStorage.clear();
-                            window.location.href = "login.html";
-                        }else{
-                            Toast(data.message);
-                        }
-                    }else{                  //成功
+                    if(data.statusCode == 200){
                         self.data = data;
+                    }else if(data.statusCode == 310){
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }else{
+                        Toast(data.message);
                     }
-                });
+                },'json');
             }
         },
         mounted(){
             this.id = this.$route.params.id;
-            // this.getData();
+            this.getData();
         }
     }
 </script>

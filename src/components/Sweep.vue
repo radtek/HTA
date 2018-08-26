@@ -127,10 +127,6 @@
                     "display" : "flex"
                 });
 
-                // $(".mint-header").css({
-                //     "background" : "#26a2ff",
-                //     "border-bottom": "0px"
-                // });
                 this.closeScan();
             }
         },
@@ -139,11 +135,6 @@
                 "display" : "none"
             });
 
-            // $(".mint-header").css({
-            //     "background" : "rgba(255,255,255,0)",
-            //     "color" : "#26a2ff",
-            //     "border-bottom": "1px solid"
-            // });
             this.startRecognize();
         },
     }

@@ -54,14 +54,14 @@
         name: 'home',
         data() {
             return {
-                id:0
+                id:31
             }
         },
         components:{
             Header,
         },
         mounted(){
-            this.id = this.$route.params.id;
+            // this.id = this.$route.params.id;
         }
     }
 </script>

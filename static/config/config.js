@@ -1,6 +1,6 @@
 document.addEventListener('plusready', addMainBackListener);
 var scan = null;            //扫码控件
-var inspType = null;
+var inspType = 7;
 
 /**
  * 拼接完整路由
