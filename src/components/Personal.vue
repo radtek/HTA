@@ -76,7 +76,6 @@
 
                 },function(data,status){
                     if(data.statusCode == 200){
-                        console.log(data);
                         self.unreadMessageCount = data.count;
                     }else if(data.statusCode == 310){
                         localStorage.clear();

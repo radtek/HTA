@@ -7,6 +7,7 @@
         </mt-header>
         <div style="padding:0 7%;">
             <div id="myScr" style="height: 85vh; overflow:scroll;">
+                <p v-if="pageList.length == 0" style="width: 100%; text-align: center">暂无数据</p>
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
@@ -162,7 +163,6 @@
                 $.get( getUrl('sf_zhzf/msys/cleanhist/photolst'), {
                     releId: clearId,
                 }, function (data, status) {
-                    console.log(data);
                     if (data.statusCode == 200) {
                         self.imgList = data.list;
                     } else if (data.statusCode == 310) {
@@ -175,7 +175,7 @@
             }
         },
         mounted() {
-            // this.id = this.$route.params.id;
+            this.id = this.$route.params.id;
             this.loadPageList();
             check();
         }

@@ -19,7 +19,7 @@
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
                     <div class="list" v-for="item in pageList">
-                        <router-link :to="{ name: 'ListContent', params: { id: item.id}}" class="clearBoth">
+                        <router-link :to="{ name: 'ListContent', params: { id: item.id }}" class="clearBoth">
                             <div class="cont">
                                 <h3> {{ item.objName }} </h3>
                                 <p>  {{ item.busiAddr }} </p>
@@ -59,7 +59,7 @@
     .list p{
         font-size: 13px;
         color: #909399;
-        width: 76%;
+        width: 100%;
     }
     .cont{
         width: 80%;
@@ -95,7 +95,7 @@
                 data:'行政区划分：好几百的后视镜到哪里好几百的后视镜到哪里',
                 searchCondition:{  //分页属性
                   pageNo:"1",
-                  pageSize:"5"
+                  pageSize:"15"
                 },
                 pageList:[],
                 allLoaded: true, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
@@ -115,78 +115,14 @@
                 this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
             },
             loadPageList(){
-                this.pageList = [
-                    {
-                        "id":"201",
-                        // "regionCode":"开发区街道",
-                        "objName":"XXX餐馆",
-                        "busiAddr":"科隆大道与牧野路交叉口",
-                        "localAddr":"XXX街道",
-                        // "fuzeren":"张三",
-                        // "fuzerenPhone":"13612341234",
-                        // "jianguanren":"李四",
-                        // "jiangguanPhone":"1232123131231",
-                        // "seatNum":"50",
-                        // "caotouNum":"4",
-                        // "guimo":"50",
-                        // "yyjhqNum":"4"
-                    },
-                    {
-                        "id":"201",
-                        // "regionCode":"开发区街道",
-                        "objName":"XXX餐馆",
-                        "busiAddr":"科隆大道与牧野路交叉口",
-                        "localAddr":"XXX街道",
-                        // "fuzeren":"张三",
-                        // "fuzerenPhone":"13612341234",
-                        // "jianguanren":"李四",
-                        // "jiangguanPhone":"1232123131231",
-                        // "seatNum":"50",
-                        // "caotouNum":"4",
-                        // "guimo":"50",
-                        // "yyjhqNum":"4"
-                    },
-                    {
-                        "id":"201",
-                        // "regionCode":"开发区街道",
-                        "objName":"XXX餐馆",
-                        "busiAddr":"科隆大道与牧野路交叉口",
-                        "localAddr":"XXX街道",
-                        // "fuzeren":"张三",
-                        // "fuzerenPhone":"13612341234",
-                        // "jianguanren":"李四",
-                        // "jiangguanPhone":"1232123131231",
-                        // "seatNum":"50",
-                        // "caotouNum":"4",
-                        // "guimo":"50",
-                        // "yyjhqNum":"4"
-                    },
-                    {
-                        "id":"201",
-                        // "regionCode":"开发区街道",
-                        "objName":"XXX餐馆",
-                        "busiAddr":"科隆大道与牧野路交叉口",
-                        "localAddr":"XXX街道",
-                        // "fuzeren":"张三",
-                        // "fuzerenPhone":"13612341234",
-                        // "jianguanren":"李四",
-                        // "jiangguanPhone":"1232123131231",
-                        // "seatNum":"50",
-                        // "caotouNum":"4",
-                        // "guimo":"50",
-                        // "yyjhqNum":"4"
-                    }
-                ];
-
-                if (this.pageList) return;
-                //TODO::删去前面的
 
                 let self = this;
-                $.post(realmName + 'sf_zhzf/msys/enterprise/list',{
+                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'),{
                     objName:self.objName,
                     // pageNum:self.searchCondition.pageNo,
                     // numPerPage:self.searchCondition.pageSize
                 },function(data,status){
+                    console.log(data);
                     if(data.statusCode == 200){
                         self.pageList = data.list;
                     }else if(data.statusCode == 310){
@@ -195,80 +131,14 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             },
             more(){
-                this.pageList = this.pageList.concat([
-                    {
-                        "id":"201",
-                        // "regionCode":"开发区街道",
-                        "objName":"XXX餐馆",
-                        "busiAddr":"科隆大道与牧野路交叉口",
-                        "localAddr":"XXX街道",
-                        // "fuzeren":"张三",
-                        // "fuzerenPhone":"13612341234",
-                        // "jianguanren":"李四",
-                        // "jiangguanPhone":"1232123131231",
-                        // "seatNum":"50",
-                        // "caotouNum":"4",
-                        // "guimo":"50",
-                        // "yyjhqNum":"4"
-                    },
-                    {
-                        "id":"201",
-                        // "regionCode":"开发区街道",
-                        "objName":"XXX餐馆",
-                        "busiAddr":"科隆大道与牧野路交叉口",
-                        "localAddr":"XXX街道",
-                        // "fuzeren":"张三",
-                        // "fuzerenPhone":"13612341234",
-                        // "jianguanren":"李四",
-                        // "jiangguanPhone":"1232123131231",
-                        // "seatNum":"50",
-                        // "caotouNum":"4",
-                        // "guimo":"50",
-                        // "yyjhqNum":"4"
-                    },
-                    {
-                        "id":"201",
-                        // "regionCode":"开发区街道",
-                        "objName":"XXX餐馆",
-                        "busiAddr":"科隆大道与牧野路交叉口",
-                        "localAddr":"XXX街道",
-                        // "fuzeren":"张三",
-                        // "fuzerenPhone":"13612341234",
-                        // "jianguanren":"李四",
-                        // "jiangguanPhone":"1232123131231",
-                        // "seatNum":"50",
-                        // "caotouNum":"4",
-                        // "guimo":"50",
-                        // "yyjhqNum":"4"
-                    },
-                    {
-                        "id":"201",
-                        // "regionCode":"开发区街道",
-                        "objName":"XXX餐馆",
-                        "busiAddr":"科隆大道与牧野路交叉口",
-                        "localAddr":"XXX街道",
-                        // "fuzeren":"张三",
-                        // "fuzerenPhone":"13612341234",
-                        // "jianguanren":"李四",
-                        // "jiangguanPhone":"1232123131231",
-                        // "seatNum":"50",
-                        // "caotouNum":"4",
-                        // "guimo":"50",
-                        // "yyjhqNum":"4"
-                    }
-                ]);
-
-                return;
-
                 // 分页查询
                 this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
 
-                //TODO::模糊分页查询路由
                 let self = this;
-                $.post(realmName + '',{
+                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'),{
                     objName:self.objName,
                     // pageNum:self.searchCondition.pageNo,
                     // numPerPage:self.searchCondition.pageSize
@@ -281,11 +151,10 @@
                     }else{
                         Toast(data.message);
                     }
-                });
+                },'json');
             },
         },
         mounted(){
-            this.loadPageList();
             check();
         }
     }

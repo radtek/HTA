@@ -6,9 +6,11 @@
             </router-link>
         </mt-header>
         <div style="padding: 0 7%">
-            <mt-field label="原密码" :attr="{ maxlength: 15 }" placeholder="请输入原密码" v-model.trim="originalPassword"></mt-field>
+            <mt-field label="原密码" :attr="{ maxlength: 15 }" placeholder="请输入原密码"
+                      v-model.trim="originalPassword"></mt-field>
             <mt-field label="新密码" :attr="{ maxlength: 15 }" placeholder="请输入新密码" v-model.trim="newPassword"></mt-field>
-            <mt-field label="确认密码" :attr="{ maxlength: 15 }" placeholder="请输入确认密码" v-model.trim="affirmPassword"></mt-field>
+            <mt-field label="确认密码" :attr="{ maxlength: 15 }" placeholder="请输入确认密码"
+                      v-model.trim="affirmPassword"></mt-field>
             <mt-button type="primary" style="width: 100%;margin: 20px 0" @click="submitForm">确认修改</mt-button>
         </div>
     </div>
@@ -17,52 +19,58 @@
 
 </style>
 <script>
-    import { Header,Cell,Toast,Button  } from 'mint-ui';
+    import {Header, Cell, Toast, Button} from 'mint-ui';
+
     export default {
         name: 'reset-password',
         data() {
             return {
-                originalPassword:'',
-                newPassword     :'',
-                affirmPassword  :''
+                originalPassword: '',
+                newPassword: '',
+                affirmPassword: ''
             }
         },
-        components:{
+        components: {
             Header,
             Cell,
         },
         methods: {
             submitForm(formName) {
                 let self = this;
-                if(self.originalPassword.length == 0){
-                  Toast('原密码为空！'); return;
+                if (self.originalPassword.length == 0) {
+                    Toast('原密码为空！');
+                    return;
                 }
-                if(self.newPassword.length == 0){
-                  Toast('新密码为空！'); return;
+                if (self.newPassword.length == 0) {
+                    Toast('新密码为空！');
+                    return;
                 }
-                if(self.affirmPassword.length == 0){
-                  Toast('确认密码为空！'); return;
+                if (self.affirmPassword.length == 0) {
+                    Toast('确认密码为空！');
+                    return;
                 }
-                if(self.newPassword != self.affirmPassword){
-                  Toast('新密码与确认密码不一致！'); return;
+                if (self.newPassword != self.affirmPassword) {
+                    Toast('新密码与确认密码不一致！');
+                    return;
                 }
 
-                //TODO::记得删除
-                self.$router.go(-1);
-
-                $.post(realmName + 'sf_zhzf/msys/user/resetpwd',{
-                    oldpass: hex_md5(self.originalPassword),
-                    newpass: hex_md5(self.newPassword)
-                },function(data,status){
-                    if(data.statusCode == 200){
-                      self.$router.go(-1);
-                    }else if(data.statusCode == 310){
-                      localStorage.clear();
-                      window.location.href = "login.html";
-                    }else{
-                      Toast(data.message);
+                $.get(getUrl('sf_zhzf/msys/user/resetpwd'), {
+                    oldpass  : hex_md5(self.originalPassword),
+                    newpass  : hex_md5(self.newPassword),
+                    // imei     : plus.device.imei,
+                    imei     : '123451234512345',
+                    lastsend : localStorage.getItem("lastsend")
+                }, function (data, status) {
+                    if (data.statusCode == 200) {
+                        Toast('修改成功');
+                        self.$router.go(-1);
+                    } else if (data.statusCode == 310) {
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    } else {
+                        Toast(data.message);
                     }
-                });
+                },'json');
             },
         },
     }

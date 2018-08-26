@@ -108,8 +108,9 @@
                 popupContent:'',
                 searchCondition:{  //分页属性
                     pageNo:"1",
-                    pageSize:"5"
+                    pageSize:"15"
                 },
+                total:0,
                 pageList:[],
                 allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
                 scrollMode:"auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
@@ -130,14 +131,14 @@
                 let self = this;
 
                 $.get( getUrl('sf_zhzf/msys/notice/list'),{
-                    // pageNum     : self.searchCondition.pageNo,
-                    // numPerPage  : self.searchCondition.pageSize
+                    pageNum     : self.searchCondition.pageNo,
+                    numPerPage  : self.searchCondition.pageSize
                 },function(data,status){
-                    console.log(data);
                     if(data.statusCode == 200){
                         self.pageList = data.list;
+                        self.total = data.totalCount;
+                        self.checkOver();
                     }else if(data.statusCode == 310){
-                        //登录超时
                         localStorage.clear();
                         window.location.href = "login.html";
                     }else{
@@ -151,11 +152,13 @@
 
                 let self = this;
                 $.get(getUrl('sf_zhzf/msys/notice/list'),{
-                    // pageNum     :self.searchCondition.pageNo,
-                    // numPerPage  :self.searchCondition.pageSize
+                    pageNum     :self.searchCondition.pageNo,
+                    numPerPage  :self.searchCondition.pageSize
                 },function(data,status){
                     if(data.statusCode == 200){
                         self.pageList = self.pageList.concat(data.list);
+                        self.total = data.totalCount;
+                        self.checkOver();
                     }else if(data.statusCode == 310){
                         localStorage.clear();
                         window.location.href = "login.html";
@@ -169,7 +172,7 @@
                 self.popupContent = self.pageList[index].content;
                 self.showPopup = true;
 
-                //发消息
+                //如果是未读的消息则更改消息状态
                 if(msgStatus == self.unread){
                     $.get(getUrl('sf_zhzf/msys/notice/reading'),{
                         id : id
@@ -186,7 +189,10 @@
                         }
                     },'json');
                 }
-            }
+            },
+            checkOver(){
+                this.pageList.length >= this.total && (this.allLoaded = true);
+            },
         },
         mounted(){
             this.loadPageList();

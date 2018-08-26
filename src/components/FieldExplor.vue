@@ -14,7 +14,7 @@
                             :options="item.replyOption.split(',')">
                     </mt-radio>
                 </div>
-                <mt-field label="其他" placeholder="请输入内容，可不填" type="textarea" rows="4" v-model.trim="other"></mt-field>
+                <mt-field label="其他" placeholder="有其他特殊情况时填写，如没有请忽略" type="textarea" rows="4" v-model.trim="other"></mt-field>
                 <hr style="border-color: rgba(0,0,0,0.1);border-top: 0;">
                 <mt-field label="【必填】姓名" :attr="{ maxlength: 10 }" placeholder="请输入陪同人姓名" v-model.trim="officerName"></mt-field>
                 <mt-button type="primary" style="width: 100%;margin: 20px 0" @click="sub">提交</mt-button>
@@ -59,7 +59,7 @@
         methods: {
             sub(){
                 this.answer.forEach(function (value,index) {
-                    if(value == ''){
+                    if(value == '' && index != '1240005'){
                         Toast('有选项未选择！');
                         return;
                     }
@@ -78,23 +78,20 @@
                 let inspStatus = '';
                 self.answer.forEach(function (value, index) {
                     inspCodes += index+',';
-                    inspResult += value+',';
-
                     if(index == '1240003' || index == '1240004'){
-                        value == '是' && (inspStatus += self.bad +',');
-                        value == '否' && (inspStatus += self.good +',');
+                        inspResult += value+',';
+                        value == '是' ? (inspStatus += self.bad +',') : (inspStatus += self.good +',');
+                    }else if(index == '1240005'){
+                        value.length == 0 ? ((inspStatus += self.good +',') && (inspResult += '无,')) : ((inspStatus += self.bad +',') && (inspResult += value+','));
                     }else{
-                        value == '是' && (inspStatus += self.good +',');
-                        value == '否' && (inspStatus += self.bad +',');
+                        inspResult += value+',';
+                        value == '是' ? (inspStatus += self.good +',') : (inspStatus += self.bad +',');
                     }
                 });
                 inspCodes = inspCodes.substring(0,inspCodes.length-1);
                 inspResult = inspResult.substring(0,inspResult.length-1);
                 inspStatus = inspStatus.substring(0,inspStatus.length-1);
-// console.log(inspCodes);
-// console.log(inspResult);
-// console.log(inspStatus);
-// console.log(self.officerName);
+
                 $.get(getUrl('sf_zhzf/msys/inspnotes/syjadd1'),{
                     execObjId  : self.id,
                     inspCode   : inspCodes,
