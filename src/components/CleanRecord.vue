@@ -21,6 +21,7 @@
                             <mt-cell title="查看照片详情" is-link></mt-cell>
                         </a>
                     </div>
+                    <mt-button v-if="pageList.length >= total" type="primary" style="width: 100%;margin: 10px 0" @click="$router.go(-1);">返回</mt-button>
                 </v-loadmore>
                 <mt-popup
                         v-model="showPopup" position="right">
@@ -80,7 +81,7 @@
     }
 </style>
 <script>
-    import {Header, Loadmore, Toast} from 'mint-ui';
+    import {Header, Loadmore, Toast, Indicator} from 'mint-ui';
 
     export default {
         name: 'home',
@@ -102,7 +103,8 @@
         components: {
             Header,
             Toast,
-            'v-loadmore': Loadmore
+            'v-loadmore': Loadmore,
+            Indicator
         },
         methods: {
             loadBottom() {
@@ -111,13 +113,14 @@
                 this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
             },
             loadPageList() {
-
+                Indicator.open();
                 let self = this;
                 $.get( getUrl('sf_zhzf/msys/cleanhist/list'), {
                     execobjId: self.id,
                     pageNum: self.searchCondition.pageNo,
                     numPerPage: self.searchCondition.pageSize
                 }, function (data, status) {
+                    Indicator.close();
                     if (data.statusCode == 200) {
                         self.pageList = data.list;
                         self.total = data.totalCount;

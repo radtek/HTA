@@ -1,6 +1,8 @@
 document.addEventListener('plusready', addMainBackListener);
 var scan = null;            //扫码控件
 var inspType = 7;
+// var imei = plus.device.imei;
+var imei = '123451234512345';
 
 /**
  * 拼接完整路由

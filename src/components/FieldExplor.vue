@@ -37,7 +37,7 @@
     }
 </style>
 <script>
-    import { Header, Radio ,Toast } from 'mint-ui';
+    import { Header, Radio ,Toast, Indicator } from 'mint-ui';
     export default {
         name: 'home',
         data() {
@@ -54,16 +54,20 @@
         },
         components:{
             Header,
-            Radio
+            Radio,
+            Indicator
         },
         methods: {
             sub(){
+                let unSelect = false;
                 this.answer.forEach(function (value,index) {
                     if(value == '' && index != '1240005'){
                         Toast('有选项未选择！');
+                        unSelect = true;
                         return;
                     }
                 });
+                if(unSelect) return;
                 if(this.officerName == ''){
                     Toast('请填写陪同人！');
                     return;
@@ -92,6 +96,7 @@
                 inspResult = inspResult.substring(0,inspResult.length-1);
                 inspStatus = inspStatus.substring(0,inspStatus.length-1);
 
+                Indicator.open();
                 $.get(getUrl('sf_zhzf/msys/inspnotes/syjadd1'),{
                     execObjId  : self.id,
                     inspCode   : inspCodes,
@@ -99,6 +104,7 @@
                     inspStatus : inspStatus,
                     officerName: self.officerName
                 },function(data,status){
+                    Indicator.close();
                     if(data.statusCode == 200){
                         Toast('提交成功');
                         self.$router.push({ name: 'CheckRecord', params: { id: self.id }});
@@ -111,10 +117,12 @@
                 },'json');
             },
             getProblem(){
+                Indicator.open();
                 let self = this;
                 $.get(getUrl('sf_zhzf/msys/inspnotes/inspstandard'),{
                     inspType: inspType
                 },function(data,status){
+                    Indicator.close();
                     if(data.statusCode == 200){
                         self.problems = data.list;
                         self.problems.forEach(function (value) {

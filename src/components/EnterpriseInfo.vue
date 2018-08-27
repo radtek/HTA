@@ -19,7 +19,7 @@
                 <mt-cell title="灶头数" :value="data.json.zaotouNum"></mt-cell>
                 <mt-cell title="规模" :value="data.json.guimo"></mt-cell>
                 <mt-cell title="油烟净化器个数" :value="data.json.yyjhqNum"></mt-cell>
-                <mt-button type="primary" style="width: 100%;margin-top: 20px" @click="$router.go(-1);">返回上一级</mt-button>
+                <mt-button type="primary" style="width: 100%;margin: 10px 0" @click="$router.go(-1);">返回</mt-button>
             </div>
         </div>
     </div>
@@ -37,7 +37,7 @@
     }
 </style>
 <script>
-    import { Header,Toast } from 'mint-ui';
+    import { Header,Toast,Indicator } from 'mint-ui';
     export default {
         name: 'home',
         data() {
@@ -56,14 +56,17 @@
         },
         components:{
             Header,
-            Toast
+            Toast,
+            Indicator
         },
         methods: {
             getData(){
+                Indicator.open();
                 let self = this;
                 $.get( getUrl('sf_zhzf/msys/enterprise/qrcode'),{
                     code : self.id
                 },function(data,status){
+                    Indicator.close();
                     if(data.statusCode == 200){
                         self.data = data;
                     }else if(data.statusCode == 310){

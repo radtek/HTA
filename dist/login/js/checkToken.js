@@ -3,13 +3,14 @@ let lastsend = localStorage.getItem("lastsend");
 let ukey  = localStorage.getItem("ukey");
 
 if (login && lastsend && ukey) {
+    $('#loading').show();
     $.get( getUrl('sf_zhzf/msys/user/login'),{
         login   : login,
-        // imei    : plus.device.imei,
-        imei    : '123451234512345',
+        imei    : imei,
         lastsend: lastsend,
         ukey    : ukey
     },function(data,status){
+        $('#loading').hide();
         if(data.statusCode == 200){
             localStorage.setItem("login", data.login);
             localStorage.setItem("ukey", data.ukey);

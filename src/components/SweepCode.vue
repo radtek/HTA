@@ -85,7 +85,7 @@
     }
 </style>
 <script>
-    import { Header,Tabbar, TabItem,Toast,Loadmore } from 'mint-ui';
+    import { Header,Tabbar, TabItem,Toast,Loadmore,Indicator } from 'mint-ui';
     export default {
         name: 'home',
         data() {
@@ -115,14 +115,14 @@
                 this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
             },
             loadPageList(){
-
+                Indicator.open();
                 let self = this;
                 $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'),{
                     objName:self.objName,
                     // pageNum:self.searchCondition.pageNo,
                     // numPerPage:self.searchCondition.pageSize
                 },function(data,status){
-                    console.log(data);
+                    Indicator.close();
                     if(data.statusCode == 200){
                         self.pageList = data.list;
                     }else if(data.statusCode == 310){

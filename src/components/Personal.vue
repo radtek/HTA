@@ -39,7 +39,7 @@
     }
 </style>
 <script>
-    import { Header,Cell,Toast,Button  } from 'mint-ui';
+    import { Header,Cell,Toast,Button,Indicator  } from 'mint-ui';
     export default {
         name: 'home',
         data() {
@@ -51,14 +51,17 @@
         components:{
             Header,
             Cell,
+            Indicator
         },
         methods: {
             getInfo(){
+                Indicator.open();
                 let self = this;
                 if(self.personInfo.statusCode == 200) return;
                 $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
 
                 },function(data,status){
+                    Indicator.close();
                     if(data.statusCode == 200){
                         sessionStorage.setItem('personInfo', data);
                         self.personInfo = data;

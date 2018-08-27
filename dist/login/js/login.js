@@ -3,15 +3,17 @@ $(document).ready(function(){
 
         var name = $.trim($("#name").val());
         var password = $.trim($("#password").val());
-        // var imei = plus.device.imei;
+        if(name.length == 0 || password.length == 0){
+            alert('账号密码不能为空!');
+            return;
+        }
+        $('#loading').show();
         $.get(getUrl('sf_zhzf/msys/user/login'),{
-            // login : name,
-            // pwd   : hex_md5(password),
-            // imei  : imei
-            login : 'admin01',
-            pwd   : 'e10adc3949ba59abbe56e057f20f883e',
-            imei  : '123451234512345'
+            login : name,
+            pwd   : hex_md5(password),
+            imei  : imei
         },function(data,status){
+            $('#loading').hide();
             if(data.statusCode == 200){
                 localStorage.setItem("login", data.login);
                 localStorage.setItem("ukey", data.ukey);
