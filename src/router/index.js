@@ -56,6 +56,11 @@ export default new Router({
         component: resolve => void(require(['../components/CheckRecord.vue'], resolve))
     },
     {
+        path: '/CheckDetail/:id/:inspVersion',
+        name: 'CheckDetail',
+        component: resolve => void(require(['../components/CheckDetail.vue'], resolve))
+    },
+    {
       path: '/Sweep',
       name: 'Sweep',
       component: resolve => void(require(['../components/Sweep.vue'], resolve))

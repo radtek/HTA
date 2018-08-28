@@ -17,7 +17,6 @@
       </mt-tab-item>
     </router-link>
   </mt-tabbar>
-
   </div>
 </template>
 
@@ -48,5 +47,9 @@ a {
 }
 .mint-tab-item-label {
   color: #409EFF !important;
+}
+
+.mint-header > h1{
+  font-size: 20px !important;
 }
 </style>

@@ -7,7 +7,7 @@
         </mt-header>
         <div style="padding: 0 5%">
 
-            <div id="myScr" style="height: 85vh; overflow:scroll; background-color: rgba(0,0,0,0);">
+            <div id="myScr" class="test" style="height: 85vh; overflow:scroll; background-color: rgba(0,0,0,0);">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
@@ -72,7 +72,7 @@
         margin-bottom: 20px;
         border-radius: 5px;
     }
-    .mint-popup{
+    .test .mint-popup{
         width: 100%;
         background-color: rgba(0,0,0,0) !important;
     }

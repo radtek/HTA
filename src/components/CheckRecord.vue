@@ -12,17 +12,17 @@
                             bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
                     <div class="check-list" v-for="item in pageList">
-                        <div class="check-cont">
-                            <h3> {{ item.typeDesc }} </h3>
-                            <mt-cell title="企业名称" :value="item.exeobjName"></mt-cell>
-                            <mt-cell :title="item.inspDesc" :value="item.inspResult"></mt-cell>
-                            <mt-cell title="检查类型" :value="item.inspSpecial"></mt-cell>
-                            <mt-cell title="检查时间" :value="item.cretime"></mt-cell>
-                            <mt-cell title="是否符合标准" :value="item.inspStatus"></mt-cell>
-                            <mt-cell title="陪同人" :value="item.officerName"></mt-cell>
-                        </div>
+                        <router-link :to="{ name: 'CheckDetail', params: { id: id, inspVersion: item.inspVersion}}">
+                            <div class="check-cont">
+                                <h3> {{ item.typeDesc }} </h3>
+                                <mt-cell title="企业名称" :value="item.exeobjName"></mt-cell>
+                                <mt-cell title="检查时间" :value="item.cretime"></mt-cell>
+                            </div>
+                        </router-link>
                     </div>
-                    <mt-button v-if="pageList.length >= total" type="primary" style="width: 100%;margin: 10px 0" @click="$router.go(-1);">返回</mt-button>
+                    <mt-button v-if="pageList.length >= total" type="primary" style="width: 100%;margin: 10px 0"
+                               @click="$router.go(-1);">返回
+                    </mt-button>
                 </v-loadmore>
             </div>
         </div>
@@ -69,7 +69,7 @@
                     pageNo: "1",
                     pageSize: "15"
                 },
-                total:0,
+                total: 0,
                 pageList: [],
                 allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
                 scrollMode: "auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
@@ -90,7 +90,7 @@
             loadPageList() {
                 Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/inspnotes/list'), {
+                $.get(getUrl('sf_zhzf/msys/inspnotes/verlist'), {
                     execobjId: self.id,
                     pageNum: self.searchCondition.pageNo,
                     numPerPage: self.searchCondition.pageSize
@@ -107,14 +107,14 @@
                     } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
             more() {
                 //分页查询
                 this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
 
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/inspnotes/list'), {
+                $.get(getUrl('sf_zhzf/msys/inspnotes/verlist'), {
                     execobjId: self.id,
                     pageNum: self.searchCondition.pageNo,
                     numPerPage: self.searchCondition.pageSize
@@ -129,9 +129,9 @@
                     } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            checkOver(){
+            checkOver() {
                 this.pageList.length >= this.total && (this.allLoaded = true);
             },
         },

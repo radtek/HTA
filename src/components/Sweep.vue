@@ -99,9 +99,8 @@
                             break;
                     }
 
-                    self.execobjId = result;
-
-                    self.$router.push({ name: 'ListContent', params: { id: result }});
+                    self.execobjId = result.split('?code=')[1];
+                    self.$router.push({ name: 'ListContent', params: { id: self.execobjId }});
 
                     //TODO::组件传参
                     self.back();

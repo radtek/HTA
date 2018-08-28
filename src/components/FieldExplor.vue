@@ -16,9 +16,19 @@
                 </div>
                 <mt-field label="其他" placeholder="有其他特殊情况时填写，如没有请忽略" type="textarea" rows="4" v-model.trim="other"></mt-field>
                 <hr style="border-color: rgba(0,0,0,0.1);border-top: 0;">
-                <mt-field label="【必填】姓名" :attr="{ maxlength: 10 }" placeholder="请输入陪同人姓名" v-model.trim="officerName"></mt-field>
+                <mt-cell title="检查人" :value="relName"></mt-cell>
+                <mt-field label="陪同人" :attr="{ maxlength: 10 }" placeholder="请输入陪同人姓名" v-model.trim="officerName"></mt-field>
+                <a @click="openPicker">
+                    <mt-cell title="检查日期" :value="time" is-link></mt-cell>
+                </a>
                 <mt-button type="primary" style="width: 100%;margin: 20px 0" @click="sub">提交</mt-button>
             </div>
+            <mt-datetime-picker
+                    ref="picker"
+                    type="date"
+                    @confirm="handleConfirm"
+            >
+            </mt-datetime-picker>
         </div>
     </div>
 </template>
@@ -27,7 +37,7 @@
         margin: 25px 0;
     }
     .mint-radiolist-title {
-        font-size: 16px;
+        font-size: 16px !important;
         margin: 8px;
         display: block;
         color: #303133;
@@ -49,7 +59,9 @@
                 officerName:'',
                 value: '',
                 answer:[],
-                problems:[]
+                problems:[],
+                relName:'',
+                time:'',
             }
         },
         components:{
@@ -81,18 +93,24 @@
                 let inspResult = '';
                 let inspStatus = '';
                 self.answer.forEach(function (value, index) {
-                    inspCodes += index+',';
-                    if(index == '1240003' || index == '1240004'){
-                        inspResult += value+',';
-                        value == '是' ? (inspStatus += self.bad +',') : (inspStatus += self.good +',');
-                    }else if(index == '1240005'){
-                        value.length == 0 ? ((inspStatus += self.good +',') && (inspResult += '无,')) : ((inspStatus += self.bad +',') && (inspResult += value+','));
+                    if(index == '1240005'){
+                        if(value.length != 0){
+                            //不能将inspCodes和inspResult的赋值提取到外面，因为当其他的长度为0时不做任何操作，这三个字段分割后的长度要保持一致
+                            inspCodes  += index+',';
+                            inspResult += value+',';
+                            inspStatus += self.bad+',';
+                        }
                     }else{
+                        inspCodes  += index+',';
                         inspResult += value+',';
-                        value == '是' ? (inspStatus += self.good +',') : (inspStatus += self.bad +',');
+                        if(index == '1240003' || index == '1240004'){
+                            value == '是' ? (inspStatus += self.bad +',') : (inspStatus += self.good +',');
+                        }else{
+                            value == '是' ? (inspStatus += self.good +',') : (inspStatus += self.bad +',');
+                        }
                     }
                 });
-                inspCodes = inspCodes.substring(0,inspCodes.length-1);
+                inspCodes  = inspCodes.substring(0,inspCodes.length-1);
                 inspResult = inspResult.substring(0,inspResult.length-1);
                 inspStatus = inspStatus.substring(0,inspStatus.length-1);
 
@@ -102,7 +120,8 @@
                     inspCode   : inspCodes,
                     inspResult : inspResult,
                     inspStatus : inspStatus,
-                    officerName: self.officerName
+                    officerName: self.officerName,
+                    inspdate   : self.time
                 },function(data,status){
                     Indicator.close();
                     if(data.statusCode == 200){
@@ -136,14 +155,48 @@
                     }
                 },'json');
             },
+            getName(){
+                let self = this;
+                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
+                },function(data,status){
+                    if(data.statusCode == 200){
+                        self.relName = data.relName;
+                    }else if(data.statusCode == 310){
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }else{
+                        Toast(data.message);
+                    }
+                },'json');
+            },
+            openPicker() {
+                this.$refs.picker.open();
+            },
+            handleConfirm(value){
+                let dateVal = new Date(value);
+                this.time = this.myFormat(dateVal);
+            },
+            myFormat(dateVal){
+
+                let year    = dateVal.getFullYear();
+                let month   = dateVal.getMonth() + 1;
+                let date    = dateVal.getDate();
+
+                month   < 10 && (month   = '0'+month);
+                date    < 10 && (date    = '0'+date);
+
+                return year + '-' + month + '-' + date;
+            }
         },
         mounted() {
             this.id = this.$route.params.id;
+            this.getName();
             this.getProblem();
             let self = this;
             this.problems.forEach(function (value) {
                 self.answer[value.inspCode] = '';
             });
+            this.time = this.myFormat(new Date());
         }
     }
 </script>
