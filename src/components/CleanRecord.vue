@@ -6,7 +6,7 @@
             </router-link>
         </mt-header>
         <div style="padding:0 7%;">
-            <div id="myScr" style="height: 85vh; overflow:scroll;">
+            <div id="myScr" class="clearTest" style="height: 85vh; overflow:scroll;">
                 <p v-if="pageList.length == 0" style="width: 100%; text-align: center">暂无数据</p>
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
@@ -37,6 +37,10 @@
     </div>
 </template>
 <style media="screen">
+    .clearTest .mint-popup{
+        width: 100%;
+        background-color: transparent!important;
+    }
     .myBox{
         width: 80%;
         margin:0 auto;

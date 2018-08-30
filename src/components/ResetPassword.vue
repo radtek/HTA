@@ -58,7 +58,7 @@
                 $.get(getUrl('sf_zhzf/msys/user/resetpwd'), {
                     oldpass  : hex_md5(self.originalPassword),
                     newpass  : hex_md5(self.newPassword),
-                    imei     : imei,
+                    imei     : plus.device.imei,
                     lastsend : localStorage.getItem("lastsend")
                 }, function (data, status) {
                     Indicator.close();
