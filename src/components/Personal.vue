@@ -55,9 +55,15 @@
         },
         methods: {
             getInfo(){
-                Indicator.open();
                 let self = this;
-                if(self.personInfo.statusCode == 200) return;
+
+                let info = sessionStorage.getItem('personInfo');
+                if(info.relName){
+                    self.personInfo = info;
+                    return;
+                }
+
+                Indicator.open();
                 $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
 
                 },function(data,status){
@@ -103,7 +109,6 @@
             }
         },
         mounted() {
-            this.personInfo = sessionStorage.getItem('personInfo');
             this.getInfo();
             this.getMessageCount();
         }

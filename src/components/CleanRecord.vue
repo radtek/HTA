@@ -27,11 +27,20 @@
                         v-model="showPopup" position="right">
                     <div style="max-height: 70vh; overflow:scroll;">
                         <div class="myBox">
-                            <img class="myImg" v-for="img in imgList" :src="img.urlPath" alt="">
-                            <p>已加载全部</p>
+                            <a v-for="img in imgList" :key="img.id" @click="showDetail(img.urlPath)">
+                                <img class="myImg" :src="img.urlPath" alt="">
+                                <!--<img class="myImg" v-for="img in imgList" src="../assets/vip.gif" alt="">-->
+                            </a>
+                            <p v-if="imgList.length == 0">暂无图片</p>
                         </div>
                     </div>
                 </mt-popup>
+                <div class="landscape" v-if="showPhoto">
+                    <a class="aClose" @click="closePhoto"><img class="myClose" src="../assets/round_close.png" alt=""></a>
+                    <div class="myBoxDetail">
+                        <img :src="imgUrl" alt="">
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -53,6 +62,7 @@
     .myImg{
         display: block;
         width: 100%;
+        margin: 5px 0;
     }
     .clear-list {
         width: 100%;
@@ -83,6 +93,26 @@
         max-width: 60%;
         padding: 10px 0;
     }
+    .landscape{
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        background-color: black;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 3000;
+    }
+    .aClose{
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 3001;
+    }
+    .myClose{
+        width: 40px;
+        height: 40px;
+    }
 </style>
 <script>
     import {Header, Loadmore, Toast, Indicator} from 'mint-ui';
@@ -93,6 +123,7 @@
             return {
                 imgList:[],
                 showPopup : false,
+                showPhoto: false,
                 id: '20',
                 searchCondition: {  //分页属性
                     pageNo: "1",
@@ -101,7 +132,8 @@
                 total:0,
                 pageList: [],
                 allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
-                scrollMode: "auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+                scrollMode: "auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+                imgUrl:'',
             }
         },
         components: {
@@ -179,7 +211,21 @@
                         Toast(data.message);
                     }
                 },'json');
-            }
+            },
+            showDetail(path){
+                this.showPhoto = true;
+                this.imgUrl = path;
+                let myBoxDetail = $(".myBoxDetail");
+                let checkMyBox = setInterval(function () {
+                    if(myBoxDetail){
+                        new window.PinchZoom.default(document.querySelector('div.myBoxDetail'), {});
+                        clearTimeout(checkMyBox);
+                    }
+                },200);
+            },
+            closePhoto(){
+                this.showPhoto = false;
+            },
         },
         mounted() {
             this.id = this.$route.params.id;

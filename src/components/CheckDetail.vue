@@ -9,10 +9,10 @@
             <div id="myScr" style="height: 85vh; overflow:scroll;">
                 <mt-cell title="企业名称" :value="pageList[0].exeobjName"></mt-cell>
                 <mt-cell title="检查类型" :value="pageList[0].inspSpecial"></mt-cell>
-                <mt-cell v-for="item in pageList"  :title="item.inspDesc" :value="item.inspResult"></mt-cell>
+                <mt-cell v-for="item in pageList"  :title="item.inspDesc" :key="item.id" :value="item.inspResult"></mt-cell>
                 <mt-cell title="检查人" :value="relName"></mt-cell>
                 <mt-cell title="陪同人" :value="pageList[0].officerName"></mt-cell>
-                <mt-cell title="检查日期" :value="pageList[0].inspdate"></mt-cell>
+                <mt-cell title="检查日期" :value="pageList[0].inspdate.split(' ')[0]"></mt-cell>
                 <mt-button  type="primary" style="width: 100%;margin: 10px 0"
                            @click="$router.go(-1);">返回
                 </mt-button>
@@ -29,7 +29,7 @@
             return {
                 id:'',
                 inspVersion:'',
-                pageList: [{exeobjName:'',inspSpecial:''}],
+                pageList: [{exeobjName:'',inspSpecial:'',inspdate:''}],
                 relName:'',
             }
         },

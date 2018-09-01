@@ -18,18 +18,14 @@
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-                    <div class="list" v-for="item in pageList">
+                    <div class="list" v-for="item in pageList" :key="item.id">
                         <router-link :to="{ name: 'ListContent', params: { id: item.id }}" class="clearBoth">
                             <div class="cont">
                                 <h3> {{ item.objName }} </h3>
                                 <p>  {{ item.busiAddr }} </p>
-                                <p>  {{ item.localAddr }} </p>
                             </div>
-                            <div class="link">
-                                <img src="../assets/return.png" alt="">
-                            </div>
+                            <img class="myReturn" src="../assets/return.png" alt="">
                         </router-link>
-
                     </div>
                 </v-loadmore>
             </div>
@@ -46,11 +42,10 @@
     }
     .list{
         width: 100%;
-        height: 85px;
-        background: #EBEEF5;
-        margin: 10px 0;
-        border-radius: 5px;
         overflow: hidden;
+        padding: 10px 0;
+        position: relative;
+        border-bottom: 1px solid #EBEEF5;
     }
     .list h3{
         font-size: 16px;
@@ -70,13 +65,12 @@
     .cont * {
         margin-top: 6px;
     }
-    .link{
-        float:right;
-        width:15%;
-        margin-top: 25px;
-    }
-    .link img{
+    .myReturn{
         width: 30px;
+        height: 30px;
+        position: absolute;
+        top: 50%;
+        margin-top: -15px;
     }
     .clearBoth:after{
         content: "";
@@ -156,6 +150,7 @@
         },
         mounted(){
             check();
+            this.loadPageList();
         }
     }
 </script>

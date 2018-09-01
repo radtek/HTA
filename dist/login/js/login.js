@@ -48,10 +48,12 @@ function login() {
             return;
         }
         $('#loading').show();
+        var imei = '867541032157567,867541032551835';
+        // var imei = plus.device.imei;
         $.get(getUrl('sf_zhzf/msys/user/login'),{
             login : name,
             pwd   : hex_md5(password),
-            imei  : plus.device.imei
+            imei  : imei,
         },function(data,status){
             $('#loading').hide();
             if(data.statusCode == 200){
@@ -59,7 +61,7 @@ function login() {
                 localStorage.setItem("ukey", data.ukey);
                 localStorage.setItem("lastsend", data.lastsend);
                 localStorage.setItem("lastsend", data.lastsend);
-                localStorage.setItem("imei", plus.device.imei);
+                localStorage.setItem("imei", imei);
                 sessionStorage.setItem('personInfo', data);
                 window.location.href = "index.html";
             }else{

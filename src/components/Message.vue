@@ -12,7 +12,7 @@
                             bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
                     <div class="message-list" v-for="(item,index) in pageList">
-                        <a v-on:click="show(index,item.id,item.msgStatus)" style="height: 100%;width: 100%;display: block">
+                        <a v-on:click="show(index,item.id,item.msgStatus,item.noticeId)" style="height: 100%;width: 100%;display: block">
                             <el-badge v-if="item.msgStatus == unread" is-dot class="item">
                                 <div class="conform">
                                     <h3> {{ item.title }} </h3>
@@ -38,18 +38,55 @@
                 </v-loadmore>
                 <mt-popup
                     v-model="showPopup" position="right">
-                    <div style="max-height: 60vh; overflow:scroll;">
+                    <div style="max-height: 70vh; overflow:scroll;">
                         <div class="myBox">
-                        {{ popupContent }}
+                            <div style="padding: 10px;background-color: white">
+                                <p class="content">{{ popupContent }}</p>
+                            </div>
+                            <div v-if="appendixList.length != 0"></div>
+                            <div v-for="item in appendixList" :key="item.id">
+                                <a v-if="item.fileType == 2" @click="createDownload(item.urlPath)">
+                                    <mt-cell :title="item.fileName">
+                                        <img slot="icon" src="../assets/word.jpg" width="24" height="24">
+                                        <span><img src="../assets/down.png" width="24" height="24"></span>
+                                    </mt-cell>
+                                </a>
+                                <div v-else style="padding: 10px 5px">
+                                    <a style="width: 100%" @click="showDetail(item.urlPath)">
+                                        <img class="appendImg" :src="item.urlPath" alt="">
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </mt-popup>
+                <mt-popup
+                        v-model="isShowDown"
+                        position="right"
+                        popup-transition="popup-fade">
+                    <div class="downBox">
+                        <div class="innerBox">
+                            <mt-progress :value="downValue">
+                                <div slot="end">{{ downValue }}%</div>
+                            </mt-progress>
+
+                            <mt-button plain type="primary" style="float: left;margin: 10px 0 0 10px;width: 30%" @click="suspend">{{ butTest }}</mt-button>
+                            <mt-button plain type="danger" style="float: right;margin: 10px 10px 0 0;width: 30%" @click="canl">取消</mt-button>
+                        </div>
+                    </div>
+                </mt-popup>
+            </div>
+            <div class="landscape" v-if="showPhoto">
+                <a class="aClose" @click="closePhoto"><img class="myClose" src="../assets/round_close.png" alt=""></a>
+                <div class="myBoxDetail">
+                    <img :src="imgUrl" alt="">
+                    <!--<img class="appendImg" src="../assets/vip.gif" alt="">-->
+                </div>
             </div>
         </div>
     </div>
 </template>
 <style>
-
     .conform{
         line-height: 30px;
         color: #303133;
@@ -83,6 +120,8 @@
         background: #EBEEF5;
         border: 2px solid rgba(0,0,0,0.2);
         border-radius: 5px;
+        overflow: hidden;
+        text-align: left;
     }
 
     .message-list{
@@ -95,10 +134,56 @@
     .message-list h3{
         font-size: 16px;
     }
-
+    .mint-cell{
+        background-color: rgba(0,0,0,0) !important;
+    }
+    .appendImg{
+        width: 100%;
+    }
+    .landscape{
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+        background-color: black;
+        position: fixed;
+        left: 0;
+        top: 0;
+        z-index: 3000;
+    }
+    .aClose{
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 3001;
+    }
+    .myClose{
+        width: 40px;
+        height: 40px;
+    }
+    .mt-progress {
+        margin: 0 10px !important;
+    }
+    .downBox{
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.2);
+        text-align: left;
+    }
+    .innerBox{
+        position: fixed;
+        width: 80%;
+        height: 100px;
+        margin-top: -50px;
+        top: 50%;
+        left: 6.8%;
+        padding: 10px;
+        border: 2px solid rgba(0,0,0,0.2);
+        border-radius: 5px;
+        background-color: rgba(255,255,255,1);
+    }
 </style>
 <script>
-    import { Header,Loadmore,Toast,Indicator } from 'mint-ui';
+    import { Header,Loadmore,Toast,Indicator,Cell } from 'mint-ui';
     export default {
         name: 'home',
         data() {
@@ -114,14 +199,22 @@
                 total:0,
                 pageList:[],
                 allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
-                scrollMode:"auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+                scrollMode:"auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+                appendixList:'',
+                showPhoto: false,//是否显示图片放大缩放
+                imgUrl:'',
+                isShowDown:false,//是否显示下载
+                downValue:0,
+                isContinue:false,//是否是继续按钮 false为暂停，true为继续
+                butTest:'暂停'
             }
         },
         components:{
             Header,
             Toast,
             'v-loadmore':Loadmore,
-            Indicator
+            Indicator,
+            Cell
         },
         methods:{
             loadBottom() {
@@ -136,6 +229,7 @@
                     pageNum     : self.searchCondition.pageNo,
                     numPerPage  : self.searchCondition.pageSize
                 },function(data,status){
+                    console.log(data);
                     Indicator.close();
                     if(data.statusCode == 200){
                         self.pageList = data.list;
@@ -170,7 +264,11 @@
                     }
                 },'json');
             },
-            show(index,id,msgStatus){
+            show(index,id,msgStatus,noticeId){
+
+                //TODO::记得删除
+                noticeId = 2;
+
                 let self = this;
                 self.popupContent = self.pageList[index].content;
                 self.showPopup = true;
@@ -192,10 +290,79 @@
                         }
                     },'json');
                 }
+
+                //获得附件
+                $.get(getUrl('sf_zhzf/msys/notice/attachfile'),{
+                    noticeId : noticeId
+                },function(data,status){
+                    if(data.statusCode == 200){
+                        console.log(data);
+                        self.appendixList = data.list;
+                    }else if(data.statusCode == 310){
+                        localStorage.clear();
+                        window.location.href = "login.html";
+                    }else{
+                        Toast(data.message);
+                    }
+                },'json');
             },
             checkOver(){
                 this.pageList.length >= this.total && (this.allLoaded = true);
             },
+            showDetail(path){
+                this.showPhoto = true;
+                this.imgUrl = path;
+                let myBoxDetail = $(".myBoxDetail");
+                let checkMyBox = setInterval(function () {
+                    if(myBoxDetail){
+                        new window.PinchZoom.default(document.querySelector('div.myBoxDetail'), {});
+                        clearTimeout(checkMyBox);
+                    }
+                },200);
+            },
+            closePhoto(){
+                this.showPhoto = false;
+            },
+            createDownload(url) {
+
+                this.isShowDown = true;
+
+                let self = this;
+                dtask = plus.downloader.createDownload( url, {}, function ( d, status ) {
+                    // 下载完成
+                    if ( status == 200 ) {
+                        self.isShowDown = false;
+                        self.downValue = 0;
+                        // Toast( "下载成功: " + d.filename );
+                        alert( "下载成功: " + d.filename );
+                    } else {
+                        Toast( "下载失败: " + status );
+                    }
+                });
+                dtask.addEventListener( "statechanged", function ( d, status ) {
+                    self.downValue = parseInt((d.downloadedSize/d.totalSize)*100);
+                    if(isNaN(self.downValue)) self.downValue = 0;
+                }, false );
+                dtask.start();
+            },
+            suspend(){
+                if(dtask == null) return;
+                if(this.isContinue){
+                    dtask.resume();
+                    this.isContinue = false;
+                    this.butTest = '暂停';
+                }else{
+                    dtask.pause();
+                    this.isContinue = true;
+                    this.butTest = '继续';
+                }
+            },
+            canl(){
+                if(dtask == null) return;
+                dtask.abort();
+                this.isShowDown = false;
+                this.downValue = 0;
+            }
         },
         mounted(){
             this.loadPageList();

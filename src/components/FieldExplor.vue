@@ -24,6 +24,7 @@
                 <mt-button type="primary" style="width: 100%;margin: 20px 0" @click="sub">提交</mt-button>
             </div>
             <mt-datetime-picker
+                    v-model="dataValuel"
                     ref="picker"
                     type="date"
                     @confirm="handleConfirm"
@@ -62,6 +63,7 @@
                 problems:[],
                 relName:'',
                 time:'',
+                dataValuel:new Date(),
             }
         },
         components:{

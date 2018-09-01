@@ -16,7 +16,7 @@
                             <div class="check-cont">
                                 <h3> {{ item.typeDesc }} </h3>
                                 <mt-cell title="企业名称" :value="item.exeobjName"></mt-cell>
-                                <mt-cell title="检查时间" :value="item.cretime"></mt-cell>
+                                <mt-cell title="检查时间" :value="item.inspdate"></mt-cell>
                             </div>
                         </router-link>
                     </div>
@@ -55,6 +55,10 @@
     .mint-cell-value {
         max-width: 70%;
         padding: 10px 0;
+    }
+
+    .mint-cell-text {
+        color: rgba(0,0,0,0.9) !important;
     }
 </style>
 <script>
