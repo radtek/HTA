@@ -65,6 +65,11 @@ export default new Router({
       name: 'Sweep',
       component: resolve => void(require(['../components/Sweep.vue'], resolve))
     },
+    {
+        path: '/Append',
+        name: 'Append',
+        component: resolve => void(require(['../components/Append.vue'], resolve))
+    },
     // 商户app列表路径
     {
       path: '/sh/ComListContent',

@@ -45,7 +45,7 @@
         data() {
             return {
                 unreadMessageCount:0,
-                personInfo:{},
+                personInfo:{relName:''},
             }
         },
         components:{
@@ -58,7 +58,7 @@
                 let self = this;
 
                 let info = sessionStorage.getItem('personInfo');
-                if(info.relName){
+                if(info != null && info.relName){
                     self.personInfo = info;
                     return;
                 }

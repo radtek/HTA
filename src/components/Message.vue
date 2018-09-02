@@ -38,17 +38,25 @@
                 </v-loadmore>
                 <mt-popup
                     v-model="showPopup" position="right">
-                    <div style="max-height: 70vh; overflow:scroll;">
+                    <div class="msg" style="max-height: 70vh; overflow:scroll;">
                         <div class="myBox">
                             <div style="padding: 10px;background-color: white">
                                 <p class="content">{{ popupContent }}</p>
                             </div>
-                            <div v-if="appendixList.length != 0"></div>
                             <div v-for="item in appendixList" :key="item.id">
                                 <a v-if="item.fileType == 2" @click="createDownload(item.urlPath)">
                                     <mt-cell :title="item.fileName">
-                                        <img slot="icon" src="../assets/word.jpg" width="24" height="24">
-                                        <span><img src="../assets/down.png" width="24" height="24"></span>
+                                        <img v-if="item.iconType == word" slot="icon"
+                                             src="../assets/word.png" width="24" height="24">
+                                        <img v-else-if="item.iconType == excel" slot="icon"
+                                             src="../assets/excel.png" width="24" height="24">
+                                        <img v-else-if="item.iconType == pdf" slot="icon"
+                                             src="../assets/pdf.png" width="24" height="24">
+                                        <img v-else-if="item.iconType == unKnow" slot="icon"
+                                             src="../assets/text.png" width="24" height="24">
+                                        <span>
+                                            <img src="../assets/down.png" width="24" height="24">
+                                        </span>
                                     </mt-cell>
                                 </a>
                                 <div v-else style="padding: 10px 5px">
@@ -113,7 +121,7 @@
         width: 100%;
         background-color: rgba(0,0,0,0) !important;
     }
-    .myBox{
+    .msg .myBox{
         width: 80%;
         margin:0 auto;
         padding: 10px;
@@ -121,7 +129,7 @@
         border: 2px solid rgba(0,0,0,0.2);
         border-radius: 5px;
         overflow: hidden;
-        text-align: left;
+        text-align: left !important;
     }
 
     .message-list{
@@ -206,7 +214,12 @@
                 isShowDown:false,//是否显示下载
                 downValue:0,
                 isContinue:false,//是否是继续按钮 false为暂停，true为继续
-                butTest:'暂停'
+                butTest:'暂停',
+
+                word    :1,
+                excel   :2,
+                pdf     :3,
+                unKnow  :4,
             }
         },
         components:{
@@ -229,7 +242,6 @@
                     pageNum     : self.searchCondition.pageNo,
                     numPerPage  : self.searchCondition.pageSize
                 },function(data,status){
-                    console.log(data);
                     Indicator.close();
                     if(data.statusCode == 200){
                         self.pageList = data.list;
@@ -265,10 +277,6 @@
                 },'json');
             },
             show(index,id,msgStatus,noticeId){
-
-                //TODO::记得删除
-                noticeId = 2;
-
                 let self = this;
                 self.popupContent = self.pageList[index].content;
                 self.showPopup = true;
@@ -290,14 +298,33 @@
                         }
                     },'json');
                 }
-
                 //获得附件
                 $.get(getUrl('sf_zhzf/msys/notice/attachfile'),{
                     noticeId : noticeId
                 },function(data,status){
                     if(data.statusCode == 200){
-                        console.log(data);
                         self.appendixList = data.list;
+                        self.appendixList.forEach(function (value,index,arr) {
+                            if(value.fileType == 2){
+                                let exe = value.fileName.split('.');
+                                switch (exe[exe.length-1].toLowerCase()){
+                                    case 'docx':
+                                    case 'doc' :
+                                        arr[index].iconType = self.word;
+                                        break;
+                                    case 'xls' :
+                                    case 'xlsx':
+                                        arr[index].iconType = self.excel;
+                                        break;
+                                    case 'pdf' :
+                                        arr[index].iconType = self.pdf;
+                                        break;
+                                    default:
+                                        arr[index].iconType = self.unKnow;
+                                        break;
+                                }
+                            }
+                        });
                     }else if(data.statusCode == 310){
                         localStorage.clear();
                         window.location.href = "login.html";
