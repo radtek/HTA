@@ -44,7 +44,7 @@
                                 <p class="content">{{ popupContent }}</p>
                             </div>
                             <div v-for="item in appendixList" :key="item.id">
-                                <a v-if="item.fileType == 2" @click="createDownload(item.urlPath)">
+                                <a v-if="item.fileType == 2" @click="createDownload(item.urlPath,item.fileName)">
                                     <mt-cell :title="item.fileName">
                                         <img v-if="item.iconType == word" slot="icon"
                                              src="../assets/word.png" width="24" height="24">
@@ -189,9 +189,12 @@
         border-radius: 5px;
         background-color: rgba(255,255,255,1);
     }
+    .confirmButton{
+        color: black;
+    }
 </style>
 <script>
-    import { Header,Loadmore,Toast,Indicator,Cell } from 'mint-ui';
+    import { Header,Loadmore,Toast,Indicator,Cell,MessageBox } from 'mint-ui';
     export default {
         name: 'home',
         data() {
@@ -227,7 +230,8 @@
             Toast,
             'v-loadmore':Loadmore,
             Indicator,
-            Cell
+            Cell,
+            MessageBox
         },
         methods:{
             loadBottom() {
@@ -248,7 +252,6 @@
                         self.total = data.totalCount;
                         self.checkOver();
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);
@@ -269,7 +272,6 @@
                         self.total = data.totalCount;
                         self.checkOver();
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);
@@ -291,7 +293,6 @@
                             self.pageList[index].msgStatus = self.read;
 
                         }else if(data.statusCode == 310){
-                            localStorage.clear();
                             window.location.href = "login.html";
                         }else{
                             Toast(data.message);
@@ -326,7 +327,6 @@
                             }
                         });
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);
@@ -350,7 +350,7 @@
             closePhoto(){
                 this.showPhoto = false;
             },
-            createDownload(url) {
+            createDownload(url,name) {
 
                 this.isShowDown = true;
 
@@ -360,8 +360,21 @@
                     if ( status == 200 ) {
                         self.isShowDown = false;
                         self.downValue = 0;
-                        // Toast( "下载成功: " + d.filename );
-                        alert( "下载成功: " + d.filename );
+
+                        MessageBox.confirm('', {
+                            message: name,
+                            title: '下载成功',
+                            showConfirmButton:true,
+                            showCancelButton:true,
+                            confirmButtonText:'确定',
+                            cancelButtonText:'打开'
+                        }).then(action => {
+
+                        }).catch(err => {
+                            if (err != 'cancel') return;
+                            plus.runtime.openFile( d.filename );
+                        });
+
                     } else {
                         Toast( "下载失败: " + status );
                     }

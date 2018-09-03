@@ -71,7 +71,6 @@
                     if(data.statusCode == 200){
                         self.data = data;
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);

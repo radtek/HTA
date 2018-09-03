@@ -120,7 +120,6 @@
                     if(data.statusCode == 200){
                         self.pageList = data.list;
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);
@@ -140,7 +139,6 @@
                     if(data.statusCode == 200){
                         self.pageList = self.pageList.concat(data.list);
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);

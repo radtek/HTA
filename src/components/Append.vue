@@ -10,7 +10,7 @@
                 <p style="text-align: center" v-if="appendixList.length == 0">暂无附件</p>
 
                 <div v-for="item in appendixList" :key="item.id">
-                    <a v-if="item.fileType == 2" @click="createDownload(item.urlPath)">
+                    <a v-if="item.fileType == 2" @click="createDownload(item.urlPath,item.fileName)">
                         <div class="myCell">
                             <img v-if="item.iconType == word" class="cellIcon" src="../assets/word.png">
                             <img v-else-if="item.iconType == excel" class="cellIcon" src="../assets/excel.png">
@@ -95,8 +95,6 @@
         methods: {
             getData(){
 
-                this.id = 10;
-
                 Indicator.open();
                 let self = this;
                 $.get( getUrl('sf_zhzf/msys/enterprise/attachfile'),{
@@ -127,7 +125,6 @@
                             }
                         });
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);
@@ -148,7 +145,7 @@
             closePhoto(){
                 this.showPhoto = false;
             },
-            createDownload(url) {
+            createDownload(url,name) {
 
                 this.isShowDown = true;
 
@@ -158,8 +155,21 @@
                     if ( status == 200 ) {
                         self.isShowDown = false;
                         self.downValue = 0;
-                        // Toast( "下载成功: " + d.filename );
-                        alert( "下载成功: " + d.filename );
+
+                        MessageBox.confirm('', {
+                            message: name,
+                            title: '下载成功',
+                            showConfirmButton:true,
+                            showCancelButton:true,
+                            confirmButtonText:'确定',
+                            cancelButtonText:'打开'
+                        }).then(action => {
+
+                        }).catch(err => {
+                            if (err != 'cancel') return;
+                            plus.runtime.openFile( d.filename );
+                        });
+
                     } else {
                         Toast( "下载失败: " + status );
                     }
@@ -282,5 +292,8 @@
         border: 2px solid rgba(0,0,0,0.2);
         border-radius: 5px;
         background-color: rgba(255,255,255,1);
+    }
+    .confirmButton{
+        color: black;
     }
 </style>

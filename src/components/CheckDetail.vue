@@ -51,7 +51,6 @@
                         self.pageList = data.list.reverse();
                     } else if (data.statusCode == 310) {
                         //登录超时
-                        localStorage.clear();
                         window.location.href = "login.html";
                     } else {
                         Toast(data.message);
@@ -65,7 +64,6 @@
                     if(data.statusCode == 200){
                         self.relName = data.relName;
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);

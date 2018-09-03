@@ -72,7 +72,6 @@
                         sessionStorage.setItem('personInfo', data);
                         self.personInfo = data;
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);
@@ -87,7 +86,6 @@
                     if(data.statusCode == 200){
                         self.unreadMessageCount = data.count;
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);

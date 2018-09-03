@@ -63,10 +63,10 @@
                 }, function (data, status) {
                     Indicator.close();
                     if (data.statusCode == 200) {
+                        localStorage.setItem("token", hex_md5(self.newPassword));
                         Toast('修改成功');
                         self.$router.go(-1);
                     } else if (data.statusCode == 310) {
-                        localStorage.clear();
                         window.location.href = "login.html";
                     } else {
                         Toast(data.message);

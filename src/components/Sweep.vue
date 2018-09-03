@@ -32,7 +32,6 @@
         position: absolute;
         text-align: center;
         background-color: white;
-        /*border-top: 1px solid rgb(38,166,255);*/
     }
     .my-tabbar-item{
         display: block;
@@ -102,19 +101,8 @@
                     self.execobjId = result.split('?code=')[1];
                     self.$router.push({ name: 'ListContent', params: { id: self.execobjId }});
 
-                    //TODO::组件传参
                     self.back();
-                    // Toast(self.execobjId);
-                    // $.post( realmName + 'sf_zhzf/msys/enterprise/qrcode',{
-                    //     code : result
-                    // },function(data,status){
-                    //     //成功直接返回企业信息，失败时statusCode为300/310
-                    //     if(data.statusCode){    //失败
-                    //         Toast(data.message);
-                    //     }else{                  //成功
-                    //
-                    //     }
-                    // });
+
                 };
                 scan.start();
             },

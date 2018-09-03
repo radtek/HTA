@@ -130,7 +130,6 @@
                         Toast('提交成功');
                         self.$router.push({ name: 'CheckRecord', params: { id: self.id }});
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);
@@ -150,7 +149,6 @@
                             self.answer[value.inspCode] = '';
                         });
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);
@@ -164,7 +162,6 @@
                     if(data.statusCode == 200){
                         self.relName = data.relName;
                     }else if(data.statusCode == 310){
-                        localStorage.clear();
                         window.location.href = "login.html";
                     }else{
                         Toast(data.message);
