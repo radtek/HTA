@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).ready(function() {
     checkLogin();
     login();
 });
@@ -13,31 +13,32 @@ function checkLogin() {
 }
 
 function login() {
-    $("#submit").click(function(){
+    $("#submit").click(function() {
 
         let name = $.trim($("#name").val());
         let password = $.trim($("#password").val());
-        if(name.length == 0){
-            plus.nativeUI.toast( '账号不能为空!' );
+        if (name.length == 0) {
+            plus.nativeUI.toast('账号不能为空!');
             return;
         }
-        if(password.length == 0){
-            plus.nativeUI.toast( '密码不能为空!' );
+        if (password.length == 0) {
+            plus.nativeUI.toast('密码不能为空!');
             return;
         }
 
         $('#loading').show();
-        let imei = plus.device.imei;
+        // let imei = plus.device.imei;
+        let imei = '867541032157567,867541032551835';
 
         (localStorage.getItem("lastsend") && localStorage.getItem("ukey")) ? {} : password = hex_md5(password);
 
-        $.get(getUrl('sf_zhzf/msys/user/login'),{
-            login : name,
-            pwd   : password,
-            imei  : imei,
-        },function(data,status){
+        $.get(getUrl('sf_zhzf/msys/user/login'), {
+            login: name,
+            pwd: password,
+            imei: imei,
+        }, function(data, status) {
             $('#loading').hide();
-            if(data.statusCode == 200){
+            if (data.statusCode == 200) {
 
                 localStorage.setItem("login", name);
                 localStorage.setItem("token", password);
@@ -46,10 +47,10 @@ function login() {
 
                 sessionStorage.setItem('personInfo', data);
                 window.location.href = "index.html";
-            }else{
+            } else {
                 localStorage.clear();
-                plus.nativeUI.toast( data.message );
+                plus.nativeUI.toast(data.message);
             }
-        },'json');
+        }, 'json');
     });
 }
