@@ -19,13 +19,14 @@
                 <mt-cell title="灶头数" :value="data.json.zaotouNum"></mt-cell>
                 <mt-cell title="规模" :value="data.json.guimo"></mt-cell>
                 <mt-cell title="油烟净化器个数" :value="data.json.yyjhqNum"></mt-cell>
+                <mt-cell title="清洗周期" :value="data.json.cleanCycle"></mt-cell>
                 <mt-cell title="查看附件" :to="{ name: 'Append', params: { id: id}}" is-link></mt-cell>
                 <mt-button type="primary" style="width: 100%;margin: 10px 0" @click="$router.go(-1);">返回</mt-button>
             </div>
         </div>
     </div>
 </template>
-<style media="screen">
+ <style media="screen">
     .mint-cell-wrapper,.mint-cell:last-child{
         background-image: none !important;
     }
@@ -46,11 +47,12 @@
                 id:'',
                 data:{
                     json:{
-                        localAddr:'',
-                        seatNum:'',
-                        zaotouNum:'',
-                        guimo:'',
-                        yyjhqNum:'',
+                        localAddr   :'',
+                        seatNum     :'',
+                        zaotouNum   :'',
+                        guimo       :'',
+                        yyjhqNum    :'',
+                        cleanCycle  :''
                     }
                 }
             }

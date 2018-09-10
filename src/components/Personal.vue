@@ -22,88 +22,86 @@
     </div>
 </template>
 <style>
-    .info{
+    .info {
         width: 100%;
         text-align: center;
         padding-bottom: 10px;
     }
-    .infoImg{
+
+    .infoImg {
         width: 100px;
         height: 100px;
     }
-    .mint-cell-wrapper,.mint-cell:last-child{
+
+    .mint-cell-wrapper, .mint-cell:last-child {
         background-image: none !important;
     }
+
     .mint-cell-wrapper {
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
 </style>
 <script>
-    import { Header,Cell,Toast,Button,Indicator  } from 'mint-ui';
+    import {Header, Cell, Toast, Button, Indicator} from 'mint-ui';
+
     export default {
         name: 'home',
         data() {
             return {
-                unreadMessageCount:0,
-                personInfo:{relName:''},
+                unreadMessageCount: 0,
+                personInfo: {relName: ''},
             }
         },
-        components:{
+        components: {
             Header,
             Cell,
             Indicator
         },
         methods: {
-            getInfo(){
+            getInfo() {
                 let self = this;
 
                 let info = sessionStorage.getItem('personInfo');
-                if(info != null && info.relName){
+                if (info != null && info.relName) {
                     self.personInfo = info;
                     return;
                 }
 
                 Indicator.open();
-                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
-
-                },function(data,status){
+                $.get(getUrl('sf_zhzf/msys/user/getinfo'), {}, function (data, status) {
                     Indicator.close();
-                    if(data.statusCode == 200){
+                    if (data.statusCode == 200) {
                         sessionStorage.setItem('personInfo', data);
                         self.personInfo = data;
-                    }else if(data.statusCode == 310){
+                    } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            getMessageCount(){
+            getMessageCount() {
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/notice/unreadcnt'),{
-
-                },function(data,status){
-                    if(data.statusCode == 200){
+                $.get(getUrl('sf_zhzf/msys/notice/unreadcnt'), {}, function (data, status) {
+                    if (data.statusCode == 200) {
                         self.unreadMessageCount = data.count;
-                    }else if(data.statusCode == 310){
+                    } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            loginOut(){
+            loginOut() {
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/user/logout'),{
-
-                },function(data,status){
-                    if(data.statusCode == 200 || data.statusCode == 310){
+                $.get(getUrl('sf_zhzf/msys/user/logout'), {}, function (data, status) {
+                    if (data.statusCode == 200 || data.statusCode == 310) {
                         localStorage.clear();
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             }
         },
         mounted() {
