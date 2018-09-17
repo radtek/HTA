@@ -8,75 +8,68 @@
     <title>登录</title>
     <link href="login/bootstrap/bootstrap.min.css" rel="stylesheet">
     <script type="text/javascript" src="login/jquery/jquery-3.3.1.js"></script>
-    <script type="text/javascript" src="login/bootstrap/bootstrap.min.js"></script>
     <script type="text/javascript" src="login/md5/md5.js"></script>
     <script type="text/javascript" src="login/js/config.js"></script>
     <style>
-        .loading {
-            display: none;
-            width: 60px;
-            height: 56px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-left: -30px;
-            line-height: 56px;
-            padding-left: 60px;
-            background: rgba(0, 0, 0, 0.8) url(login/img/loading.gif) no-repeat 13px 50%;
-            opacity: 0.7;
-            z-index: 9999;
-            -moz-border-radius: 20px;
-            -webkit-border-radius: 20px;
-            border-radius: 20px;
+        header{
+            font-family: Arial;
         }
-        
-        .myImg {
-            display: block;
-            width: 150px;
-            margin: 10% auto 10px;
+        header img{
+            width: 30%;
+            margin: 10% 35% 5% 35%;
         }
-        
-        .title {
-            text-align: center;
-        }
-        
-        .footer {
-            text-align: center;
+        header h2{
             width: 100%;
-            margin: 20vh auto 0;
-            margin-bottom: 16px;
+            color: #062F65;
+            font-size: 18px;
+            text-align: center;
         }
-
-        .footer p {
-            margin: 0px;
-            font-size: 13px;
-            color: #6b6868;
+        form{
+            width: 80%;
+            margin: 20% 10% 25% 10%;
+        }
+        .form-group input{
+            width: 100%;
+            height: 40px;
+            border: #009688 1px solid;
+            border-radius: 3px;
+            color: #888888;
+            font-size: 14px;
+        }
+        .col{
+            margin: 9% 0;
+        }
+        .submit input{
+            background: #089593;
+            color: #fff;
+        }
+        .footer{
+            color: #007D71;
+            font-size: 12px;
+            font-family: "黑缘黑体";
+            text-align: center;
         }
     </style>
 </head>
 
-<body style="background-color: rgba(204, 228, 255, 0.5);">
-
-    <div id="loading" class="loading"></div>
-
-    <div>
+<body>
+    <header>
         <img class="myImg" src="login/img/logo.png" alt="">
         <h2 class="title">油烟监管执法平台</h2>
-    </div>
-
-    <form class="form-horizontal" role="form" style="margin-top: 10%">
+    </header>
+    <form>
         <div class="form-group">
-            <div class="col-sm-10">
+            <div class="col">
                 <input type="text" class="form-control" id="name" placeholder="请输入账号">
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-10">
+            <div class="col">
                 <input type="password" class="form-control" id="password" placeholder="请输入密码">
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
+            <div class="col submit">
                 <input type="button" class="btn btn-primary" value="登录" style="width: 100%;" id="submit">
             </div>
         </div>
