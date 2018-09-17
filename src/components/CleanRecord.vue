@@ -20,10 +20,12 @@
                             <mt-cell title="查看照片详情" is-link></mt-cell>
                         </a>
                         <!--<a v-if="item.status == 1" v-on:click="reply(item.id,index)" style="display: block">-->
-                            <!--<mt-cell title="审批" is-link></mt-cell>-->
+                        <!--<mt-cell title="审批" is-link></mt-cell>-->
                         <!--</a>-->
                     </div>
-                    <mt-button v-if="pageList.length >= total" type="primary" style="width: 100%;margin: 10px 0" @click="$router.go(-1);">返回</mt-button>
+                    <mt-button v-if="pageList.length >= total" type="primary" style="width: 100%;margin: 10px 0"
+                               @click="$router.go(-1);">返回
+                    </mt-button>
                 </v-loadmore>
 
                 <mt-popup
@@ -67,14 +69,16 @@
                             </el-form>
 
                             <div style="width: 100%; margin-top: 10px">
-                                <mt-button size="small" style="width: 100%" type="primary" @click="examine">提交</mt-button>
+                                <mt-button size="small" style="width: 100%" type="primary" @click="examine">提交
+                                </mt-button>
                             </div>
                         </div>
                     </div>
                 </mt-popup>
 
                 <div class="landscape" v-if="showPhoto">
-                    <a class="aClose" @click="closePhoto"><img class="myClose" src="../assets/round_close.png" alt=""></a>
+                    <a class="aClose" @click="closePhoto"><img class="myClose" src="../assets/round_close.png"
+                                                               alt=""></a>
                     <div class="myBoxDetail">
                         <img :src="imgUrl" alt="">
                     </div>
@@ -84,33 +88,39 @@
     </div>
 </template>
 <style media="screen">
-    .myempty{
+    .myempty {
         display: none;
     }
-    .clearTest .mint-popup{
+
+    .clearTest .mint-popup {
         width: 100%;
-        background-color: transparent!important;
+        background-color: transparent !important;
     }
-    .box{
+
+    .box {
         width: 80%;
-        margin:0 auto;
+        margin: 0 auto;
         padding: 10px;
-        border: 2px solid rgba(0,0,0,0.2);
+        border: 2px solid rgba(0, 0, 0, 0.2);
         border-radius: 5px;
     }
-    .myBox{
+
+    .myBox {
         text-align: center;
         background: #EBEEF5;
     }
-    .auditingBox{
+
+    .auditingBox {
         text-align: left;
         background: #EBEEF5;
     }
-    .myImg{
+
+    .myImg {
         display: block;
         width: 100%;
         margin: 5px 0;
     }
+
     .clear-list {
         width: 100%;
         background: #EBEEF5;
@@ -119,28 +129,35 @@
         overflow: hidden;
         padding-top: 10px;
     }
-    .time{
+
+    .time {
         width: 100%;
         color: #606266;
         text-align: center;
     }
-    .mint-cell-text{
-        color: rgba(0,0,0,0.9);
+
+    .mint-cell-text {
+        color: rgba(0, 0, 0, 0.9);
     }
-    .mint-cell{
+
+    .mint-cell {
         background-color: rgba(0, 0, 0, 0) !important;
     }
-    .mint-cell-wrapper,.mint-cell:last-child{
+
+    .mint-cell-wrapper, .mint-cell:last-child {
         background-image: none !important;
     }
+
     .mint-cell-wrapper {
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     }
+
     .mint-cell-value {
         max-width: 60%;
         padding: 10px 0;
     }
-    .landscape{
+
+    .landscape {
         height: 100vh;
         width: 100vw;
         overflow: hidden;
@@ -150,17 +167,20 @@
         top: 0;
         z-index: 3000;
     }
-    .aClose{
+
+    .aClose {
         position: fixed;
         top: 0;
         right: 0;
         z-index: 3001;
     }
-    .myClose{
+
+    .myClose {
         width: 40px;
         height: 40px;
     }
-    .mint-radiolist-title{
+
+    .mint-radiolist-title {
         font-size: 16px !important;
     }
 </style>
@@ -171,26 +191,26 @@
         name: 'home',
         data() {
             return {
-                imgList         : [],
-                showPopup       : false,
-                showPhoto       : false,
-                showAuditing    : false,
+                imgList: [],
+                showPopup: false,
+                showPhoto: false,
+                showAuditing: false,
                 id: '20',
-                searchCondition : {  //分页属性
-                    pageNo  : "1",
+                searchCondition: {  //分页属性
+                    pageNo: "1",
                     pageSize: "15"
                 },
-                total           : 0,
-                pageList        : [],
-                allLoaded       : false,    //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
-                scrollMode      : "auto",   //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
-                imgUrl          : '',
-                answer          : '2',
-                select          : ['是','否'],
-                formal          : '',
-                clearId         : '',
-                clearIndex      : '',
-                isReply         : false,    //false 展示审核按钮
+                total: 0,
+                pageList: [],
+                allLoaded: false,    //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
+                scrollMode: "auto",   //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+                imgUrl: '',
+                answer: '2',
+                select: ['是', '否'],
+                formal: '',
+                clearId: '',
+                clearIndex: '',
+                isReply: false,    //false 展示审核按钮
             }
         },
         components: {
@@ -208,7 +228,7 @@
             loadPageList() {
                 Indicator.open();
                 let self = this;
-                $.get( getUrl('sf_zhzf/msys/cleanhist/list'), {
+                $.get(getUrl('sf_zhzf/msys/cleanhist/list'), {
                     execobjId: self.id,
                     pageNum: self.searchCondition.pageNo,
                     numPerPage: self.searchCondition.pageSize
@@ -225,7 +245,7 @@
                     } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
             more() {
 
@@ -233,7 +253,7 @@
                 this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
 
                 let self = this;
-                $.get( getUrl('sf_zhzf/msys/cleanhist/list'), {
+                $.get(getUrl('sf_zhzf/msys/cleanhist/list'), {
                     execobjId: self.id,
                     pageNum: self.searchCondition.pageNo,
                     numPerPage: self.searchCondition.pageSize
@@ -247,12 +267,12 @@
                     } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            checkOver(){
+            checkOver() {
                 this.pageList.length >= this.total && (this.allLoaded = true);
             },
-            click(clearId,index,status){
+            click(clearId, index, status) {
                 //审核需要
                 this.clearId = clearId;
                 this.clearIndex = index;
@@ -260,7 +280,7 @@
 
                 this.showPopup = true;
                 let self = this;
-                $.get( getUrl('sf_zhzf/msys/cleanhist/photolst'), {
+                $.get(getUrl('sf_zhzf/msys/cleanhist/photolst'), {
                     releId: clearId,
                 }, function (data, status) {
                     if (data.statusCode == 200) {
@@ -270,40 +290,40 @@
                     } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            showDetail(path){
+            showDetail(path) {
                 this.showPhoto = true;
                 this.imgUrl = path;
                 let myBoxDetail = $(".myBoxDetail");
                 let checkMyBox = setInterval(function () {
-                    if(myBoxDetail){
+                    if (myBoxDetail) {
                         new window.PinchZoom.default(document.querySelector('div.myBoxDetail'), {});
                         clearTimeout(checkMyBox);
                     }
-                },200);
+                }, 200);
             },
-            closePhoto(){
+            closePhoto() {
                 this.showPhoto = false;
             },
-            reply(id,index){
+            reply(id, index) {
                 this.showAuditing = true;
                 this.clearId = id;
                 this.answer = '2';
                 this.clearIndex = index;
             },
-            photoReply(){
+            photoReply() {
                 this.showAuditing = true;
                 this.answer = '2';
             },
-            examine(){
+            examine() {
                 Indicator.open();
                 let self = this;
 
-                $.get( getUrl('sf_zhzf/msys/cleanhist/ckverify'), {
-                    id      : self.clearId,
-                    status  : self.answer,
-                    explain : self.formal,
+                $.get(getUrl('sf_zhzf/msys/cleanhist/ckverify'), {
+                    id: self.clearId,
+                    status: self.answer,
+                    explain: self.formal,
                 }, function (data, status) {
                     Indicator.close();
                     if (data.statusCode == 200) {
@@ -317,10 +337,10 @@
                     } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            checkR(status){
-                if(status == 1) this.isReply = false;   // 1 为未审核，false显示
+            checkR(status) {
+                if (status == 1) this.isReply = false;   // 1 为未审核，false显示
                 else this.isReply = true;
             },
         },

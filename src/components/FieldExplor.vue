@@ -128,7 +128,7 @@
                     Indicator.close();
                     if(data.statusCode == 200){
                         Toast('提交成功');
-                        self.$router.push({ name: 'CheckRecord', params: { id: self.id }});
+                        self.$router.push({name: 'CheckRecord', params: {id: self.id}});
                     }else if(data.statusCode == 310){
                         window.location.href = "login.html";
                     }else{

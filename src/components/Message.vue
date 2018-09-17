@@ -9,10 +9,11 @@
 
             <div id="myScr" class="test" style="height: 85vh; overflow:scroll; background-color: rgba(0,0,0,0);">
                 <v-loadmore :bottom-method="loadBottom"
-                            bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
+                            bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
                     <div class="message-list" v-for="(item,index) in pageList">
-                        <a v-on:click="show(index,item.id,item.msgStatus,item.noticeId)" style="height: 100%;width: 100%;display: block">
+                        <a v-on:click="show(index,item.id,item.msgStatus,item.noticeId)"
+                           style="height: 100%;width: 100%;display: block">
                             <el-badge v-if="item.msgStatus == unread" is-dot class="item">
                                 <div class="conform">
                                     <h3> {{ item.title }} </h3>
@@ -34,10 +35,12 @@
                             </el-badge>
                         </a>
                     </div>
-                    <mt-button v-if="pageList.length >= total" type="primary" style="width: 100%;margin: 10px 0" @click="$router.go(-1);">返回</mt-button>
+                    <mt-button v-if="pageList.length >= total" type="primary" style="width: 100%;margin: 10px 0"
+                               @click="$router.go(-1);">返回
+                    </mt-button>
                 </v-loadmore>
                 <mt-popup
-                    v-model="showPopup" position="right">
+                        v-model="showPopup" position="right">
                     <div class="msg" style="max-height: 70vh; overflow:scroll;">
                         <div class="myBox">
                             <div style="padding: 10px;background-color: white">
@@ -78,8 +81,12 @@
                                 <div slot="end">{{ downValue }}%</div>
                             </mt-progress>
 
-                            <mt-button plain type="primary" style="float: left;margin: 10px 0 0 10px;width: 30%" @click="suspend">{{ butTest }}</mt-button>
-                            <mt-button plain type="danger" style="float: right;margin: 10px 10px 0 0;width: 30%" @click="canl">取消</mt-button>
+                            <mt-button plain type="primary" style="float: left;margin: 10px 0 0 10px;width: 30%"
+                                       @click="suspend">{{ butTest }}
+                            </mt-button>
+                            <mt-button plain type="danger" style="float: right;margin: 10px 10px 0 0;width: 30%"
+                                       @click="canl">取消
+                            </mt-button>
                         </div>
                     </div>
                 </mt-popup>
@@ -95,7 +102,7 @@
     </div>
 </template>
 <style>
-    .conform{
+    .conform {
         line-height: 30px;
         color: #303133;
         font-size: 15px;
@@ -105,50 +112,58 @@
         height: 60px;
         overflow: hidden
     }
-    .dates{
+
+    .dates {
         text-align: right;
         color: #909399;
         font-size: 12px;
         padding: 0 5px 5px 0;
     }
-    .el-badge{
+
+    .el-badge {
         width: 100%;
         background: #EBEEF5;
         margin-bottom: 20px;
         border-radius: 5px;
     }
-    .test .mint-popup{
+
+    .test .mint-popup {
         width: 100%;
-        background-color: rgba(0,0,0,0) !important;
+        background-color: rgba(0, 0, 0, 0) !important;
     }
-    .msg .myBox{
+
+    .msg .myBox {
         width: 80%;
-        margin:0 auto;
+        margin: 0 auto;
         padding: 10px;
         background: #EBEEF5;
-        border: 2px solid rgba(0,0,0,0.2);
+        border: 2px solid rgba(0, 0, 0, 0.2);
         border-radius: 5px;
         overflow: hidden;
         text-align: left !important;
     }
 
-    .message-list{
+    .message-list {
         height: 95px;
         width: 96%;
         background: #EBEEF5;
         margin: 15px 2%;
         border-radius: 5px;
     }
-    .message-list h3{
+
+    .message-list h3 {
         font-size: 16px;
     }
-    .mint-cell{
-        background-color: rgba(0,0,0,0) !important;
+
+    .mint-cell {
+        background-color: rgba(0, 0, 0, 0) !important;
     }
-    .appendImg{
+
+    .appendImg {
         width: 100%;
     }
-    .landscape{
+
+    .landscape {
         height: 100vh;
         width: 100vw;
         overflow: hidden;
@@ -158,26 +173,31 @@
         top: 0;
         z-index: 3000;
     }
-    .aClose{
+
+    .aClose {
         position: fixed;
         top: 0;
         right: 0;
         z-index: 3001;
     }
-    .myClose{
+
+    .myClose {
         width: 40px;
         height: 40px;
     }
+
     .mt-progress {
         margin: 0 10px !important;
     }
-    .downBox{
+
+    .downBox {
         width: 100vw;
         height: 100vh;
         background: rgba(0, 0, 0, 0.2);
         text-align: left;
     }
-    .innerBox{
+
+    .innerBox {
         position: fixed;
         width: 80%;
         height: 100px;
@@ -185,130 +205,132 @@
         top: 50%;
         left: 6.8%;
         padding: 10px;
-        border: 2px solid rgba(0,0,0,0.2);
+        border: 2px solid rgba(0, 0, 0, 0.2);
         border-radius: 5px;
-        background-color: rgba(255,255,255,1);
+        background-color: rgba(255, 255, 255, 1);
     }
-    .confirmButton{
+
+    .confirmButton {
         color: black;
     }
 </style>
 <script>
-    import { Header,Loadmore,Toast,Indicator,Cell,MessageBox } from 'mint-ui';
+    import {Header, Loadmore, Toast, Indicator, Cell, MessageBox} from 'mint-ui';
+
     export default {
         name: 'home',
         data() {
             return {
-                unread:1, //未读为1
-                read:2, //已读为2
-                showPopup:false,
-                popupContent:'',
-                searchCondition:{  //分页属性
-                    pageNo:"1",
-                    pageSize:"15"
+                unread: 1, //未读为1
+                read: 2, //已读为2
+                showPopup: false,
+                popupContent: '',
+                searchCondition: {  //分页属性
+                    pageNo: "1",
+                    pageSize: "15"
                 },
-                total:0,
-                pageList:[],
+                total: 0,
+                pageList: [],
                 allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
-                scrollMode:"auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
-                appendixList:'',
+                scrollMode: "auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+                appendixList: '',
                 showPhoto: false,//是否显示图片放大缩放
-                imgUrl:'',
-                isShowDown:false,//是否显示下载
-                downValue:0,
-                isContinue:false,//是否是继续按钮 false为暂停，true为继续
-                butTest:'暂停',
+                imgUrl: '',
+                isShowDown: false,//是否显示下载
+                downValue: 0,
+                isContinue: false,//是否是继续按钮 false为暂停，true为继续
+                butTest: '暂停',
 
-                word    :1,
-                excel   :2,
-                pdf     :3,
-                unKnow  :4,
+                word: 1,
+                excel: 2,
+                pdf: 3,
+                unKnow: 4,
             }
         },
-        components:{
+        components: {
             Header,
             Toast,
-            'v-loadmore':Loadmore,
+            'v-loadmore': Loadmore,
             Indicator,
             Cell,
             MessageBox
         },
-        methods:{
+        methods: {
             loadBottom() {
                 // 上拉加载
                 this.more();// 上拉触发的分页查询
                 this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
             },
-            loadPageList(){
+            loadPageList() {
                 Indicator.open();
                 let self = this;
-                $.get( getUrl('sf_zhzf/msys/notice/list'),{
-                    pageNum     : self.searchCondition.pageNo,
-                    numPerPage  : self.searchCondition.pageSize
-                },function(data,status){
+                $.get(getUrl('sf_zhzf/msys/notice/list'), {
+                    pageNum: self.searchCondition.pageNo,
+                    numPerPage: self.searchCondition.pageSize
+                }, function (data, status) {
                     Indicator.close();
-                    if(data.statusCode == 200){
+                    if (data.statusCode == 200) {
                         self.pageList = data.list;
                         self.total = data.totalCount;
                         self.checkOver();
-                    }else if(data.statusCode == 310){
+                    } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            more(){
+            more() {
                 //分页查询
                 this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
 
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/notice/list'),{
-                    pageNum     :self.searchCondition.pageNo,
-                    numPerPage  :self.searchCondition.pageSize
-                },function(data,status){
-                    if(data.statusCode == 200){
+                $.get(getUrl('sf_zhzf/msys/notice/list'), {
+                    pageNum: self.searchCondition.pageNo,
+                    numPerPage: self.searchCondition.pageSize
+                }, function (data, status) {
+                    if (data.statusCode == 200) {
                         self.pageList = self.pageList.concat(data.list);
                         self.total = data.totalCount;
                         self.checkOver();
-                    }else if(data.statusCode == 310){
+                    } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            show(index,id,msgStatus,noticeId){
+            show(index, id, msgStatus, noticeId) {
                 let self = this;
                 self.popupContent = self.pageList[index].content;
                 self.showPopup = true;
 
                 //如果是未读的消息则更改消息状态
-                if(msgStatus == self.unread){
-                    $.get(getUrl('sf_zhzf/msys/notice/reading'),{
-                        id : id
-                    },function(data,status){
-                        if(data.statusCode == 200){
+                if (msgStatus == self.unread) {
+                    $.get(getUrl('sf_zhzf/msys/notice/reading'), {
+                        id: id
+                    }, function (data, status) {
+                        if (data.statusCode == 200) {
 
                             self.pageList[index].msgStatus = self.read;
 
-                        }else if(data.statusCode == 310){
+                        } else if (data.statusCode == 310) {
                             window.location.href = "login.html";
-                        }else{
+                        } else {
                             Toast(data.message);
                         }
-                    },'json');
+                    }, 'json');
                 }
                 //获得附件
-                $.get(getUrl('sf_zhzf/msys/notice/attachfile'),{
-                    noticeId : noticeId
-                },function(data,status){
-                    if(data.statusCode == 200){
+                $.get(getUrl('sf_zhzf/msys/notice/attachfile'), {
+                    noticeId: noticeId
+                }, function (data, status) {
+                    if (data.statusCode == 200) {
                         self.appendixList = data.list;
-                        self.appendixList.forEach(function (value,index,arr) {
-                            if(value.fileType == 2){
+                        self.appendixList.forEach(function (value, index, arr) {
+                            if (value.fileType == 2) {
                                 let exe = value.fileName.split('.');
-                                switch (exe[exe.length-1].toLowerCase()){
+                                switch (exe[exe.length - 1].toLowerCase()) {
                                     case 'docx':
                                     case 'doc' :
                                         arr[index].iconType = self.word;
@@ -326,85 +348,85 @@
                                 }
                             }
                         });
-                    }else if(data.statusCode == 310){
+                    } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            checkOver(){
+            checkOver() {
                 this.pageList.length >= this.total && (this.allLoaded = true);
             },
-            showDetail(path){
+            showDetail(path) {
                 this.showPhoto = true;
                 this.imgUrl = path;
                 let myBoxDetail = $(".myBoxDetail");
                 let checkMyBox = setInterval(function () {
-                    if(myBoxDetail){
+                    if (myBoxDetail) {
                         new window.PinchZoom.default(document.querySelector('div.myBoxDetail'), {});
                         clearTimeout(checkMyBox);
                     }
-                },200);
+                }, 200);
             },
-            closePhoto(){
+            closePhoto() {
                 this.showPhoto = false;
             },
-            createDownload(url,name) {
+            createDownload(url, name) {
 
                 this.isShowDown = true;
 
                 let self = this;
-                dtask = plus.downloader.createDownload( url, {}, function ( d, status ) {
+                dtask = plus.downloader.createDownload(url, {}, function (d, status) {
                     // 下载完成
-                    if ( status == 200 ) {
+                    if (status == 200) {
                         self.isShowDown = false;
                         self.downValue = 0;
 
                         MessageBox.confirm('', {
                             message: name,
                             title: '下载成功',
-                            showConfirmButton:true,
-                            showCancelButton:true,
-                            confirmButtonText:'确定',
-                            cancelButtonText:'打开'
+                            showConfirmButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: '确定',
+                            cancelButtonText: '打开'
                         }).then(action => {
 
                         }).catch(err => {
                             if (err != 'cancel') return;
-                            plus.runtime.openFile( d.filename );
+                            plus.runtime.openFile(d.filename);
                         });
 
                     } else {
-                        Toast( "下载失败: " + status );
+                        Toast("下载失败: " + status);
                     }
                 });
-                dtask.addEventListener( "statechanged", function ( d, status ) {
-                    self.downValue = parseInt((d.downloadedSize/d.totalSize)*100);
-                    if(isNaN(self.downValue)) self.downValue = 0;
-                }, false );
+                dtask.addEventListener("statechanged", function (d, status) {
+                    self.downValue = parseInt((d.downloadedSize / d.totalSize) * 100);
+                    if (isNaN(self.downValue)) self.downValue = 0;
+                }, false);
                 dtask.start();
             },
-            suspend(){
-                if(dtask == null) return;
-                if(this.isContinue){
+            suspend() {
+                if (dtask == null) return;
+                if (this.isContinue) {
                     dtask.resume();
                     this.isContinue = false;
                     this.butTest = '暂停';
-                }else{
+                } else {
                     dtask.pause();
                     this.isContinue = true;
                     this.butTest = '继续';
                 }
             },
-            canl(){
-                if(dtask == null) return;
+            canl() {
+                if (dtask == null) return;
                 dtask.abort();
                 this.isShowDown = false;
                 this.downValue = 0;
             }
         },
-        mounted(){
+        mounted() {
             this.loadPageList();
             check();
         }

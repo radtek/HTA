@@ -16,13 +16,13 @@
             </div>
             <div id="myScr" style="height: 70vh; overflow:scroll;">
                 <v-loadmore :bottom-method="loadBottom"
-                            bottomPullText="下拉加载" bottomDropText="释放加载更多"  bottomLoadingText="加载中···"
+                            bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
                             :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
                     <div class="list" v-for="item in pageList" :key="item.id">
                         <router-link :to="{ name: 'ListContent', params: { id: item.id }}" class="clearBoth">
                             <div class="cont">
                                 <h3> {{ item.objName }} </h3>
-                                <p>  {{ item.busiAddr }} </p>
+                                <p> {{ item.busiAddr }} </p>
                             </div>
                             <img class="myReturn" src="../assets/return.png" alt="">
                         </router-link>
@@ -33,74 +33,83 @@
     </div>
 </template>
 <style media="screen">
-    .mint-tab-item-label{
+    .mint-tab-item-label {
         color: #409EFF;
     }
-    .demo-input-suffix{
+
+    .demo-input-suffix {
         margin: 20px 0;
         width: 100%;
     }
-    .list{
+
+    .list {
         width: 100%;
         overflow: hidden;
         padding: 10px 0;
         position: relative;
         border-bottom: 1px solid #EBEEF5;
     }
-    .list h3{
+
+    .list h3 {
         font-size: 16px;
         color: #606266;
     }
-    .list p{
+
+    .list p {
         font-size: 13px;
         color: #909399;
         width: 100%;
     }
-    .cont{
+
+    .cont {
         width: 80%;
         float: left;
         padding-left: 10px;
         height: 100%;
     }
+
     .cont * {
         margin-top: 6px;
     }
-    .myReturn{
+
+    .myReturn {
         width: 30px;
         height: 30px;
         position: absolute;
         top: 50%;
         margin-top: -15px;
     }
-    .clearBoth:after{
+
+    .clearBoth:after {
         content: "";
         clear: both;
         display: block;
     }
 </style>
 <script>
-    import { Header,Tabbar, TabItem,Toast,Loadmore,Indicator } from 'mint-ui';
+    import {Header, Tabbar, TabItem, Toast, Loadmore, Indicator} from 'mint-ui';
+
     export default {
         name: 'home',
         data() {
             return {
-                objName:"",
-                title:'新乡海滨有限公司',
-                data:'行政区划分：好几百的后视镜到哪里好几百的后视镜到哪里',
-                searchCondition:{  //分页属性
-                  pageNo:"1",
-                  pageSize:"15"
+                objName: "",
+                title: '新乡海滨有限公司',
+                data: '行政区划分：好几百的后视镜到哪里好几百的后视镜到哪里',
+                searchCondition: {  //分页属性
+                    pageNo: "1",
+                    pageSize: "15"
                 },
-                pageList:[],
+                pageList: [],
                 allLoaded: true, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
-                scrollMode:"auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+                scrollMode: "auto" //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
             }
         },
-        components:{
+        components: {
             Header,
             Tabbar,
             TabItem,
-            'v-loadmore':Loadmore
+            'v-loadmore': Loadmore
         },
         methods: {
             loadBottom() {
@@ -108,45 +117,45 @@
                 this.more();// 上拉触发的分页查询
                 this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
             },
-            loadPageList(){
+            loadPageList() {
                 Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'),{
-                    objName:self.objName,
+                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
+                    objName: self.objName,
                     // pageNum:self.searchCondition.pageNo,
                     // numPerPage:self.searchCondition.pageSize
-                },function(data,status){
+                }, function (data, status) {
                     Indicator.close();
-                    if(data.statusCode == 200){
+                    if (data.statusCode == 200) {
                         self.pageList = data.list;
-                    }else if(data.statusCode == 310){
+                    } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            more(){
+            more() {
                 // 分页查询
                 this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
 
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'),{
-                    objName:self.objName,
+                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
+                    objName: self.objName,
                     // pageNum:self.searchCondition.pageNo,
                     // numPerPage:self.searchCondition.pageSize
-                },function(data,status){
-                    if(data.statusCode == 200){
+                }, function (data, status) {
+                    if (data.statusCode == 200) {
                         self.pageList = self.pageList.concat(data.list);
-                    }else if(data.statusCode == 310){
+                    } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
         },
-        mounted(){
+        mounted() {
             check();
             this.loadPageList();
         }

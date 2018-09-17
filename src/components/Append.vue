@@ -47,14 +47,19 @@
                                 <div slot="end">{{ downValue }}%</div>
                             </mt-progress>
 
-                            <mt-button plain type="primary" style="float: left;margin: 10px 0 0 10px;width: 30%" @click="suspend">{{ butTest }}</mt-button>
-                            <mt-button plain type="danger" style="float: right;margin: 10px 10px 0 0;width: 30%" @click="canl">取消</mt-button>
+                            <mt-button plain type="primary" style="float: left;margin: 10px 0 0 10px;width: 30%"
+                                       @click="suspend">{{ butTest }}
+                            </mt-button>
+                            <mt-button plain type="danger" style="float: right;margin: 10px 10px 0 0;width: 30%"
+                                       @click="canl">取消
+                            </mt-button>
                         </div>
                     </div>
                 </mt-popup>
 
                 <div class="landscape" v-if="showPhoto">
-                    <a class="aClose" @click="closePhoto"><img class="myClose" src="../assets/round_close.png" alt=""></a>
+                    <a class="aClose" @click="closePhoto"><img class="myClose" src="../assets/round_close.png"
+                                                               alt=""></a>
                     <div class="myBoxDetail">
                         <img :src="imgUrl" alt="图片加载失败">
                         <!--<img class="appendImg" src="../assets/vip.gif" alt="">-->
@@ -66,47 +71,48 @@
 </template>
 
 <script>
-    import { Header,Toast,Indicator } from 'mint-ui';
+    import {Header, Toast, Indicator} from 'mint-ui';
+
     export default {
         name: 'append',
         data() {
             return {
-                id:'',
-                appendixList:[],
+                id: '',
+                appendixList: [],
 
                 showPhoto: false,//是否显示图片放大缩放
-                imgUrl:'',
-                isShowDown:false,//是否显示下载
-                downValue:0,
-                isContinue:false,//是否是继续按钮 false为暂停，true为继续
-                butTest:'暂停',
+                imgUrl: '',
+                isShowDown: false,//是否显示下载
+                downValue: 0,
+                isContinue: false,//是否是继续按钮 false为暂停，true为继续
+                butTest: '暂停',
 
-                word    :1,
-                excel   :2,
-                pdf     :3,
-                unKnow  :4,
+                word: 1,
+                excel: 2,
+                pdf: 3,
+                unKnow: 4,
             }
         },
-        components:{
+        components: {
             Header,
             Toast,
             Indicator
         },
         methods: {
-            getData(){
+            getData() {
 
                 Indicator.open();
                 let self = this;
-                $.get( getUrl('sf_zhzf/msys/enterprise/attachfile'),{
-                    code : self.id
-                },function(data,status){
+                $.get(getUrl('sf_zhzf/msys/enterprise/attachfile'), {
+                    code: self.id
+                }, function (data, status) {
                     Indicator.close();
-                    if(data.statusCode == 200){
+                    if (data.statusCode == 200) {
                         self.appendixList = data.list;
-                        self.appendixList.forEach(function (value,index,arr) {
-                            if(value.fileType == 2){
+                        self.appendixList.forEach(function (value, index, arr) {
+                            if (value.fileType == 2) {
                                 let exe = value.fileName.split('.');
-                                switch (exe[exe.length-1].toLowerCase()){
+                                switch (exe[exe.length - 1].toLowerCase()) {
                                     case 'docx':
                                     case 'doc' :
                                         arr[index].iconType = self.word;
@@ -124,82 +130,82 @@
                                 }
                             }
                         });
-                    }else if(data.statusCode == 310){
+                    } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
-            showDetail(path){
+            showDetail(path) {
                 this.showPhoto = true;
                 this.imgUrl = path;
                 let myBoxDetail = $(".myBoxDetail");
                 let checkMyBox = setInterval(function () {
-                    if(myBoxDetail){
+                    if (myBoxDetail) {
                         new window.PinchZoom.default(document.querySelector('div.myBoxDetail'), {});
                         clearTimeout(checkMyBox);
                     }
-                },200);
+                }, 200);
             },
-            closePhoto(){
+            closePhoto() {
                 this.showPhoto = false;
             },
-            createDownload(url,name) {
+            createDownload(url, name) {
 
                 this.isShowDown = true;
 
                 let self = this;
-                dtask = plus.downloader.createDownload( url, {}, function ( d, status ) {
+                dtask = plus.downloader.createDownload(url, {}, function (d, status) {
                     // 下载完成
-                    if ( status == 200 ) {
+                    if (status == 200) {
                         self.isShowDown = false;
                         self.downValue = 0;
 
                         MessageBox.confirm('', {
                             message: name,
                             title: '下载成功',
-                            showConfirmButton:true,
-                            showCancelButton:true,
-                            confirmButtonText:'确定',
-                            cancelButtonText:'打开'
+                            showConfirmButton: true,
+                            showCancelButton: true,
+                            confirmButtonText: '确定',
+                            cancelButtonText: '打开'
                         }).then(action => {
 
                         }).catch(err => {
                             if (err != 'cancel') return;
-                            plus.runtime.openFile( d.filename );
+                            plus.runtime.openFile(d.filename);
                         });
 
                     } else {
-                        Toast( "下载失败: " + status );
+                        Toast("下载失败: " + status);
                     }
                 });
-                dtask.addEventListener( "statechanged", function ( d, status ) {
-                    self.downValue = parseInt((d.downloadedSize/d.totalSize)*100);
-                    if(isNaN(self.downValue)) self.downValue = 0;
-                }, false );
+                dtask.addEventListener("statechanged", function (d, status) {
+                    self.downValue = parseInt((d.downloadedSize / d.totalSize) * 100);
+                    if (isNaN(self.downValue)) self.downValue = 0;
+                }, false);
                 dtask.start();
             },
-            suspend(){
-                if(dtask == null) return;
-                if(this.isContinue){
+            suspend() {
+                if (dtask == null) return;
+                if (this.isContinue) {
                     dtask.resume();
                     this.isContinue = false;
                     this.butTest = '暂停';
-                }else{
+                } else {
                     dtask.pause();
                     this.isContinue = true;
                     this.butTest = '继续';
                 }
             },
-            canl(){
-                if(dtask == null) return;
+            canl() {
+                if (dtask == null) return;
                 dtask.abort();
                 this.isShowDown = false;
                 this.downValue = 0;
             }
         },
-        mounted(){
+        mounted() {
             this.id = this.$route.params.id;
             this.getData();
         }
@@ -207,15 +213,16 @@
 </script>
 
 <style scoped>
-    .myCell{
+    .myCell {
         width: 100%;
         overflow: hidden;
         margin-top: 10px;
-        border-bottom: 1px solid rgba(0,0,0,0.5);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
         position: relative;
         min-height: 100px;
     }
-    .cellIcon{
+
+    .cellIcon {
         width: 80px;
         height: 80px;
         position: absolute;
@@ -223,25 +230,29 @@
         left: 0;
         margin-top: -40px;
     }
-    .cellTest{
+
+    .cellTest {
         max-width: 60%;
         margin-left: 90px;
         margin-top: 10px;
     }
-    .remake{
+
+    .remake {
         padding-top: 10px;
         display: block;
         font-size: 18px;
         overflow: hidden;
     }
-    .fileName{
+
+    .fileName {
         padding-top: 20px;
         padding-bottom: 10px;
         display: block;
         font-size: 14px;
-        color: rgba(0,0,0,0.6);
+        color: rgba(0, 0, 0, 0.6);
     }
-    .downIcon{
+
+    .downIcon {
         width: 30px;
         height: 30px;
         position: absolute;
@@ -249,10 +260,12 @@
         margin-top: -15px;
         right: 0;
     }
-    .appendImg{
+
+    .appendImg {
         width: 100%;
     }
-    .landscape{
+
+    .landscape {
         height: 100vh;
         width: 100vw;
         overflow: hidden;
@@ -262,26 +275,31 @@
         top: 0;
         z-index: 3000;
     }
-    .aClose{
+
+    .aClose {
         position: fixed;
         top: 0;
         right: 0;
         z-index: 3001;
     }
-    .myClose{
+
+    .myClose {
         width: 40px;
         height: 40px;
     }
+
     .mt-progress {
         margin: 0 10px !important;
     }
-    .downBox{
+
+    .downBox {
         width: 100vw;
         height: 100vh;
         background: rgba(0, 0, 0, 0.2);
         text-align: left;
     }
-    .innerBox{
+
+    .innerBox {
         position: fixed;
         width: 80%;
         height: 100px;
@@ -289,11 +307,12 @@
         top: 50%;
         left: 6.8%;
         padding: 10px;
-        border: 2px solid rgba(0,0,0,0.2);
+        border: 2px solid rgba(0, 0, 0, 0.2);
         border-radius: 5px;
-        background-color: rgba(255,255,255,1);
+        background-color: rgba(255, 255, 255, 1);
     }
-    .confirmButton{
+
+    .confirmButton {
         color: black;
     }
 </style>

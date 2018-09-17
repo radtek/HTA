@@ -16,41 +16,40 @@
 </template>
 
 <script>
-    import { Header,Cell,Toast,Button,Indicator  } from 'mint-ui';
+    import {Header, Cell, Toast, Button, Indicator} from 'mint-ui';
+
     export default {
         name: 'person-info',
         data() {
             return {
-                personInfo:{},
+                personInfo: {},
             }
         },
-        components:{
+        components: {
             Header,
             Cell,
         },
         methods: {
-            getInfo(){
+            getInfo() {
 
                 let info = sessionStorage.getItem('personInfo');
-                if(info.relName){
+                if (info.relName) {
                     self.personInfo = info;
                     return;
                 }
                 Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
-
-                },function(data,status){
+                $.get(getUrl('sf_zhzf/msys/user/getinfo'), {}, function (data, status) {
                     Indicator.close();
-                    if(data.statusCode == 200){
+                    if (data.statusCode == 200) {
                         sessionStorage.setItem('personInfo', data);
                         self.personInfo = data;
-                    }else if(data.statusCode == 310){
+                    } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
-                    }else{
+                    } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
         },
         mounted() {

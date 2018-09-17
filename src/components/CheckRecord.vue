@@ -58,7 +58,7 @@
     }
 
     .mint-cell-text {
-        color: rgba(0,0,0,0.9) !important;
+        color: rgba(0, 0, 0, 0.9) !important;
     }
 </style>
 <script>

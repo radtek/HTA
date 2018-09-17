@@ -56,10 +56,10 @@
                 }
                 Indicator.open();
                 $.get(getUrl('sf_zhzf/msys/user/resetpwd'), {
-                    oldpass  : hex_md5(self.originalPassword),
-                    newpass  : hex_md5(self.newPassword),
-                    imei     : plus.device.imei,
-                    lastsend : localStorage.getItem("lastsend")
+                    oldpass: hex_md5(self.originalPassword),
+                    newpass: hex_md5(self.newPassword),
+                    imei: plus.device.imei,
+                    lastsend: localStorage.getItem("lastsend")
                 }, function (data, status) {
                     Indicator.close();
                     if (data.statusCode == 200) {
@@ -71,7 +71,7 @@
                     } else {
                         Toast(data.message);
                     }
-                },'json');
+                }, 'json');
             },
         },
     }
