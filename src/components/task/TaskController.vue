@@ -37,7 +37,7 @@
             </div>
         </div>
 
-        <router-link to="/">
+        <router-link to="/TaskInfor">
             <div class="cont">
                 <h3>油烟检查任务</h3>
                 <p>完成期限： <span>2018.03.09</span></p>
