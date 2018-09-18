@@ -46,7 +46,6 @@
                     <img src="" alt="">
                 </div>
             </div>
-
         </router-link>
 
     </div>
@@ -146,6 +145,17 @@
                 console.log(key, keyPath);
 //                getData(key);
             },
+            getData(key){
+                if(key == 1){
+                    $.get(getUrl(''), {
+
+                    })
+                }else if(key == 2){
+                    $.get(getUrl(''), {
+
+                    })
+                }
+            },
             loadBottom() {
                 // 上拉加载
                 this.more();// 上拉触发的分页查询
@@ -168,7 +178,6 @@
                         p1:"2018.05.05",
                         p2:"120",
                         name:"weiyakajs",
-
                     }
                   ];
 //                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
