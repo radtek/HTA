@@ -7,6 +7,11 @@ export default new Router({
     routes: [
         {
             path: '/',
+            name: 'TaskController',
+            component: resolve => void(require(['../components/task/TaskController.vue'], resolve))
+        },
+        {
+            path: '/SweepCode',
             name: 'SweepCode',
             component: resolve => void(require(['../components/SweepCode.vue'], resolve))
         },

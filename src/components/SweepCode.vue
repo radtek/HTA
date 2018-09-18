@@ -120,6 +120,23 @@
             loadPageList() {
                 Indicator.open();
                 let self = this;
+
+//                self.pageList = [
+//                    {
+//                    name:"weiyakajs",
+//                    name:"weiyakajs",
+//                    name:"weiyakajs",
+//                    name:"weiyakajs",
+//
+//                    },
+//                    {
+//                        name:"weiyakajs",
+//                        name:"weiyakajs",
+//                        name:"weiyakajs",
+//                        name:"weiyakajs",
+//
+//                    }
+//                ];
                 $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
                     objName: self.objName,
                     // pageNum:self.searchCondition.pageNo,
