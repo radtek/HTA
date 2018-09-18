@@ -3,19 +3,19 @@
         <mt-header title="个人中心"></mt-header>
         <div style="padding: 0 7%">
             <div class="info">
-                <img class="infoImg" src="../assets/people_fill.png" alt="">
+                <img class="infoImg" src="../../assets/img/people_fill.png" alt="">
                 <p>{{ personInfo.relName }}</p>
             </div>
 
             <mt-cell title="个人信息" to="/PersonInfo" is-link>
-                <img slot="icon" src="../assets/profile_fill.png" width="24" height="24">
+                <img slot="icon" src="../../assets/img/profile_fill.png" width="24" height="24">
             </mt-cell>
             <mt-cell title="消息提醒" to="/Message" is-link>
-                <img slot="icon" src="../assets/comment.png" width="24" height="24">
+                <img slot="icon" src="../../assets/img/comment.png" width="24" height="24">
                 <mt-badge type="error" v-if="unreadMessageCount != 0">{{ unreadMessageCount }}</mt-badge>
             </mt-cell>
             <mt-cell title="修改密码" to="/ResetPassword" is-link>
-                <img slot="icon" src="../assets/write_fill.png" width="24" height="24">
+                <img slot="icon" src="../../assets/img/write_fill.png" width="24" height="24">
             </mt-cell>
             <mt-button type="danger" style="width: 100%;margin-top: 20px" @click="loginOut()">退出登录</mt-button>
         </div>

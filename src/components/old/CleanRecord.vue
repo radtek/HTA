@@ -77,7 +77,7 @@
                 </mt-popup>
 
                 <div class="landscape" v-if="showPhoto">
-                    <a class="aClose" @click="closePhoto"><img class="myClose" src="../assets/round_close.png"
+                    <a class="aClose" @click="closePhoto"><img class="myClose" src="../../assets/img/round_close.png"
                                                                alt=""></a>
                     <div class="myBoxDetail">
                         <img :src="imgUrl" alt="">

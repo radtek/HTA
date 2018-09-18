@@ -12,15 +12,15 @@
                 <div v-for="item in appendixList" :key="item.id">
                     <a v-if="item.fileType == 2" @click="createDownload(item.urlPath,item.fileName)">
                         <div class="myCell">
-                            <img v-if="item.iconType == word" class="cellIcon" src="../assets/word.png">
-                            <img v-else-if="item.iconType == excel" class="cellIcon" src="../assets/excel.png">
-                            <img v-else-if="item.iconType == pdf" class="cellIcon" src="../assets/pdf.png">
-                            <img v-else-if="item.iconType == unKnow" class="cellIcon" src="../assets/text.png">
+                            <img v-if="item.iconType == word" class="cellIcon" src="../../assets/img/word.png">
+                            <img v-else-if="item.iconType == excel" class="cellIcon" src="../../assets/img/excel.png">
+                            <img v-else-if="item.iconType == pdf" class="cellIcon" src="../../assets/img/pdf.png">
+                            <img v-else-if="item.iconType == unKnow" class="cellIcon" src="../../assets/img/text.png">
                             <div class="cellTest">
                                 <span class="remake">{{ item.remark }}</span>
                                 <span class="fileName">{{ item.fileName }}</span>
                             </div>
-                            <img class="downIcon" src="../assets/down.png">
+                            <img class="downIcon" src="../../assets/img/down.png">
                         </div>
                     </a>
                     <a v-else @click="showDetail(item.urlPath)">
@@ -31,7 +31,7 @@
                                 <span class="remake">{{ item.remark }}</span>
                                 <span class="fileName">{{ item.fileName }}</span>
                             </div>
-                            <img class="downIcon" src="../assets/return.png">
+                            <img class="downIcon" src="../../assets/img/return.png">
                         </div>
                     </a>
                 </div>
@@ -58,7 +58,7 @@
                 </mt-popup>
 
                 <div class="landscape" v-if="showPhoto">
-                    <a class="aClose" @click="closePhoto"><img class="myClose" src="../assets/round_close.png"
+                    <a class="aClose" @click="closePhoto"><img class="myClose" src="../../assets/img/round_close.png"
                                                                alt=""></a>
                     <div class="myBoxDetail">
                         <img :src="imgUrl" alt="图片加载失败">
