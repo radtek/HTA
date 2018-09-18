@@ -13,7 +13,7 @@
             <a class="my-tabbar-item" style="width: 100%;height: 100%">
                 <a @click="back(); $router.go(-1);">
                     <div class="myIcon">
-                        <img src="../assets/pull_left.png" alt="">
+                        <img src="../../assets/img/pull_left.png" alt="">
                     </div>
                     <div class="myMsg">
                         返回

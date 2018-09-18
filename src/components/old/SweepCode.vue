@@ -3,7 +3,7 @@
         <mt-header title="企业列表">
             <router-link to="/Sweep" slot="right">
                 <mt-button>
-                    <img slot="icon" src="../assets/shao.png" style="width: 23px;">
+                    <img slot="icon" src="../../assets/img/shao.png" style="width: 23px;">
                 </mt-button>
                 扫码
             </router-link>
@@ -24,7 +24,7 @@
                                 <h3> {{ item.objName }} </h3>
                                 <p> {{ item.busiAddr }} </p>
                             </div>
-                            <img class="myReturn" src="../assets/return.png" alt="">
+                            <img class="myReturn" src="../../assets/img/return.png" alt="">
                         </router-link>
                     </div>
                 </v-loadmore>

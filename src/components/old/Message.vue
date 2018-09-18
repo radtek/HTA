@@ -50,15 +50,15 @@
                                 <a v-if="item.fileType == 2" @click="createDownload(item.urlPath,item.fileName)">
                                     <mt-cell :title="item.fileName">
                                         <img v-if="item.iconType == word" slot="icon"
-                                             src="../assets/word.png" width="24" height="24">
+                                             src="../../assets/img/word.png" width="24" height="24">
                                         <img v-else-if="item.iconType == excel" slot="icon"
-                                             src="../assets/excel.png" width="24" height="24">
+                                             src="../../assets/img/excel.png" width="24" height="24">
                                         <img v-else-if="item.iconType == pdf" slot="icon"
-                                             src="../assets/pdf.png" width="24" height="24">
+                                             src="../../assets/img/pdf.png" width="24" height="24">
                                         <img v-else-if="item.iconType == unKnow" slot="icon"
-                                             src="../assets/text.png" width="24" height="24">
+                                             src="../../assets/img/text.png" width="24" height="24">
                                         <span>
-                                            <img src="../assets/down.png" width="24" height="24">
+                                            <img src="../../assets/img/down.png" width="24" height="24">
                                         </span>
                                     </mt-cell>
                                 </a>
@@ -92,7 +92,7 @@
                 </mt-popup>
             </div>
             <div class="landscape" v-if="showPhoto">
-                <a class="aClose" @click="closePhoto"><img class="myClose" src="../assets/round_close.png" alt=""></a>
+                <a class="aClose" @click="closePhoto"><img class="myClose" src="../../assets/img/round_close.png" alt=""></a>
                 <div class="myBoxDetail">
                     <img :src="imgUrl" alt="">
                     <!--<img class="appendImg" src="../assets/vip.gif" alt="">-->
