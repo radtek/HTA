@@ -27,4 +27,3 @@ myRouter = myRouter.concat(personal);
 export default new Router({
     routes: myRouter
 });
-
