@@ -37,13 +37,13 @@
             </div>
         </div>
 
-        <router-link to="/">
+        <router-link to="/TaskInfor">
             <div class="cont">
                 <h3>油烟检查任务</h3>
                 <p>完成期限： <span>2018.03.09</span></p>
                 <p>任务来源： <span>110任务</span></p>
                 <div class="go">
-                    <img src="" alt="">
+                    <img src="../../assets/img/into.png" alt="无法加载">
                 </div>
             </div>
         </router-link>
@@ -116,11 +116,11 @@
     }
     .cont .go{
         position: absolute;
-        right: 20%;
+        right: 9%;
         bottom: 30%;
-        background: #0b2e13;
-        width: 10px;
-        height: 10px;
+    }
+    .cont .go img{
+        width: 30px;
     }
 </style>
 
