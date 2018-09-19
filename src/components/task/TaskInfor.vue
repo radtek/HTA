@@ -1,7 +1,9 @@
 <template>
     <div>
         <header>
-            <img src="../../assets/img/return.png" alt="">
+            <router-link to="/">
+                <img src="../../assets/img/return.png" alt="">
+            </router-link>
             <h3>任务详情</h3>
         </header>
         <div class="content">
@@ -41,44 +43,46 @@
                 <h3>派发附件</h3>
                 <div class="list">
                     <div class="Limg">
-                        <img src="../../assets/img/excel.png" alt="">
+                        <img src="../../assets/img/img.png" alt="">
                     </div>
                     <div class="text">
                         <p>双击编辑文本</p>
                         <p>双击编辑文本</p>
                     </div>
                     <div class="load">
-                        <img src="../../assets/img/down.png" alt="">
+                        <img src="../../assets/img/load.png" alt="无法加载">
                     </div>
                     <div class="clear"></div>
                 </div>
                 <div class="list">
                     <div class="Limg">
-                        <img src="../../assets/img/excel.png" alt="">
+                        <img src="../../assets/img/img.png" alt="无法加载">
                     </div>
                     <div class="text">
                         <p>双击编辑文本</p>
                         <p>双击编辑文本</p>
                     </div>
                     <div class="load">
-                        <img src="../../assets/img/down.png" alt="">
+                        <img src="../../assets/img/load.png" alt="无法加载">
                     </div>
                     <div class="clear"></div>
                 </div>
                 <div class="list">
                     <div class="ListImg">
-                        <img src="../../assets/img/excel.png" alt="">
+                        <img src="../../assets/img/img.png" alt="">
                     </div>
                     <div class="ListImg">
-                        <img src="../../assets/img/excel.png" alt="">
+                        <img src="../../assets/img/img.png" alt="">
                     </div>
                     <div class="ListImg">
-                        <img src="../../assets/img/excel.png" alt="">
+                        <img src="../../assets/img/img.png" alt="">
                     </div>
                     <div class="clear"></div>
                 </div>
             </div>
-
+            <div class="record">
+                <h3>流转记录</h3>
+            </div>
         </div>
     </div>
 </template>
@@ -90,8 +94,9 @@
     }
     header img{
         position: absolute;
-        top: 10px;
-        left: 20px;
+        top: 14px;
+        left: 28px;
+        width: 27px;
     }
     h3{
         text-align: center;
@@ -164,8 +169,7 @@
         height: 60px;
     }
     .list .load img{
-        width: 30px;
-        height: 30px;
+        width: 40px;
     }
     .ListImg{
         float: left;
@@ -173,6 +177,18 @@
     }
     .ListImg img{
         width: 60px;
+    }
+    .record{
+        background: #fff;
+        margin: 20px 10px 15px 10px;
+        font-size: 14px;
+        border-bottom: rgba(225, 225, 225, 1) solid 1px;
+    }
+    .record h3{
+        color: #646464;
+        text-align: left;
+        font-size: 14px;
+        padding: 15px 10px 15PX 20px;
     }
 </style>
 
