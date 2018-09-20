@@ -11,6 +11,7 @@
     * {
         margin: 0;
         padding: 0;
+        font-family: normal;
     }
     a {
         text-decoration: none;
@@ -27,5 +28,33 @@
     }
     .mint-cell-wrapper{
         font-size: 14px;
+    }
+    input,textarea{
+        font-size: 14px;
+        color: rgb(117,117,117);
+    }
+    ::-webkit-input-placeholder {
+        color: rgb(172,169,169);
+        font-size: 14px;
+        text-align: left;
+        font-family: normal;
+    }
+    :-moz-placeholder {
+        color: rgb(172,169,169);
+        font-size: 14px;
+        text-align: left;
+        font-family: normal;
+    }
+    ::-moz-placeholder {
+        color: rgb(172,169,169);
+        font-size: 14px;
+        text-align: left;
+        font-family: normal;
+    }
+    :-ms-input-placeholder {
+        color: rgb(172,169,169);
+        font-size: 14px;
+        text-align: left;
+        font-family: normal;
     }
 </style>
