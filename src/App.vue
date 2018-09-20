@@ -16,10 +16,16 @@
         text-decoration: none;
         color: black;
     }
-    /*.mint-tab-item-label {*/
-        /*color: #409EFF !important;*/
-    /*}*/
-    /*.mint-header > h1 {*/
-        /*font-size: 20px !important;*/
-    /*}*/
+    .bmt{
+        margin-top: 20px;
+    }
+    .mt{
+        margin-top: 10px;
+    }
+    .smt{
+        margin-top: 5px;
+    }
+    .mint-cell-wrapper{
+        font-size: 14px;
+    }
 </style>

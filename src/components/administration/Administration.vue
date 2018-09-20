@@ -2,8 +2,8 @@
     <div>
         <div style="width: 100%;height: 40px"><myHeard title="行政执法"></myHeard></div>
 
-        <img class="myImg" src="../../assets/img/new/1.jpg" alt="">
-        
+        <!--<img class="myImg" src="../../assets/img/new/1.jpg" alt="">-->
+
         <el-row class="mySpan" :span="24">
             <router-link to="/Check/1">
                 <el-col class="spanContent" :span="6">
