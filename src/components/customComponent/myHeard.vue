@@ -5,7 +5,7 @@
                 <mt-button class="myColor" icon="back" @click="$router.go(-1);"></mt-button>
             </router-link>
             <mt-button v-if="reform" slot="right">
-                <router-link to="/Reform" class="myColor">
+                <router-link to="/Reform" class="myColor" style="font-size: 12px">
                     下达整改
                 </router-link>
             </mt-button>
@@ -34,6 +34,7 @@
     .mint-header{
         background-color: white;
         color: rgb(16,16,16);
+        font-size: 16px !important;
     }
     .myColor{
         color: rgb(0,149,147);

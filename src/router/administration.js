@@ -26,7 +26,7 @@ export default [
     },
     //整改记录
     {
-        path: '/RectifyRecord/:type',
+        path: '/RectifyRecord',
         name: 'RectifyRecord',
         component: resolve => void(require(['../components/administration/RectifyRecord.vue'], resolve))
     },

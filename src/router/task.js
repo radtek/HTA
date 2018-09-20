@@ -18,9 +18,4 @@ export default [
         name: 'TaskInfor',
         component: resolve => void(require(['../components/task/TaskInfor.vue'], resolve))
     },
-    {
-        path: '/TaskInfor',
-        name: 'TaskInfor',
-        component: resolve => void(require(['../components/task/TaskInfor.vue'], resolve))
-    },
 ]
