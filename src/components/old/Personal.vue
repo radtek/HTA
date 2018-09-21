@@ -10,10 +10,12 @@
             <mt-cell title="个人信息" to="/PersonInfo" is-link>
                 <img slot="icon" src="../../assets/img/profile_fill.png" width="24" height="24">
             </mt-cell>
+
             <mt-cell title="消息提醒" to="/Message" is-link>
                 <img slot="icon" src="../../assets/img/comment.png" width="24" height="24">
                 <mt-badge type="error" v-if="unreadMessageCount != 0">{{ unreadMessageCount }}</mt-badge>
             </mt-cell>
+
             <mt-cell title="修改密码" to="/ResetPassword" is-link>
                 <img slot="icon" src="../../assets/img/write_fill.png" width="24" height="24">
             </mt-cell>
