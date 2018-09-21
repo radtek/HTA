@@ -1,9 +1,26 @@
 <template>
     <div class="block">
-        <span class="red-point">*</span>
+        <span class="red-point" v-if="redPoint">*</span>
         <div style="padding-left: 8px">
-            <mt-field :label="label" v-model="value" :placeholder="placeholder">
+            <mt-field
+                    v-if="leftImg"
+                    :label="label"
+                    v-model="value"
+                    :placeholder="placeholder"
+                    :readonly="readonly"
+                    :type="type"
+                    rows="3"
+                    disableClear>
                 <span><i class="fa fa-angle-right fa-lg myColor"></i></span>
+            </mt-field>
+            <mt-field
+                    v-else
+                    :label="label"
+                    v-model="value"
+                    :readonly="readonly"
+                    :placeholder="placeholder"
+                    :type="type"
+                    rows="3">
             </mt-field>
         </div>
     </div>
@@ -12,10 +29,17 @@
 <script>
     export default {
         name: "my-field",
+        model:{
+            prop: 'value',
+        },
         props:{
-            label : '',
+            value       : '',
+            label       : '',
             placeholder : '',
-            value : '',
+            leftImg     : false,
+            redPoint    : false,
+            type        : '',
+            readonly    : false
         }
     }
 </script>
@@ -24,14 +48,15 @@
     .block{
         position: relative;
         background-color: white;
+        margin-bottom: 1px;
     }
     .red-point{
         color: red;
         position: absolute;
-        height: 48px;
-        line-height: 48px;
         z-index: 1;
-        top: 3px;
+        height: 14px;
+        top: 50%;
+        margin-top: -7px;
         left: 8px;
     }
     .myColor{
