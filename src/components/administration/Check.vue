@@ -6,7 +6,18 @@
             <a @click="popupVisible = true;getObj();">
                 <myField label="执法对象" placeholder="请选择" v-model="onjName" left-img="true" red-point="true"></myField>
             </a>
-            <myField label="检查人" placeholder="请输入" v-model="form.checkMan" red-point="true"></myField>
+
+            <div class="block">
+                <span class="red-point">*</span>
+                <div style="padding-left: 8px">
+                    <mt-field
+                            label="检查人"
+                            v-model="form.checkMan"
+                            placeholder="请输入">
+                    </mt-field>
+                </div>
+            </div>
+
             <myField label="协办人员" placeholder="请输入" v-model="form.jointly" red-point="true"></myField>
             <a @click="openPicker">
                 <myField label="办理时间" placeholder="请选择" v-model="form.time" left-img="true" red-point="true"></myField>
@@ -17,7 +28,7 @@
         <div class="bmt">
             <myField label="检查项目" red-point="true" :readonly="true"></myField>
             <a @click="allClick()"><mt-checklist v-model="all" :options="['全选']"></mt-checklist></a>
-            <mt-checklist v-model="checkList" :options="checkOptions"></mt-checklist>
+            <a @click="checkListClick()"><mt-checklist v-model="checkList" :options="checkOptions"></mt-checklist></a>
         </div>
 
         <div style="width: 100%;height: 53px;"><myFlaxSub title="开始检查" @click="sub"></myFlaxSub></div>
@@ -86,10 +97,9 @@
                 objList     : [],
                 dataValue   : new Date(),
                 onjName     : '',
-                relName     : '',
                 form : {
                     objId   : '',
-                    checkMan: '',
+                    checkMan: null,
                     jointly : '',
                     time    : '',
                     content : '',
@@ -103,6 +113,9 @@
                 //this.all.length是点击之前的值
                 this.all.length === 0 ? this.checkList = this.checkOptions : this.checkList = [];
             },
+            checkListClick:function () {
+                this.all = [];
+            },
             getCheckList:function () {
                 Indicator.open();
                 let self = this;
@@ -112,7 +125,6 @@
                     Indicator.close();
                     if (data.statusCode == 200) {
                         self.tpCheckList = data.list;
-                        console.log(self.tpCheckList);
                         data.list.forEach(function (value,index) {
                             self.checkOptions.push(value.inspName);
                         })
@@ -131,7 +143,6 @@
                     objName    : self.selectValue
                 }, function (data, status) {
                     Indicator.close();
-                    console.log(data);
                     if (data.statusCode == 200) {
                         self.objList = data.list;
                     } else if (data.statusCode == 310) {
@@ -146,7 +157,7 @@
                 $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
                 },function(data,status){
                     if(data.statusCode == 200){
-                        self.relName = data.relName;
+                        self.form.checkMan = data.relName;
                     }else if(data.statusCode == 310){
                         window.location.href = "login.html";
                     }else{
@@ -177,6 +188,25 @@
 
                 return year + '-' + month + '-' + date;
             },
+            test:function () {
+                if(this.form.objId.length == 0){
+                    Toast('请选择执法对象');
+                    return false;
+                }
+                if(this.form.jointly.length == 0){
+                    Toast('请输入检查人');
+                    return false;
+                }
+                if(this.form.time.length == 0){
+                    Toast('请输入协办人员');
+                    return false;
+                }
+                if(this.form.items.length == 0){
+                    Toast('请选择检查项目');
+                    return false;
+                }
+                return true;
+            },
             sub:function () {
                 let self = this;
                 self.checkList.forEach(function (value1) {
@@ -187,17 +217,19 @@
                     })
                 });
                 self.form.items = self.form.items.substring(0,self.form.items.length-1);
-                self.$router.push({name: 'SceneCheck', params: {
-                    objId   : self.form.objId,
-                    jointly : self.form.jointly,
-                    time    : self.form.time,
-                    items   : self.form.items
-                }});
+                if(this.test())
+                    self.$router.push({name: 'SceneCheck', params: {
+                        objId   : self.form.objId,
+                        jointly : self.form.jointly,
+                        time    : self.form.time,
+                        items   : self.form.items
+                    }});
             },
         },
         mounted() {
             this.type = this.$route.params.type;
             this.getCheckList();
+            this.getName();
             this.form.time = this.myFormat(new Date());
         },
     }
@@ -233,5 +265,20 @@
         padding: 2px 15px;
         font-size: 14px;
         color: rgb(96,96,96);
+    }
+
+    .block{
+        position: relative;
+        background-color: white;
+        border-bottom: 1px solid rgb(248,248,248);
+    }
+    .red-point{
+        color: red;
+        position: absolute;
+        z-index: 1;
+        height: 14px;
+        top: 50%;
+        margin-top: -10px;
+        left: 8px;
     }
 </style>

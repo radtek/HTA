@@ -5,7 +5,7 @@
             <mt-field
                     v-if="leftImg"
                     :label="label"
-                    v-model="value"
+                    v-model="model"
                     :placeholder="placeholder"
                     :readonly="readonly"
                     :type="type"
@@ -29,9 +29,12 @@
 <script>
     export default {
         name: "my-field",
+        model:{
+            prop : 'model',
+        },
         props: {
-            value: '',
-            label: '',
+            model: [String, Number],
+            label:'',
             placeholder: '',
             leftImg: false,
             redPoint: false,
@@ -40,7 +43,7 @@
         },
         data () {
             return {
-                currentValue: this.value //不直接绑定prop，而是在data 或者 computed 里面根据prop初始化自己领域的值
+                currentValue: this.model //不直接绑定prop，而是在data 或者 computed 里面根据prop初始化自己领域的值
             }
         },
         methods: {
@@ -55,7 +58,8 @@
     .block{
         position: relative;
         background-color: white;
-        margin-bottom: 1px;
+        /*margin-bottom: 1px;*/
+        border-bottom: 1px solid rgb(248,248,248);
     }
     .red-point{
         color: red;
@@ -63,7 +67,7 @@
         z-index: 1;
         height: 14px;
         top: 50%;
-        margin-top: -7px;
+        margin-top: -10px;
         left: 8px;
     }
     .myColor{

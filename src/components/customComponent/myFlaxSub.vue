@@ -26,6 +26,7 @@
         width: 100%;
         bottom: 0;
         left: 0;
+        z-index: 2;
     }
     .flaxBottom .flaxBut{
         padding: 10px 15px;

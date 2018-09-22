@@ -115,6 +115,27 @@
     .mint-cell-wrapper, .mint-cell:last-child {
         background-image: none;
     }
+    .mint-cell {
+        /*border-bottom: 1px solid rgb(248,248,248);*/
+    }
+    .scene-check .mint-radiolist-title{
+        font-size: 14px;
+        margin: 0;
+        padding: 8px 20px;
+        color: rgba(0,0,0,0.7);
+        background-color: white;
+        border-top: 1px solid rgb(248,248,248);
+        border-bottom: 1px solid rgb(248,248,248);
+    }
+    .scene-check .mint-radiolist-title:before{
+        content: "*";
+        position: absolute;
+        color: red;
+        left: 10px;
+    }
+    .mint-radio-label{
+        color: #888;
+    }
 
     /*element-ui*/
     .select .el-input-group__append{
