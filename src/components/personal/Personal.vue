@@ -13,34 +13,32 @@
             <el-col :span="15">
                 <div class="grid-content bg-purple">
                     <el-row type="flex" class="row-bg">
-                        <el-col :span="8"><div class="grid-content bg-purple">试一试</div></el-col>
-                        <el-col :span="8"><div class="grid-content bg-purple-light department">食药监</div></el-col>
-                        <el-col :span="8"><div class="grid-content bg-purple post">科长</div></el-col>
+                        <el-col :span="12"><div class="grid-content bg-purple">{{uesrInfo.relName}}</div></el-col>
+                        <el-col :span="10"><div class="grid-content bg-purple-light department">{{uesrInfo.deptName}}</div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple post">{{uesrInfo.roleName}}</div></el-col>
                     </el-row>
 
                     <el-row type="flex" class="row-bg">
                         <el-col :span="10"><div class="grid-content bg-purple phone">联系方式</div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light phoneNum">15136791852</div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple-light phoneNum">{{uesrInfo.phone}}</div></el-col>
                     </el-row>
                 </div>
             </el-col>
         </el-row>
         <div class="separate"></div>
-        <div>
-            <mt-cell title="个人信息" icon="more" to="">
-                <img slot="icon" src="../../assets/img/img.png" width="24" height="24">
-            </mt-cell>
-             <mt-cell title="消息提醒" icon="more" to="">
-                <span>
-                    未读消息
-                    <mt-badge type="error">10</mt-badge>
-                </span>
-                <img slot="icon" src="../../assets/img/img.png" width="24" height="24">
-            </mt-cell>
-             <mt-cell title="系统设置" icon="more" to="">
-                <img slot="icon" src="../../assets/img/img.png" width="24" height="24">
-            </mt-cell>
-        </div>
+        <mt-cell title="个人信息" to="/PersonalInfo" is-link>
+            <span slot="icon" class="fa fa-user-o icon"></span>
+        </mt-cell>
+        <mt-cell title="消息提醒" >
+            <span>
+                未读消息
+                <mt-badge type="error">{{unreadMessageCount}}</mt-badge>
+            </span>
+            <span slot="icon" class="fa fa-commenting-o icon"></span>
+        </mt-cell>
+        <mt-cell title="系统设置" to="/PersonalMessage" is-link>
+            <span slot="icon" class="fa fa-cogs icon" ></span>
+        </mt-cell>
         <myMenu active="4"></myMenu>
     </div>
 </template>
@@ -49,16 +47,50 @@
     import myMenu from "../customComponent/myMenu";
     import myHeard from "../customComponent/myHeard";
     export default {
-        name: "",
+        name: "personal",
+        data(){
+            return {
+                unreadMessageCount: 0,
+                uesrInfo: {relName: ''},
+            }
+        },
         components:{
             myMenu,
             myHeard,
+        },
+        methods:{
+            getUserInfo:function(){
+                let self = this;
+                let uesrInfo = sessionStorage.getItem("personInfo");
+
+                $.get(getUrl('sf_zhzf/msys/user/getinfo'),function(data, status) {
+                    if(data.statusCode == 200){
+                        self.uesrInfo = data;
+                    }
+                }, 'json');
+            },
+            getMessageCount:function(){
+                let self = this;
+                $.get(getUrl('sf_zhzf/msys/notice/unreadcnt'),function(data,status) {
+                    self.unreadMessageCount = data.count;
+                },'json');
+            }
+        },
+        mounted() {
+            this.getUserInfo();
+            this.getMessageCount();
         },
     }
 </script>
 
 <style scoped>
+    .icon{
+        width:24px;
+        height:24px;
+        margin-left: 10px
+    }
     .person{
+        margin: 0;
         margin-top: 40px;
         background-color: #fff;
         padding: 10px;

@@ -30,11 +30,11 @@ export default [
     //     name: 'FieldExplor',
     //     component: resolve => void(require(['../components/old/FieldExplor.vue'], resolve))
     // },
-    // {
-    //     path: '/PersonInfo',
-    //     name: 'PersonInfo',
-    //     component: resolve => void(require(['../components/old/PersonInfo.vue'], resolve))
-    // },
+    {
+        path: '/PersonInfo',
+        name: 'PersonInfo',
+        component: resolve => void(require(['../components/old/PersonInfo.vue'], resolve))
+    },
     // {
     //     path: '/ResetPassword',
     //     name: 'ResetPassword',
