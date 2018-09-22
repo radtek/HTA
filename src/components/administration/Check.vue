@@ -86,6 +86,7 @@
                 objList     : [],
                 dataValue   : new Date(),
                 onjName     : '',
+                relName     : '',
                 form : {
                     objId   : '',
                     checkMan: '',
@@ -140,6 +141,19 @@
                     }
                 }, 'json');
             },
+            getName(){
+                let self = this;
+                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
+                },function(data,status){
+                    if(data.statusCode == 200){
+                        self.relName = data.relName;
+                    }else if(data.statusCode == 310){
+                        window.location.href = "login.html";
+                    }else{
+                        Toast(data.message);
+                    }
+                },'json');
+            },
             selectedObj:function (obj,id) {
                 this.onjName = obj;
                 this.form.objId = id;
@@ -179,7 +193,7 @@
                     time    : self.form.time,
                     items   : self.form.items
                 }});
-            }
+            },
         },
         mounted() {
             this.type = this.$route.params.type;
