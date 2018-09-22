@@ -48,7 +48,7 @@
                 },function(data,status){
                     Indicator.close();
                     if(data.statusCode == 200){
-                        console.log(data.list);
+                        console.log(data);
                         self.problems = data.list;
                         self.problems.forEach(function (value) {
                             self.answer[value.inspCode] = '';

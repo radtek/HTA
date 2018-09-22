@@ -112,6 +112,9 @@
     .mint-datetime-action {
         color: rgb(110,193,191);
     }
+    .mint-cell-wrapper, .mint-cell:last-child {
+        background-image: none;
+    }
 
     /*element-ui*/
     .select .el-input-group__append{
