@@ -4,16 +4,20 @@
             <h3>任务管理</h3>
         </header>
         <div class="nav">
-            <el-menu
-                    :default-active="activeIndex2"
-                    class="el-menu-demo"
-                    mode="horizontal"
-                    @select="handleSelect"
-                    text-color="#8C8888"
-                    active-text-color="#089593">
-                <el-menu-item index="1" class="right">处理中心</el-menu-item>
-                <el-menu-item index="2" class="left">订单管理</el-menu-item>
-            </el-menu>
+            <div class="abroad">
+                <div class="content-choice">
+                    <el-menu
+                            :default-active="activeIndex2"
+                            class="el-menu-demo"
+                            mode="horizontal"
+                            @select="handleSelect"
+                            text-color="#8C8888"
+                            active-text-color="#089593">
+                        <el-menu-item index="2" class="right">待办任务</el-menu-item>
+                        <el-menu-item index="1" class="left">已办任务</el-menu-item>
+                    </el-menu>
+                </div>
+            </div>
 
             <div style="padding: 15px 0;background-color: #F8F9F9!important;width: 100%;" v-if="show">
                 <el-input placeholder="请输入内容" class="input-with-select search" size="small">
@@ -23,33 +27,147 @@
                     <v-loadmore :bottom-method="loadBottom"
                                 bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
                                 :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-                        <!--<div class="list" v-for="item in pageList" :key="item.id">-->
-                        <!--<router-link :to="{ name: 'ListContent', params: { id: item.id }}" class="clearBoth">-->
-                        <!--<div class="cont">-->
-                        <!--<h3> {{ item.objName }} </h3>-->
-                        <!--<p> {{ item.p1 }} </p>-->
-                        <!--<p> {{ item.p2 }} </p>-->
-                        <!--</div>-->
-                        <!--</router-link>-->
-                        <!--</div>-->
                     </v-loadmore>
                 </div>
             </div>
         </div>
 
-        <router-link to="/TaskInfor">
-            <div class="cont">
-                <h3>油烟检查任务</h3>
-                <p>完成期限： <span>2018.03.09</span></p>
-                <p>任务来源： <span>110任务</span></p>
-                <div class="go">
-                    <img src="../../assets/img/into.png" alt="无法加载">
-                </div>
+        <div class="back-color">
+            <div class="cont" v-if="pageList.length != 0 && activeIndex == 1 " v-for="item in pageList">
+                <h3>{{ item.title }}</h3>
+                <p>完成期限： <span>{{ item.p1 }}</span></p>
+                <p>任务来源： <span>{{ item.p2 }}</span></p>
+                <router-link to="/TaskInfor">
+                    <div class="go">
+                        <img src="../../assets/img/into.png" alt="无法加载">
+                    </div>
+                </router-link>
             </div>
-        </router-link>
 
+            <div class="cont" v-if="otherList.length != 0 && activeIndex == 2 " v-for="item in otherList">
+                <h3>{{ item.title }}</h3>
+                <p>完成期限： <span>{{ item.p1 }}</span></p>
+                <p>任务来源： <span>{{ item.p2 }}</span></p>
+                <router-link to="/TaskInfor">
+                    <div class="go">
+                        <img src="../../assets/img/into.png" alt="无法加载">
+                    </div>
+                </router-link>
+            </div>
+        </div>
+        <my-menu active="1"></my-menu>
     </div>
 </template>
+
+<script>
+    import { Loadmore } from 'mint-ui';
+    import myMenu from "../customComponent/myMenu";
+
+    export default {
+        data() {
+            return {
+                objName: "",
+                taskList: [],
+                activeIndex: '1',
+                activeIndex2: '1',
+                show: true,
+                pageList: [],
+                otherList: [],
+                allLoaded: true, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
+                scrollMode: "auto"
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                this.activeIndex = key;
+                console.log(this.activeIndex);
+            },
+            getData(key){
+                if(key == 1){
+                    $.get(getUrl(''), {
+
+                    })
+                }else if(key == 2){
+                    $.get(getUrl(''), {
+
+                    })
+                }
+            },
+            loadBottom() {
+                // 上拉加载
+                this.more();// 上拉触发的分页查询
+                this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
+            },
+            loadPageList() {
+                let self = this;
+               $.get(getUrl('sf_zhzf/msys/task/list'), {
+                   objName: self.objName,
+                   // pageNum:self.searchCondition.pageNo,
+                   // numPerPage:self.searchCondition.pageSize
+               }, function (data, status) {
+                   if (data.statusCode == 200) {
+                       console.log(data.list);
+                       for (let i = 0 ; i < data.list.length ; i++ ) {
+
+                          if (data.list[i].statusName == "未确认") {
+                               console.log("未确认");
+                               self.otherList.push(
+                                   {
+                                       title:data.list[i].deptName,
+                                       p1:data.list[i].cretime,
+                                       p2:data.list[i].publisher,
+                                       name:data.list[i].statusName,
+                                   }
+                               );
+                          }  else {
+                               self.pageList.push(
+                                   {
+                                       title:data.list[i].deptName,
+                                       p1:data.list[i].cretime,
+                                       p2:data.list[i].publisher,
+                                       name:data.list[i].statusName,
+                                   }
+                               );
+                           }
+
+                       }
+                   } else if (data.statusCode == 310) {
+                       // window.location.href = "login.html";
+                   } else {
+                       Toast(data.message);
+                   }
+               }, 'json');
+            },
+            more() {
+                // 分页查询
+                this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
+
+                let self = this;
+                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
+                    objName: self.objName,
+                    // pageNum:self.searchCondition.pageNo,
+                    // numPerPage:self.searchCondition.pageSize
+                }, function (data, status) {
+                    if (data.statusCode == 200) {
+                        self.pageList = self.pageList.concat(data.list);
+                    } else if (data.statusCode == 310) {
+                        window.location.href = "login.html";
+                    } else {
+                        Toast(data.message);
+                    }
+                }, 'json');
+            },
+        },
+        mounted:function(){
+            this.loadPageList();
+        },
+        components: {
+            'v-loadmore': Loadmore,
+            'my-menu':myMenu,
+        },
+    }
+
+</script>
 
 <style scoped>
     body{
@@ -58,6 +176,7 @@
     }
     header{
         height: 55px;
+        background-color: #ffffff;
     }
     h3{
         text-align: center;
@@ -67,18 +186,30 @@
         padding: 15px 0;
         font-weight: 100;
     }
-    .nav{
+    .content-choice{
         width: 80%;
-        margin: 0 10%;
+        margin: auto;
+    }
+    .back-color{
+        background-color: #ffffff;
+    }
+    .nav{
+        width: 100%;
+        margin: 0;
     }
     .right,.left{
-        width: 50%;
+        width: 40%;
         text-align: center;
     }
+    .right{
+        float: right;
+    }
+    .left{
+        float: left;
+    }
     .search{
-        border: #089593 solid 1px;
         width: 90%;
-        margin: 0 5%;
+        margin: 0 4%;
     }
     .submit{
         border: #089593 solid 1px;
@@ -122,102 +253,8 @@
     .cont .go img{
         width: 30px;
     }
-</style>
-
-<script>
-    import { Loadmore } from 'mint-ui';
-
-    export default {
-        data() {
-            return {
-                objName: "",
-                taskList: [],
-                activeIndex: '1',
-                activeIndex2: '1',
-                show: true,
-                pageList: [],
-                allLoaded: true, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
-                scrollMode: "auto"
-            };
-        },
-        methods: {
-            handleSelect(key, keyPath) {
-                console.log(key, keyPath);
-//                getData(key);
-            },
-            getData(key){
-                if(key == 1){
-                    $.get(getUrl(''), {
-
-                    })
-                }else if(key == 2){
-                    $.get(getUrl(''), {
-
-                    })
-                }
-            },
-            loadBottom() {
-                // 上拉加载
-                this.more();// 上拉触发的分页查询
-                this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
-            },
-            loadPageList() {
-                Indicator.open();
-                let self = this;
-
-                self.pageList = [
-                    {
-                        title:"油烟检查任务",
-                        p1:"2018.03.03",
-                        p2:"110",
-                        name:"weiyakajs",
-
-                    },
-                    {
-                        title:"油烟检查任务",
-                        p1:"2018.05.05",
-                        p2:"120",
-                        name:"weiyakajs",
-                    }
-                  ];
-//                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
-//                    objName: self.objName,
-//                    // pageNum:self.searchCondition.pageNo,
-//                    // numPerPage:self.searchCondition.pageSize
-//                }, function (data, status) {
-//                    Indicator.close();
-//                    if (data.statusCode == 200) {
-//                        self.pageList = data.list;
-//                    } else if (data.statusCode == 310) {
-//                        window.location.href = "login.html";
-//                    } else {
-//                        Toast(data.message);
-//                    }
-//                }, 'json');
-            },
-            more() {
-                // 分页查询
-                this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
-
-                let self = this;
-                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
-                    objName: self.objName,
-                    // pageNum:self.searchCondition.pageNo,
-                    // numPerPage:self.searchCondition.pageSize
-                }, function (data, status) {
-                    if (data.statusCode == 200) {
-                        self.pageList = self.pageList.concat(data.list);
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
-            },
-        },
-        components: {
-            'v-loadmore': Loadmore
-        },
+    .abroad{
+        width: 100%;
+        background-color: #ffffff;
     }
-
-</script>
+</style>

@@ -91,6 +91,7 @@
     header{
         height: 55px;
         position: relative;
+        background-color: #ffffff;
     }
     header img{
         position: absolute;
