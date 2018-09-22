@@ -16,7 +16,7 @@
             <mt-field
                     v-else
                     :label="label"
-                    v-model="value"
+                    v-model="currentValue" @input="handleInput"
                     :readonly="readonly"
                     :placeholder="placeholder"
                     :type="type"
@@ -29,17 +29,24 @@
 <script>
     export default {
         name: "my-field",
-        model:{
-            prop: 'value',
+        props: {
+            value: '',
+            label: '',
+            placeholder: '',
+            leftImg: false,
+            redPoint: false,
+            type: '',
+            readonly: false
         },
-        props:{
-            value       : '',
-            label       : '',
-            placeholder : '',
-            leftImg     : false,
-            redPoint    : false,
-            type        : '',
-            readonly    : false
+        data () {
+            return {
+                currentValue: this.value //不直接绑定prop，而是在data 或者 computed 里面根据prop初始化自己领域的值
+            }
+        },
+        methods: {
+            handleInput() {
+                this.$emit('input', this.currentValue); // key code
+            }
         }
     }
 </script>

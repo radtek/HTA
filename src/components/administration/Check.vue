@@ -4,14 +4,14 @@
 
         <div class="bmt">
             <a @click="popupVisible = true;getObj();">
-                <myField label="执法对象" placeholder="请选择" v-model="form.obj" left-img="true" red-point="true"></myField>
+                <myField label="执法对象" placeholder="请选择" v-model="onjName" left-img="true" red-point="true"></myField>
             </a>
             <myField label="检查人" placeholder="请输入" v-model="form.checkMan" red-point="true"></myField>
             <myField label="协办人员" placeholder="请输入" v-model="form.jointly" red-point="true"></myField>
             <a @click="openPicker">
                 <myField label="办理时间" placeholder="请选择" v-model="form.time" left-img="true" red-point="true"></myField>
             </a>
-            <myField label="检查内容" placeholder="请输入" v-model="form.content" red-point="true" type="textarea"></myField>
+            <myField label="检查内容" placeholder="请输入" v-model="form.content" type="textarea"></myField>
         </div>
 
         <div class="bmt">
@@ -20,8 +20,7 @@
             <mt-checklist v-model="checkList" :options="checkOptions"></mt-checklist>
         </div>
 
-        <myFlaxSub title="提交" @click="sub"></myFlaxSub>
-
+        <div style="width: 100%;height: 53px;"><myFlaxSub title="开始检查" @click="sub"></myFlaxSub></div>
         <div class="select">
             <mt-popup
                     v-model="popupVisible"
@@ -42,7 +41,7 @@
                     </div>
 
                     <div class="mt">
-                        <a v-for="item in objList" :key="item.id" @click="selectedObj(item.objName)">
+                        <a v-for="item in objList" :key="item.id" @click="selectedObj(item.objName,item.id)">
                             <div class="myObj">
                                 <p>{{ item.objName }}</p>
                             </div>
@@ -85,14 +84,17 @@
                 checkList   : [],
                 selectValue : '',
                 objList     : [],
-                dataValue  :new Date(),
+                dataValue   : new Date(),
+                onjName     : '',
                 form : {
-                    obj     :'',
-                    checkMan:'',
-                    jointly :'',
-                    time    :'2018-08-23 14:22',
-                    content :'',
-                }
+                    objId   : '',
+                    checkMan: '',
+                    jointly : '',
+                    time    : '',
+                    content : '',
+                    items   : ''
+                },
+                tpCheckList : [],
             };
         },
         methods: {
@@ -108,6 +110,8 @@
                 }, function (data, status) {
                     Indicator.close();
                     if (data.statusCode == 200) {
+                        self.tpCheckList = data.list;
+                        console.log(self.tpCheckList);
                         data.list.forEach(function (value,index) {
                             self.checkOptions.push(value.inspName);
                         })
@@ -136,8 +140,9 @@
                     }
                 }, 'json');
             },
-            selectedObj:function (obj) {
-                this.form.obj = obj;
+            selectedObj:function (obj,id) {
+                this.onjName = obj;
+                this.form.objId = id;
                 this.popupVisible = false;
             },
             openPicker:function () {
@@ -159,7 +164,21 @@
                 return year + '-' + month + '-' + date;
             },
             sub:function () {
-                console.log(555);
+                let self = this;
+                self.checkList.forEach(function (value1) {
+                    self.tpCheckList.forEach(function (value2) {
+                        if(value2.inspName == value1){
+                            self.form.items += value2.id+',';
+                        }
+                    })
+                });
+                self.form.items = self.form.items.substring(0,self.form.items.length-1);
+                self.$router.push({name: 'SceneCheck', params: {
+                    objId   : self.form.objId,
+                    jointly : self.form.jointly,
+                    time    : self.form.time,
+                    items   : self.form.items
+                }});
             }
         },
         mounted() {

@@ -14,7 +14,7 @@ export default [
     },
     //现场检查
     {
-        path: '/SceneCheck',
+        path: '/SceneCheck/:objId/:jointly/:time/:items',
         name: 'SceneCheck',
         component: resolve => void(require(['../components/administration/SceneCheck.vue'], resolve))
     },
