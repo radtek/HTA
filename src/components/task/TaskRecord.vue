@@ -20,39 +20,43 @@
             </div>
 
             <div style="padding: 15px 0;background-color: #F8F9F9!important;width: 100%;" v-if="show">
-                <el-input placeholder="请输入内容" class="input-with-select search" size="small">
-                    <el-button slot="append" icon="el-icon-search" class="submit" size="small"></el-button>
-                </el-input>
-                <div class="list">
-                    <v-loadmore :bottom-method="loadBottom"
-                                bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
-                                :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-                    </v-loadmore>
-                </div>
+                <!--<el-input placeholder="请输入内容" class="input-with-select search" size="small">-->
+                    <!--<el-button slot="append" icon="el-icon-search" class="submit" size="small"></el-button>-->
+                <!--</el-input>-->
+                <!--<div class="list">-->
+                    <!--<v-loadmore :bottom-method="loadBottom"-->
+                                <!--bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"-->
+                                <!--:bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">-->
+                    <!--</v-loadmore>-->
+                <!--</div>-->
             </div>
         </div>
 
         <div class="back-color">
-            <div class="cont" v-if="pageList.length != 0 && activeIndex == 1 " v-for="item in pageList">
-                <h3>{{ item.title }}</h3>
-                <p>完成期限： <span>{{ item.p1 }}</span></p>
-                <p>任务来源： <span>{{ item.p2 }}</span></p>
-                <router-link to="/TaskInfor">
-                    <div class="go">
-                        <img src="../../assets/img/into.png" alt="无法加载">
-                    </div>
-                </router-link>
+            <div class="choice-list" v-if="pageList.length != 0 && activeIndex == 1 " v-for="item in pageList">
+                <div class="cont">
+                    <h3>{{ item.title }}</h3>
+                    <p>完成期限： <span>{{ item.p1 }}</span></p>
+                    <p>任务来源： <span>{{ item.p2 }}</span></p>
+                    <router-link to="/TaskInfor">
+                        <div class="go">
+                            <img src="../../assets/img/into.png" alt="无法加载">
+                        </div>
+                    </router-link>
+                </div>
             </div>
 
-            <div class="cont" v-if="otherList.length != 0 && activeIndex == 2 " v-for="item in otherList">
-                <h3>{{ item.title }}</h3>
-                <p>完成期限： <span>{{ item.p1 }}</span></p>
-                <p>任务来源： <span>{{ item.p2 }}</span></p>
-                <router-link to="/TaskInfor">
-                    <div class="go">
-                        <img src="../../assets/img/into.png" alt="无法加载">
-                    </div>
-                </router-link>
+            <div class="choice-list" v-if="otherList.length != 0 && activeIndex == 2 " v-for="item in otherList">
+                <div class="cont">
+                    <h3>{{ item.title }}</h3>
+                    <p>完成期限： <span>{{ item.p1 }}</span></p>
+                    <p>任务来源： <span>{{ item.p2 }}</span></p>
+                    <router-link to="/TaskDealWith">
+                        <div class="go">
+                            <img src="../../assets/img/into.png" alt="无法加载">
+                        </div>
+                    </router-link>
+                </div>
             </div>
         </div>
         <my-menu active="1"></my-menu>
@@ -102,8 +106,6 @@
                 let self = this;
                $.get(getUrl('sf_zhzf/msys/task/list'), {
                    objName: self.objName,
-                   // pageNum:self.searchCondition.pageNo,
-                   // numPerPage:self.searchCondition.pageSize
                }, function (data, status) {
                    if (data.statusCode == 200) {
                        console.log(data.list);
@@ -114,7 +116,7 @@
                                self.otherList.push(
                                    {
                                        title:data.list[i].deptName,
-                                       p1:data.list[i].cretime,
+                                       p1:data.list[i].limitDate,
                                        p2:data.list[i].publisher,
                                        name:data.list[i].statusName,
                                    }
@@ -123,7 +125,7 @@
                                self.pageList.push(
                                    {
                                        title:data.list[i].deptName,
-                                       p1:data.list[i].cretime,
+                                       p1:data.list[i].limitDate,
                                        p2:data.list[i].publisher,
                                        name:data.list[i].statusName,
                                    }
@@ -157,6 +159,7 @@
                     }
                 }, 'json');
             },
+
         },
         mounted:function(){
             this.loadPageList();
@@ -187,11 +190,15 @@
         font-weight: 100;
     }
     .content-choice{
-        width: 80%;
+        width: 87%;
         margin: auto;
     }
-    .back-color{
+    .choice-list{
         background-color: #ffffff;
+        margin-top: 2px;
+    }
+    .back-color{
+        background-color: rgb(248, 249, 249);
     }
     .nav{
         width: 100%;
@@ -219,10 +226,9 @@
     }
     .cont{
         width: 80%;
-        margin: 0 10%;
-        padding: 10px 0;
-        border-top: rgba(225, 225, 225, 1) solid 0.5px;
-        border-bottom: rgba(225, 225, 225, 1) solid 0.5px;
+        margin: auto;
+        padding: 10px 10px 10px 10px;
+        background-color: #ffffff;
         border-radius: 3px;
         position: relative;
         font-family: "思源黑体";
