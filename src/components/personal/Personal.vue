@@ -29,14 +29,14 @@
         <mt-cell title="个人信息" to="/PersonalInfo" is-link>
             <span slot="icon" class="fa fa-user-o icon"></span>
         </mt-cell>
-        <mt-cell title="消息提醒" >
+        <mt-cell title="消息提醒" to="/PersonalMessage" >
             <span>
                 未读消息
                 <mt-badge type="error">{{unreadMessageCount}}</mt-badge>
             </span>
             <span slot="icon" class="fa fa-commenting-o icon"></span>
         </mt-cell>
-        <mt-cell title="系统设置" to="/PersonalMessage" is-link>
+        <mt-cell title="系统设置" to="/Config" is-link>
             <span slot="icon" class="fa fa-cogs icon" ></span>
         </mt-cell>
         <myMenu active="4"></myMenu>
