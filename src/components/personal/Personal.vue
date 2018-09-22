@@ -2,7 +2,7 @@
     <div>
         <myHeard title="个人中心" ></myHeard>
         <div class="separate"></div>
-        <el-row :gutter="24" class="person" >
+        <el-row :gutter="24" class="person" style="margin: 40px 0 0;" >
             <el-col :span="7">
                 <div class="grid-content bg-purple divPhoto">
                     <div class="bg-img">
@@ -30,9 +30,12 @@
             <span slot="icon" class="fa fa-user-o icon"></span>
         </mt-cell>
         <mt-cell title="消息提醒" to="/PersonalMessage" >
-            <span>
+            <span v-if="unreadMessageCount != 0">
                 未读消息
                 <mt-badge type="error">{{unreadMessageCount}}</mt-badge>
+            </span>
+            <span v-if="unreadMessageCount == 0">
+                无未读消息
             </span>
             <span slot="icon" class="fa fa-commenting-o icon"></span>
         </mt-cell>
@@ -66,13 +69,23 @@
                 $.get(getUrl('sf_zhzf/msys/user/getinfo'),function(data, status) {
                     if(data.statusCode == 200){
                         self.uesrInfo = data;
+                    } else if (data.statusCode == 310) {
+                        window.location.href = "login.html";
+                    } else {
+                        Toast(data.message);
                     }
                 }, 'json');
             },
             getMessageCount:function(){
                 let self = this;
                 $.get(getUrl('sf_zhzf/msys/notice/unreadcnt'),function(data,status) {
-                    self.unreadMessageCount = data.count;
+                    if (data.statusCode == 200) {
+                        self.unreadMessageCount = data.count;
+                    }else if(data.statusCode == 310){
+                        window.location.href = "login.html";
+                    }else{
+                        Toast(data.message);
+                    }
                 },'json');
             }
         },
@@ -90,8 +103,6 @@
         margin-left: 10px
     }
     .person{
-        margin: 0;
-        margin-top: 40px;
         background-color: #fff;
         padding: 10px;
     }

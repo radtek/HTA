@@ -6,7 +6,6 @@
             </router-link>
         </mt-header>
         <div style="padding: 0 5%">
-
             <div id="myScr" class="test" style="height: 85vh; overflow:scroll; background-color: rgba(0,0,0,0);">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
