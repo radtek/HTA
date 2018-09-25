@@ -51,4 +51,10 @@
     #content{
         margin-top: 55px;
     }
+    .mint-cell-text{
+        margin-left: 10px;
+    }
+    .mint-cell-value{
+        margin-right: 10px;
+    }
 </style>
