@@ -11,7 +11,7 @@
     * {
         margin: 0;
         padding: 0;
-        font-family: normal;
+
     }
     a {
         text-decoration: none;
@@ -27,11 +27,11 @@
         margin-top: 5px;
     }
     .mint-cell-wrapper{
-        font-size: 14px;
+        font-size: 14px !important;
     }
     input,textarea{
-        font-size: 14px;
-        color: rgb(117,117,117);
+        font-size: 14px !important;
+        color: rgb(117,117,117) !important;
     }
     ::-webkit-input-placeholder {
         color: rgb(172,169,169);
@@ -59,81 +59,88 @@
     }
 
     /*修改mint-ui默认样式*/
-    .mint-header {
-        background-color: rgb(110,193,191);;
-    }
     .mint-button:not(.is-disabled):active::after {
-        opacity: .2;
+        opacity: .2  !important;
     }
     .mint-button--primary {
-        background-color: rgb(110,193,191);
+        background-color: rgb(110,193,191)  !important;
     }
     .mint-button--primary.is-plain {
-        border: 1px solid rgb(110,193,191);
-        color: rgb(110,193,191);
+        border: 1px solid rgb(110,193,191)  !important;
+        color: rgb(110,193,191)  !important;
     }
     .mint-badge.is-primary {
-        background-color: rgb(110,193,191);
+        background-color: rgb(110,193,191)  !important;
     }
     .mint-switch-input:checked + .mint-switch-core {
-        border-color: rgb(110,193,191);
-        background-color: rgb(110,193,191);
+        border-color: rgb(110,193,191)  !important;
+        background-color: rgb(110,193,191)  !important;
     }
     .mint-navbar .mint-tab-item.is-selected {
-        border-bottom: 3px solid rgb(110,193,191);
-        color: rgb(110,193,191);
+        border-bottom: 3px solid rgb(110,193,191)  !important;
+        color: rgb(110,193,191)  !important;
     }
     .mint-tabbar > .mint-tab-item.is-selected {
-        color: rgb(110,193,191);
+        color: rgb(110,193,191)  !important;
     }
     .mint-searchbar-cancel {
-        color: rgb(110,193,191);
+        color: rgb(110,193,191)  !important;
     }
     .mint-checkbox-input:checked + .mint-checkbox-core {
-        background-color: rgb(110,193,191);
-        border-color: rgb(110,193,191);
+        background-color: rgb(110,193,191)  !important;
+        border-color: rgb(110,193,191) !important;
     }
     .mint-radio-input:checked + .mint-radio-core {
-        background-color: rgb(110,193,191);
-        border-color: rgb(110,193,191);
+        background-color: rgb(110,193,191) !important;
+        border-color: rgb(110,193,191) !important;
     }
     .mt-range-progress {
-        background-color: rgb(110,193,191);
+        background-color: rgb(110,193,191) !important;
     }
     .mt-progress-progress {
-        background-color: rgb(110,193,191);
+        background-color: rgb(110,193,191) !important;
     }
     .mint-msgbox-confirm {
-        color: rgb(110,193,191);
+        color: rgb(110,193,191) !important;
     }
     .mint-msgbox-confirm:active {
-        color: rgb(110,193,191);
+        color: rgb(110,193,191) !important;
     }
     .mint-datetime-action {
-        color: rgb(110,193,191);
+        color: rgb(110,193,191) !important;
     }
     .mint-cell-wrapper, .mint-cell:last-child {
-        background-image: none;
+        background-image: none  !important;
+    }
+    .mint-loadmore-content{
+        font-size: 14px !important;
+        color: #8C8888;
+    }
+    .mint-cell-title{
+        min-width: 30% !important;
+    }
+    .mint-cell-text{
+        color: rgba(0,0,0,0.7)  !important;
     }
     .mint-cell {
         /*border-bottom: 1px solid rgb(248,248,248);*/
     }
-    .scene-check .mint-radiolist-title{
-        font-size: 14px;
-        margin: 0;
-        padding: 8px 20px;
-        color: rgba(0,0,0,0.7);
-        background-color: white;
-        border-top: 1px solid rgb(248,248,248);
-        border-bottom: 1px solid rgb(248,248,248);
+    .mint-radiolist-title{
+        font-size: 14px  !important;
+        margin: 0  !important;
+        padding: 8px 20px !important;
+        color: rgba(0,0,0,0.7)  !important;
+        background-color: white  !important;
+        border-top: 1px solid rgb(248,248,248)  !important;
+        border-bottom: 1px solid rgb(248,248,248)  !important;
     }
-    .scene-check .mint-radiolist-title:before{
+    .mint-radiolist-title:before{
         content: "*";
         position: absolute;
         color: red;
         left: 10px;
     }
-    .mint-radio-label{
+    .mint-radio-label,.mint-checkbox-label{
         color: #888;
     }
 
@@ -141,5 +148,26 @@
     .select .el-input-group__append{
         color: white;
         background-color: rgb(94,186,185);
+    }
+
+    /*自定义*/
+    .myReturn{
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        background-color: white;
+        font-size: 14px;
+        color: rgb(0,149,147);
+        border-top: 1px solid rgba(0,0,0,0.1);
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 2;
+    }
+    .item{
+        background-color: white;
+        padding-left: 10px;
+        margin-bottom: 1px;
     }
 </style>

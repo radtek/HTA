@@ -38,13 +38,13 @@ export default [
     },
     //整改明细
     {
-        path: '/ReformDetail',
+        path: '/ReformDetail/:id',
         name: 'ReformDetail',
         component: resolve => void(require(['../components/administration/ReformDetail.vue'], resolve))
     },
     //后督察
     {
-        path: '/Supervise',
+        path: '/Supervise/:data',
         name: 'Supervise',
         component: resolve => void(require(['../components/administration/Supervise.vue'], resolve))
     },

@@ -32,8 +32,8 @@
 
 <style scoped>
     .mint-header{
-        background-color: white;
-        color: rgb(16,16,16);
+        background-color: white !important;
+        color: rgb(16,16,16) !important;
         font-size: 16px !important;
     }
     .myColor{

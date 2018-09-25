@@ -29,8 +29,8 @@
 </template>
 
 <script>
-    import myHeard from "../customComponent/myHeard";
-    import myField from  "../customComponent/myField";
+    import myHeard   from  "../customComponent/myHeard";
+    import myField   from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
     import {Toast, Indicator} from 'mint-ui';
     export default {
@@ -85,8 +85,8 @@
 
                 self.problems.forEach(function (value) {
                     let obj = {
-                        id   : value.id,
-                        code : value.inspCode,
+                        id         : value.id,
+                        code       : value.inspCode,
                         inspResult : self.answer[value.inspCode],
                         inspStatus : self.result[value.inspCode] === '合格' ? 1 : 2
                     };

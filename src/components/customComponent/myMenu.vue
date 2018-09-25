@@ -56,7 +56,7 @@
 
 <style scoped>
     .mint-tabbar{
-        position: fixed;
+        position: fixed !important;
         background-color: white !important;
     }
     .unActive{

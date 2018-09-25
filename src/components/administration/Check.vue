@@ -20,7 +20,7 @@
 
             <myField label="协办人员" placeholder="请输入" v-model="form.jointly" red-point="true"></myField>
             <a @click="openPicker">
-                <myField label="办理时间" placeholder="请选择" v-model="form.time" left-img="true" red-point="true"></myField>
+                <myField label="检查时间" placeholder="请选择" v-model="form.time" left-img="true" red-point="true"></myField>
             </a>
             <myField label="检查内容" placeholder="请输入" v-model="form.content" type="textarea"></myField>
         </div>
@@ -193,11 +193,11 @@
                     Toast('请选择执法对象');
                     return false;
                 }
-                if(this.form.jointly.length == 0){
+                if(this.form.checkMan.length == 0){
                     Toast('请输入检查人');
                     return false;
                 }
-                if(this.form.time.length == 0){
+                if(this.form.jointly.length == 0){
                     Toast('请输入协办人员');
                     return false;
                 }
