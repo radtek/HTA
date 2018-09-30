@@ -20,31 +20,37 @@ export default [
     },
     //一企一档
     {
-        path: '/CompanyMessage',
+        path: '/CompanyMessage/:id/:data',
         name: 'CompanyMessage',
         component: resolve => void(require(['../components/message/CompanyMessage.vue'], resolve))
     },
     //企业详细信息
     {
-        path: '/CompanyDetailMessage',
+        path: '/CompanyDetailMessage/:id/:data',
         name: 'CompanyDetailMessage',
         component: resolve => void(require(['../components/message/CompanyDetailMessage.vue'], resolve))
     },
+    //企业附件
+    {
+        path: '/Append/:data',
+        name: 'Append',
+        component: resolve => void(require(['../components/message/Append.vue'], resolve))
+    },
     //检查记录
     {
-        path: '/CheckRecord',
+        path: '/CheckRecord/:id',
         name: 'CheckRecord',
         component: resolve => void(require(['../components/message/CheckRecord.vue'], resolve))
     },
     //检查详情
     {
-        path: '/CheckDetail',
+        path: '/CheckDetail/:id/:inspVersion',
         name: 'CheckDetail',
         component: resolve => void(require(['../components/message/CheckDetail.vue'], resolve))
     },
     //清洗记录
     {
-        path: '/ClearRecord',
+        path: '/ClearRecord/:id',
         name: 'ClearRecord',
         component: resolve => void(require(['../components/message/ClearRecord.vue'], resolve))
     },

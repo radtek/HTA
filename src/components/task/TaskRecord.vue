@@ -190,8 +190,8 @@
         font-weight: 100;
     }
     .content-choice{
-        width: 87%;
-        margin: auto;
+        width: 80%;
+        margin: 0 auto;
     }
     .choice-list{
         background-color: #ffffff;
@@ -207,12 +207,7 @@
     .right,.left{
         width: 40%;
         text-align: center;
-    }
-    .right{
-        float: right;
-    }
-    .left{
-        float: left;
+        margin: 0 5% !important;
     }
     .search{
         width: 90%;

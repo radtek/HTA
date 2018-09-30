@@ -37,7 +37,7 @@
         font-size: 16px !important;
     }
     .myColor{
-        color: rgb(0,149,147);
+        color: rgb(0,149,147) !important;
     }
     .scan{
         width: 20px;

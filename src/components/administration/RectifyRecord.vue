@@ -24,7 +24,7 @@
                 <div class="myBlock" v-for="list in searchCondition1.pageList" @click="click1(list)" :key="list.id">
                     <div class="qyInfo">
                         <p class="myP qyName">{{ list.exeobjName }}</p>
-                        <p class="myP">地址：河南省河南省河南省河南省河南省</p>
+                        <p class="myP">地址：{{ list.busiAddr }}</p>
                         <p class="myP">整改期限：{{ list.limitDate }}</p>
                     </div>
                     <img class="myLinkImg" src="../../assets/img/into.png" alt="无法加载">
@@ -44,7 +44,7 @@
                 <div class="myBlock" v-for="list in searchCondition2.pageList" @click="click2(list.id)" :key="list.id">
                     <div class="qyInfo">
                         <p class="myP qyName">{{ list.exeobjName }}</p>
-                        <p class="myP">地址：河南省河南省河南省河南省河南省</p>
+                        <p class="myP">地址：{{ list.busiAddr }}</p>
                         <p class="myP">整改期限：{{ list.limitDate }}</p>
                     </div>
                     <img class="myLinkImg" src="../../assets/img/into.png" alt="无法加载">
@@ -182,7 +182,7 @@
     .left,.right{
         width: 40%;
         text-align: center;
-        margin: 0 5%;
+        margin: 0 5% !important;
     }
     .el-menu.el-menu--horizontal{
         border-bottom: 0px;

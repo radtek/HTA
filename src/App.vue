@@ -143,6 +143,9 @@
     .mint-radio-label,.mint-checkbox-label{
         color: #888;
     }
+    .mint-button--primary.is-plain {
+        background-color: transparent !important;
+    }
 
     /*element-ui*/
     .select .el-input-group__append{

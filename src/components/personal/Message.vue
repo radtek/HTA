@@ -99,7 +99,11 @@
                 </div>
             </div>
         </div>
-        <mt-button size="large" @click="$router.go(-1)" class="btn">返回</mt-button>
+        <a @click="$router.go(-1);">
+            <div class="myReturn">
+                返回
+            </div>
+        </a>
     </div>
 </template>
 <style>
@@ -185,7 +189,7 @@
     }
 
     .mint-cell {
-        background-color: rgba(0, 0, 0, 0) !important;
+        /*background-color: rgba(0, 0, 0, 0) !important;*/
     }
 
     .appendImg {
