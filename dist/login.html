@@ -11,6 +11,23 @@
     <script type="text/javascript" src="login/md5/md5.js"></script>
     <script type="text/javascript" src="login/js/config.js"></script>
     <style>
+        .loading{
+            display: none;
+            width: 60px;
+            height: 56px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -30px;
+            line-height: 56px;
+            padding-left: 60px;
+            background: rgba(0, 0, 0, 0.8) url(login/img/loading.gif) no-repeat 13px 50%;
+            opacity: 0.7;
+            z-index: 9999;
+            -moz-border-radius: 20px;
+            -webkit-border-radius: 20px;
+            border-radius: 20px;
+        }
         header{
             font-family: Arial;
         }
@@ -78,6 +95,8 @@
         <p>新乡高新区综合监管和执法局</p>
         <p>技术支持：河南十方物联网有限公司</p>
     </div>
+
+    <div id="loading" class="loading"></div>
     <script type="text/javascript" src="login/js/login.js"></script>
 </body>
 

@@ -25,4 +25,10 @@ export default [
         name: 'Config',
         component: resolve => void(require(['../components/personal/Config.vue'], resolve))
     },
+    //消息提醒
+    {
+        path: '/ResetPassword',
+        name: 'ResetPassword',
+        component: resolve => void(require(['../components/personal/ResetPassword.vue'], resolve))
+    },
 ]

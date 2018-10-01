@@ -73,10 +73,8 @@
                     pageNum     : search.pageNo,
                     numPerPage  : search.pageSize
                 }, function (data, status) {
-                    console.log(data);
                     Indicator.close();
                     if (data.statusCode == 200) {
-                        console.log(data);
                         search.pageList = search.pageList.concat(data.list);
                         search.total = data.totalCount;
                         search.pageList.length >= search.total && (search.allLoaded = true);

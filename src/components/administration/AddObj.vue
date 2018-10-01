@@ -59,16 +59,16 @@
                     Toast('企业名称为空');
                     return false;
                 }
-                if(this.objType.length == 0){
-                    Toast('请选择企业类型');
-                    return false;
-                }
                 if(this.objAdd.length == 0){
                     Toast('地址为空');
                     return false;
                 }
                 if(this.licence.length == 0){
                     Toast('营业执照为空');
+                    return false;
+                }
+                if(this.objType.length == 0){
+                    Toast('请选择企业类型');
                     return false;
                 }
                 if(this.faName.length == 0){
@@ -90,9 +90,10 @@
                 return true;
             },
             sub:function () {
-                Indicator.open();
                 let self = this;
-                if(test())
+                if(self.test())
+                    self.objType = self.objType == '企业' ? '1' : '2';
+                    Indicator.open();
                     $.get(getUrl('sf_zhzf/msys/enterprise/add'),{
                         objName     : self.objName,
                         objType     : self.objType,
@@ -106,6 +107,7 @@
                         Indicator.close();
                         if(data.statusCode == 200){
                             Toast('新增执法对象成功');
+                            self.$router.push({name: 'Administration'});
                         }else if(data.statusCode == 310){
                             window.location.href = "login.html";
                         }else{

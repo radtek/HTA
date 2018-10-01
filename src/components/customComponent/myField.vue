@@ -1,7 +1,7 @@
 <template>
     <div class="block">
         <span class="red-point" v-if="redPoint">*</span>
-        <div style="padding-left: 8px">
+        <div style="padding:0 8px">
             <mt-field
                     v-if="leftImg"
                     :label="label"
@@ -20,6 +20,7 @@
                     :readonly="readonly"
                     :placeholder="placeholder"
                     :type="type"
+                    :attr="attr"
                     rows="3">
             </mt-field>
         </div>
@@ -39,7 +40,8 @@
             leftImg: false,
             redPoint: false,
             type: '',
-            readonly: false
+            readonly: false,
+            attr    : {}
         },
         data () {
             return {

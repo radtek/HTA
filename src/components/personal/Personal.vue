@@ -10,17 +10,17 @@
                     </div>
                 </div>
             </el-col>
-            <el-col :span="15">
+            <el-col :span="17">
                 <div class="grid-content bg-purple">
                     <el-row type="flex" class="row-bg">
-                        <el-col :span="12"><div class="grid-content bg-purple">{{uesrInfo.relName}}</div></el-col>
-                        <el-col :span="10"><div class="grid-content bg-purple-light department">{{uesrInfo.deptName}}</div></el-col>
-                        <el-col :span="5"><div class="grid-content bg-purple post">{{uesrInfo.roleName}}</div></el-col>
+                        <el-col :span="10"><div class="grid-content bg-purple">{{uesrInfo.relName}}</div></el-col>
+                        <el-col :span="8"><div class="grid-content bg-purple-light department">{{uesrInfo.deptName}}</div></el-col>
+                        <el-col :span="8"><div class="grid-content bg-purple post">{{uesrInfo.roleName}}</div></el-col>
                     </el-row>
 
                     <el-row type="flex" class="row-bg">
                         <el-col :span="10"><div class="grid-content bg-purple phone">联系方式</div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light phoneNum">{{uesrInfo.phone}}</div></el-col>
+                        <el-col :span="14"><div class="grid-content bg-purple-light phoneNum">{{uesrInfo.phone}}</div></el-col>
                     </el-row>
                 </div>
             </el-col>
@@ -38,6 +38,9 @@
                 无未读消息
             </span>
             <span slot="icon" class="fa fa-commenting-o icon"></span>
+        </mt-cell>
+        <mt-cell title="修改密码" to="/ResetPassword" is-link>
+            <span slot="icon" class="fa fa-key icon" ></span>
         </mt-cell>
         <mt-cell title="系统设置" to="/Config" is-link>
             <span slot="icon" class="fa fa-cogs icon" ></span>

@@ -13,8 +13,9 @@ function checkLogin() {
 }
 
 function login() {
+    let isLoad = false;
     $("#submit").click(function() {
-
+        if(isLoad) return;
         let name = $.trim($("#name").val());
         let password = $.trim($("#password").val());
         if (name.length == 0) {
@@ -27,6 +28,7 @@ function login() {
         }
 
         $('#loading').show();
+        isLoad = true;
         // let imei = plus.device.imei;
         let imei = '867541032157567,867541032551835';
 
@@ -38,6 +40,7 @@ function login() {
             imei: imei,
         }, function(data, status) {
             $('#loading').hide();
+            isLoad = false;
             if (data.statusCode == 200) {
 
                 localStorage.setItem("login", name);

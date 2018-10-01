@@ -1,6 +1,6 @@
 <template>
     <div>
-        <myHeard back="true" title="限期整改记录" reform="true"></myHeard>
+        <myHeard title="任务管理"></myHeard>
         <div class="myMenu">
             <el-menu
                     :default-active="activeIndex"
@@ -9,8 +9,8 @@
                     @select="handleSelect"
                     text-color="#8C8888"
                     active-text-color="#089593">
-                <el-menu-item index="1" class="left">未完成督察</el-menu-item>
-                <el-menu-item index="2" class="right">已完成督察</el-menu-item>
+                <el-menu-item index="1" class="left">待办任务</el-menu-item>
+                <el-menu-item index="2" class="right">已办任务</el-menu-item>
             </el-menu>
         </div>
 
@@ -19,13 +19,13 @@
             <div class="bmt" style="width: 100%;height: 101px;"></div>
 
             <Loadmore :bottom-method="loadBottom"
-                        bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
-                        :bottom-all-loaded="searchCondition1.allLoaded" :auto-fill="false" ref="loadmore1">
-                <div class="myBlock" v-for="list in searchCondition1.pageList" @click="click1(list)" :key="list.id">
+                      bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
+                      :bottom-all-loaded="searchCondition1.allLoaded" :auto-fill="false" ref="loadmore1">
+                <div class="myBlock" v-for="list in searchCondition1.pageList" @click="click(list.id)" :key="list.id">
                     <div class="qyInfo">
-                        <p class="myP qyName">{{ list.exeobjName }}</p>
-                        <p class="myP">地址：{{ list.busiAddr }}</p>
-                        <p class="myP">整改期限：{{ list.limitDate }}</p>
+                        <p class="myP qyName">{{ list.taskName }}</p>
+                        <p class="myP">完成期限：{{ list.limitDate }}</p>
+                        <p class="myP">任务来源：{{ list.publisher }}</p>
                     </div>
                     <img class="myLinkImg" src="../../assets/img/into.png" alt="无法加载">
                 </div>
@@ -41,38 +41,32 @@
             <Loadmore :bottom-method="loadBottom"
                       bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
                       :bottom-all-loaded="searchCondition2.allLoaded" :auto-fill="false" ref="loadmore2">
-                <div class="myBlock" v-for="list in searchCondition2.pageList" @click="click2(list.id)" :key="list.id">
+                <div class="myBlock" v-for="list in searchCondition2.pageList" @click="click(list.id)" :key="list.id">
                     <div class="qyInfo">
-                        <p class="myP qyName">{{ list.exeobjName }}</p>
-                        <p class="myP">地址：{{ list.busiAddr }}</p>
-                        <p class="myP">整改期限：{{ list.limitDate }}</p>
+                        <p class="myP qyName">{{ list.taskName }}</p>
+                        <p class="myP">完成期限：{{ list.limitDate }}</p>
+                        <p class="myP">任务来源：{{ list.publisher }}</p>
                     </div>
                     <img class="myLinkImg" src="../../assets/img/into.png" alt="无法加载">
                 </div>
             </Loadmore>
 
-            <div style="width: 100%;height: 40px;"></div>
+            <div style="width: 100%;height: 55px;"></div>
         </div>
 
-        <a @click="$router.go(-1);">
-            <div class="myReturn">
-                返回
-            </div>
-        </a>
+        <myMenu active="1"></myMenu>
     </div>
 </template>
 
 <script>
     import myHeard   from  "../customComponent/myHeard";
-    import myField   from  "../customComponent/myField";
-    import myFlaxSub from  "../customComponent/myFlaxSub";
+    import myMenu    from  "../customComponent/myMenu"
     import {Toast, Indicator, Loadmore} from 'mint-ui';
     export default {
         name: "rectify-record",
         components:{
             myHeard,
-            myField,
-            myFlaxSub,
+            myMenu,
             Toast,
             Indicator,
             Loadmore,
@@ -113,8 +107,8 @@
                 let search = index == 1 ? this.searchCondition1 : this.searchCondition2;
                 search.pageNo = isMore ? parseInt(search.pageNo) + 1 : parseInt(search.pageNo);
 
-                $.get(getUrl('sf_zhzf/msys/rectify/list'), {
-                    status      : index,
+                $.get(getUrl('sf_zhzf/msys/task/list'), {
+                    taskStatus  : index,
                     pageNum     : search.pageNo,
                     numPerPage  : search.pageSize
                 }, function (data, status) {
@@ -131,11 +125,8 @@
                     }
                 }, 'json');
             },
-            click1:function (list) {
-                this.$router.push({name: 'Supervise', params: { data : JSON.stringify(list) }});
-            },
-            click2:function (id) {
-                this.$router.push({name: 'ReformDetail', params: { id : id }});
+            click:function (id) {
+                this.$router.push({name: 'TaskInfor', params: { id : id }});
             },
         },
         mounted() {
@@ -177,6 +168,7 @@
         height: 25px;
         line-height: 25px;
         color: #8C8888;
+        overflow: hidden;
     }
     .qyInfo{
         width: 80%;

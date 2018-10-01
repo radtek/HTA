@@ -21,6 +21,8 @@
                     <mt-field
                             label="检查人"
                             v-model="form.checkMan"
+                            readonly
+                            disableClear
                             placeholder="请输入">
                     </mt-field>
                 </div>
@@ -65,7 +67,7 @@
         <mt-datetime-picker
                 v-model="dataValue"
                 ref="picker"
-                type="date"
+                type="datetime"
                 @confirm="handleConfirm"
         >
         </mt-datetime-picker>
@@ -117,7 +119,6 @@
                     objName    : self.selectValue
                 }, function (data, status) {
                     Indicator.close();
-                    console.log(data)
                     if (data.statusCode == 200) {
                         self.objList = data.list;
                     } else if (data.statusCode == 310) {
@@ -156,27 +157,31 @@
             },
             myFormat:function (dateVal) {
 
-                let year    = dateVal.getFullYear();
-                let month   = dateVal.getMonth() + 1;
-                let date    = dateVal.getDate();
+                let year     = dateVal.getFullYear();
+                let month    = dateVal.getMonth() + 1;
+                let date     = dateVal.getDate();
+                let hours    = dateVal.getHours();
+                let minutes  = dateVal.getMinutes();
 
-                month   < 10 && (month   = '0'+month);
-                date    < 10 && (date    = '0'+date);
+                month    < 10 && (month   = '0'+month);
+                date     < 10 && (date    = '0'+date);
+                hours    < 10 && (hours   = '0'+hours);
+                minutes  < 10 && (minutes = '0'+minutes);
 
-                return year + '-' + month + '-' + date;
+                return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes;
             },
             test:function () {
                 if(this.form.inspVersion == ''){
                     Toast('请选择整改批次');
-                    return false
+                    return false;
                 }
                 if(this.form.reformContent == ''){
                     Toast('请填写整改内容');
-                    return false
+                    return false;
                 }
                 if(this.form.offiName == ''){
                     Toast('请填写协办人员');
-                    return false
+                    return false;
                 }
                 return true;
             },
@@ -193,7 +198,8 @@
                     }, function (data, status) {
                         Indicator.close();
                         if (data.statusCode == 200) {
-                            self.data = data.rectNote;
+                            Toast('下达限期整改成功');
+                            self.$router.push({name: 'RectifyRecord'});
                         } else if (data.statusCode == 310) {
                             //登录超时
                             window.location.href = "login.html";

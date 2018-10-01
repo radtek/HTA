@@ -144,7 +144,6 @@
                     pageNum     : search.pageNo,
                     numPerPage  : search.pageSize
                 }, function (data, status) {
-                    console.log(data);
                     Indicator.close();
                     if (data.statusCode == 200) {
                         search.pageList = search.pageList.concat(data.list);

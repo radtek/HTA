@@ -24,19 +24,8 @@
             </mt-radio>
         </div>
 
-        <div class="mt">
-            <div class="item">
-                <mt-cell title="现场拍照"></mt-cell>
-            </div>
-            <div class="imgs clearBoth">
-                <div v-for="(img,index) in imgs" :key="index">
-                    <img :src="img" alt="加载失败">
-                </div>
-                <div id="add" class="weui-uploader-input-wrp" @click= "captureImage()">
-                    <input type="file" id="file_input" multiple/>
-                </div>
-            </div>
-        </div>
+        <myBase64Img @changeImg="changeImg"></myBase64Img>
+
         <div style="width: 100%;height: 53px; margin-top: 10px"><myFlaxSub @click="sub()" title="提交"></myFlaxSub></div>
     </div>
 </template>
@@ -45,6 +34,7 @@
     import myHeard   from  "../customComponent/myHeard";
     import myField   from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
+    import myBase64Img from "../customComponent/myUploadImg";
     import {Toast, Indicator} from 'mint-ui';
     export default {
         name: "scene-check",
@@ -52,6 +42,7 @@
             myHeard,
             myField,
             myFlaxSub,
+            myBase64Img,
             Toast,
             Indicator
         },
@@ -66,10 +57,13 @@
                 problems    : [],
                 answer      : [],
                 result      : [],
-                imgs        : [],
+                imgs        : null,
             };
         },
         methods: {
+            changeImg:function (imgs) {
+                this.imgs = imgs;
+            },
             getProblem:function () {
                 Indicator.open();
                 let self = this;
@@ -79,7 +73,6 @@
                     Indicator.close();
                     if(data.statusCode == 200){
                         self.problems = data.list;
-                        console.log(self.problems);
                         self.problems.forEach(function (value) {
                             self.answer[value.inspCode] = '';
                             self.result[value.inspCode] = '';
@@ -91,67 +84,29 @@
                     }
                 },'json');
             },
-            captureImage: function () {
-                let self = this;
-                let cmr  = plus.camera.getCamera();
-                let res  = cmr.supportedImageResolutions[0];
-                let fmt  = cmr.supportedImageFormats[0];
-                console.log("Resolution: "+res+", Format: "+fmt);
-                cmr.captureImage(
-                    function( path ){
-                        console.log( "Capture image success: " + path );
-                        let localPath = plus.io.convertLocalFileSystemURL(path);
-                        Indicator.open();
-                        // self.imgs.push(localPath);
-                        // let image      = new Image();
-                        // image.src      = path;
-                        // image.onload   = function(){
-                        //     let base64 = self.getBase64Image(image);
-                        //     alert(base64);
-                        // }
-
-                        let base64  = "";
-                        let img     = new Image();
-                        img.src     = localPath;
-
-                        img.onload  = function(){
-                            base64  = self.getBase64Image(img);
-                            self.imgs.push(base64);
-                            Indicator.close();
-                        }
-                    },
-                    function( error ) {
-                        console.log( "Capture image failed: " + error.message );
-                    },
-                    {
-                        resolution:res,format:fmt
+            test:function () {
+                let select = true;
+                this.answer.forEach(function (value,index) {
+                    if(value == ''  && index != '1240005'){
+                        Toast('有选项未选择！');
+                        select = false;
+                        return;
                     }
-                );
-            },
-            getBase64Image(img) {
-
-                let square = 700;
-                let imageWidth;
-                let imageHeight;
-                let offsetX = 0;
-                let offsetY = 0;
-                if (img.width > img.height) {
-                    imageWidth = Math.round(square * img.width / img.height);
-                    imageHeight = square;
-                    offsetX = - Math.round((imageWidth - square) / 2);
-                } else {
-                    imageHeight = Math.round(square * img.height / img.width);
-                    imageWidth = square;
-                    offsetY = - Math.round((imageHeight - square) / 2);
-                }
-
-                let canvas = document.createElement("canvas");
-                canvas.width = square;
-                canvas.height = square;
-                canvas.getContext("2d").drawImage(img, offsetX, offsetY, imageWidth, imageHeight);
-                return canvas.toDataURL("image/jpeg");
+                });
+                if(!select) return select;
+                this.result.forEach(function (value) {
+                    if(value == ''){
+                        Toast('有选项未选择！');
+                        select = false;
+                        return;
+                    }
+                });
+                return select;
             },
             sub:function () {
+
+                if(!this.test()) return;
+
                 Indicator.open();
                 let self = this;
                 let list = [];
@@ -171,7 +126,7 @@
                     inspdate     : self.form.time,
                     officerName  : self.form.jointly,
                     list         : list,
-                    imgBase64    : ''
+                    imgBase64    : self.imgs
                 },function(data,status){
                     Indicator.close();
                     if(data.statusCode == 200){
@@ -197,53 +152,5 @@
 </script>
 
 <style scoped>
-    .clearBoth:after{
-        content: ' ';
-        clear: both;
-        display: block;
-    }
-    .imgs{
-        background-color: white;
-        padding: 0 10px;
-    }
-    .imgs img{
-        float: left;
-        margin: 9px;
-        width: 50px;
-        height: 50px;
-    }
-    .weui-uploader-input-wrp {
-        float: left;
-        position: relative;
-        margin: 9px;
-        width: 50px;
-        height: 50px;
-        border: 1px solid #D9D9D9;
-        background-color: rgb(245,245,245);
-    }
-    #file_input {
-        display: none;
-        font: 100% tahoma, \5b8b\4f53, arial;
-        vertical-align: baseline;
-        border-radius: 0;
-        background-color: transparent;
-        -webkit-appearance: none;
-    }
-    .weui-uploader-input-wrp:before {
-        width: 2px;
-        height: 39.5px;
-    }
-    .weui-uploader-input-wrp:after {
-        width: 39.5px;
-        height: 2px;
-    }
-    .weui-uploader-input-wrp:before, .weui-uploader-input-wrp:after {
-        content: " ";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -webkit-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-        background-color: #D9D9D9;
-    }
+
 </style>

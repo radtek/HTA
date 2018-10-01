@@ -30,7 +30,6 @@
         methods:{
             logOut:function () {
                 $.get(getUrl('sf_zhzf/msys/user/logout'),function(data,status){
-                    console.log(data);
                     if(data.statusCode == 200 || data.statusCode == 310){
                         localStorage.clear();
                         window.location.href = "login.html";

@@ -20,15 +20,7 @@
             </div>
 
             <div style="padding: 15px 0;background-color: #F8F9F9!important;width: 100%;" v-if="show">
-                <!--<el-input placeholder="请输入内容" class="input-with-select search" size="small">-->
-                    <!--<el-button slot="append" icon="el-icon-search" class="submit" size="small"></el-button>-->
-                <!--</el-input>-->
-                <!--<div class="list">-->
-                    <!--<v-loadmore :bottom-method="loadBottom"-->
-                                <!--bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"-->
-                                <!--:bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">-->
-                    <!--</v-loadmore>-->
-                <!--</div>-->
+
             </div>
         </div>
 
@@ -68,6 +60,10 @@
     import myMenu from "../customComponent/myMenu";
 
     export default {
+        components: {
+            'v-loadmore': Loadmore,
+            'my-menu':myMenu,
+        },
         data() {
             return {
                 objName: "",
@@ -164,10 +160,7 @@
         mounted:function(){
             this.loadPageList();
         },
-        components: {
-            'v-loadmore': Loadmore,
-            'my-menu':myMenu,
-        },
+
     }
 
 </script>
