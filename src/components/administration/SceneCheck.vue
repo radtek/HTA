@@ -121,17 +121,23 @@
                     list.push(obj);
                 });
 
-                $.get(getUrl('sf_zhzf/msys/inspnotes/noteadd2'),{
+                let jsonData = {
                     execObjId    : self.form.objId,
                     inspdate     : self.form.time,
                     officerName  : self.form.jointly,
                     list         : list,
                     imgBase64    : self.imgs
+                };
+
+                console.log(jsonData);
+
+                $.get(getUrl('sf_zhzf/msys/inspnotes/noteadd2'),{
+                    jsonData : JSON.stringify(jsonData)
                 },function(data,status){
                     Indicator.close();
                     if(data.statusCode == 200){
-                        //TODO::imgBase64
-
+                        Toast('提交成功');
+                        self.$router.push({name: 'AdminCheckRecord'});
                     }else if(data.statusCode == 310){
                         window.location.href = "login.html";
                     }else{

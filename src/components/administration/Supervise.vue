@@ -19,10 +19,10 @@
 
         <div class="bmt">
             <a @click="openPicker">
-                <myField label="办理时间" placeholder="请选择" v-model="time" left-img="true" red-point="true"></myField>
+                <myField label="督察时间" placeholder="请选择" v-model="time" left-img="true" red-point="true"></myField>
             </a>
-            <myField label="协办人员" placeholder="请输入" v-model="jointly" red-point="true"></myField>
-            <myField label="备注说明" placeholder="请输入" type="textarea" v-model="remarks"></myField>
+            <myField label="协办人员" placeholder="请输入" v-model.trim="jointly" red-point="true"></myField>
+            <myField label="备注说明" placeholder="请输入" type="textarea" red-point="true" v-model.trim="remarks"></myField>
         </div>
 
         <div class="bmt"><myBase64Img @changeImg="changeImg"></myBase64Img></div>
@@ -32,7 +32,7 @@
         <mt-datetime-picker
                 v-model="dataValue"
                 ref="picker"
-                type="date"
+                type="datetime"
                 @confirm="handleConfirm"
         >
         </mt-datetime-picker>
@@ -79,6 +79,10 @@
                     Toast('请填写协办人员！');
                     return false;
                 }
+                if(this.remarks == '') {
+                    Toast('请填写协办人员！');
+                    return false;
+                }
                 return true;
             },
             sub:function () {
@@ -113,15 +117,18 @@
                 this.time = this.myFormat(dateVal);
             },
             myFormat:function (dateVal) {
+                let year     = dateVal.getFullYear();
+                let month    = dateVal.getMonth() + 1;
+                let date     = dateVal.getDate();
+                let hours    = dateVal.getHours();
+                let minutes  = dateVal.getMinutes();
 
-                let year    = dateVal.getFullYear();
-                let month   = dateVal.getMonth() + 1;
-                let date    = dateVal.getDate();
+                month    < 10 && (month   = '0'+month);
+                date     < 10 && (date    = '0'+date);
+                hours    < 10 && (hours   = '0'+hours);
+                minutes  < 10 && (minutes = '0'+minutes);
 
-                month   < 10 && (month   = '0'+month);
-                date    < 10 && (date    = '0'+date);
-
-                return year + '-' + month + '-' + date;
+                return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes;
             },
         },
         mounted() {

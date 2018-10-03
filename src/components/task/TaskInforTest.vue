@@ -98,7 +98,7 @@
             <el-col :span="12"><a class="link" @click="dealWith">办理</a></el-col>
             <el-col :span="12"><a class="link" @click="$router.go(-1);">返回</a></el-col>
         </div>
-        <a v-else-if="status == 3" @click="$router.go(-1);">
+        <a v-else @click="$router.go(-1);">
             <div class="myReturn">
                 返回
             </div>

@@ -1,6 +1,9 @@
 <template>
     <div>
-        <div style="width: 100%;height: 40px;"><myHeard back="true" title="日常检查"></myHeard></div>
+        <div style="width: 100%;height: 40px;">
+            <myHeard v-if="type == 1" back="true" title="日常检查"></myHeard>
+            <myHeard v-else back="true" title="专项检查"></myHeard>
+        </div>
 
         <div class="bmt">
             <a @click="popupVisible = true;getObj();">
