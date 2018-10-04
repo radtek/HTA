@@ -22,9 +22,7 @@
             </div>
 
             <myField label="协办人员" placeholder="请输入" v-model="form.jointly" red-point="true"></myField>
-            <a @click="openPicker">
-                <myField label="检查时间" placeholder="请选择" v-model="form.time" left-img="true" red-point="true"></myField>
-            </a>
+            <myTimeDate label="检查时间" placeholder="请选择" type="date" @changeTime="changeTime"></myTimeDate>
             <myField label="检查内容" placeholder="请输入" v-model="form.content" type="textarea"></myField>
         </div>
 
@@ -64,21 +62,14 @@
                 </div>
             </mt-popup>
         </div>
-
-        <mt-datetime-picker
-                v-model="dataValue"
-                ref="picker"
-                type="date"
-                @confirm="handleConfirm"
-        >
-        </mt-datetime-picker>
     </div>
 </template>
 
 <script>
-    import myHeard from "../customComponent/myHeard";
-    import myField from  "../customComponent/myField";
+    import myHeard  from "../customComponent/myHeard";
+    import myField  from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
+    import myTimeDate from "../customComponent/myTimeDate";
     import {Toast, Indicator} from 'mint-ui';
     export default {
         name: "check",
@@ -86,6 +77,7 @@
             myHeard,
             myField,
             myFlaxSub,
+            myTimeDate,
             Toast,
             Indicator
         },
@@ -98,7 +90,6 @@
                 checkList   : [],
                 selectValue : '',
                 objList     : [],
-                dataValue   : new Date(),
                 onjName     : '',
                 form : {
                     objId   : '',
@@ -112,6 +103,9 @@
             };
         },
         methods: {
+            changeTime:function (time) {
+                this.form.time = time;
+            },
             allClick:function () {
                 //this.all.length是点击之前的值
                 this.all.length === 0 ? this.checkList = this.checkOptions : this.checkList = [];
@@ -173,24 +167,6 @@
                 this.form.objId = id;
                 this.popupVisible = false;
             },
-            openPicker:function () {
-                this.$refs.picker.open();
-            },
-            handleConfirm:function (value) {
-                let dateVal = new Date(value);
-                this.form.time = this.myFormat(dateVal);
-            },
-            myFormat:function (dateVal) {
-
-                let year    = dateVal.getFullYear();
-                let month   = dateVal.getMonth() + 1;
-                let date    = dateVal.getDate();
-
-                month   < 10 && (month   = '0'+month);
-                date    < 10 && (date    = '0'+date);
-
-                return year + '-' + month + '-' + date;
-            },
             test:function () {
                 if(this.form.objId.length == 0){
                     Toast('请选择执法对象');
@@ -233,7 +209,6 @@
             this.type = this.$route.params.type;
             this.getCheckList();
             this.getName();
-            this.form.time = this.myFormat(new Date());
         },
     }
 </script>

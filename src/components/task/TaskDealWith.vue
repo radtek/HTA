@@ -1,47 +1,29 @@
 <template>
     <div>
-        <div style="width: 100%;height: 40px;"><myHeard back="true" title="日常检查"></myHeard></div>
+        <div style="width: 100%;height: 40px;"><myHeard back="true" title="任务办理"></myHeard></div>
 
         <div class="bmt">
             <a @click="popupVisible = true;getObj();">
                 <myField label="执法对象" placeholder="请选择" v-model="form.obj" left-img="true" red-point="true"></myField>
             </a>
-            <myField label="检查人" placeholder="请输入" v-model="form.checkMan" red-point="true"></myField>
-            <myField label="协办人员" placeholder="请输入" v-model="form.jointly" red-point="true"></myField>
-            <a @click="openPicker">
-                <myField label="办理时间" placeholder="请选择" v-model="form.time" left-img="true" red-point="true"></myField>
-            </a>
-            <myField label="检查内容" placeholder="请输入" v-model="form.content" red-point="true" type="textarea"></myField>
-        </div>
-
-
-
-        <div class="weui_cells weui_cells_form">
-            <div class="weui_cell">
-                <div class="weui_uploader_hd weui_cell" id="picture_content">
-                    <div class="font-position">照片</div>
-                    <div class="add-img">
-                        <img src="" alt="">
-                    </div>
-                    <div class="add-img">
-                        <img src="" alt="">
-                    </div>
-                    <div class="add-img">
-                        <img src="" alt="">
-                    </div>
-                    <div class="add-img">
-                        <img src="" alt="">
-                    </div>
-
-                    <div id="add" class="weui-uploader-input-wrp" @click= "captureImage()">
-                        <input type="file" id="file_input" multiple/>
-                    </div>
+            <div class="block">
+                <span class="red-point">*</span>
+                <div style="padding-left: 8px">
+                    <mt-field
+                            label="检查人"
+                            v-model="form.checkMan"
+                            readonly
+                            disableClear
+                            placeholder="请输入">
+                    </mt-field>
                 </div>
             </div>
+            <myField label="协办人员" placeholder="请输入" v-model.trim="form.jointly" red-point="true"></myField>
+            <myTimeDate label="办理时间" placeholder="请选择" type="date" @changeTime="changeTime"></myTimeDate>
+            <myField label="办理说明" placeholder="请输入" v-model.trim="form.explain" red-point="true" type="textarea"></myField>
         </div>
 
-
-
+        <div class="bmt"><myBase64Img @changeImg="changeImg"></myBase64Img></div>
 
         <myFlaxSub title="提交" @click="sub"></myFlaxSub>
 
@@ -65,7 +47,7 @@
                     </div>
 
                     <div class="mt">
-                        <a v-for="item in objList" :key="item.id" @click="selectedObj(item.objName)">
+                        <a v-for="item in objList" :key="item.id" @click="selectedObj(item.id,item.objName)">
                             <div class="myObj">
                                 <p>{{ item.objName }}</p>
                             </div>
@@ -74,13 +56,6 @@
                 </div>
             </mt-popup>
         </div>
-        <mt-datetime-picker
-                v-model="dataValue"
-                ref="picker"
-                type="date"
-                @confirm="handleConfirm"
-        >
-        </mt-datetime-picker>
     </div>
 </template>
 
@@ -88,6 +63,8 @@
     import myHeard from "../customComponent/myHeard";
     import myField from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
+    import myBase64Img from "../customComponent/myUploadImg";
+    import myTimeDate from "../customComponent/myTimeDate";
     import {Toast, Indicator} from 'mint-ui';
     export default {
         name: "check",
@@ -95,53 +72,47 @@
             myHeard,
             myField,
             myFlaxSub,
+            myBase64Img,
+            myTimeDate,
             Toast,
             Indicator
         },
         data() {
             return {
-                type : 1,
                 popupVisible  : false,
                 selectValue   : '',
                 objList       : [],
-                dataArr       : [],
-                dataValue     :new Date(),
                 form : {
-                    obj       :'',
-                    checkMan  :'',
-                    jointly   :'',
-                    time      :'2018-08-23 14:22',
-                    content   :'',
+                    obj       : '',
+                    id        : 0,
+                    execObjId : 0,
+                    checkMan  : '',
+                    jointly   : '',
+                    time      : '2018-08-23 14:22',
+                    explain   : '',
+                    imgs      : null
                 },
-                dialogImageUrl: '',
-                dialogVisible : false
             };
         },
         methods: {
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
+            changeTime:function (time) {
+                this.form.time = time;
             },
-            handlePictureCardPreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
+            changeImg:function (imgs) {
+                this.form.imgs = imgs;
             },
-            getCheckList:function () {
-                Indicator.open();
+            getName(){
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/inspnotes/inspitems'), {
-                    inspSpecial: self.type
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        data.list.forEach(function (value,index) {
-                            self.checkOptions.push(value.inspName);
-                        })
-                    } else if (data.statusCode == 310) {
-                        // window.location.href = "login.html";
-                    } else {
+                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
+                },function(data,status){
+                    if(data.statusCode == 200){
+                        self.form.checkMan = data.relName;
+                    }else if(data.statusCode == 310){
+                        window.location.href = "login.html";
+                    }else{
                         Toast(data.message);
                     }
-                }, 'json');
+                },'json');
             },
             getObj:function () {
                 Indicator.open();
@@ -151,85 +122,61 @@
                     objName    : self.selectValue
                 }, function (data, status) {
                     Indicator.close();
-                    console.log(data);
                     if (data.statusCode == 200) {
                         self.objList = data.list;
                     } else if (data.statusCode == 310) {
-                        // window.location.href = "login.html";
+                        window.location.href = "login.html";
                     } else {
                         Toast(data.message);
                     }
                 }, 'json');
             },
-            selectedObj:function (obj) {
-                this.form.obj = obj;
-                this.popupVisible = false;
+            selectedObj:function (execObjId,execObjName) {
+                this.form.execObjId = execObjId;
+                this.form.obj       = execObjName;
+                this.popupVisible   = false;
             },
-            openPicker:function () {
-                this.$refs.picker.open();
-            },
-            handleConfirm:function (value) {
-                let dateVal    = new Date(value);
-                this.form.time = this.myFormat(dateVal);
-            },
-            myFormat:function (dateVal) {
-
-                let year    = dateVal.getFullYear();
-                let month   = dateVal.getMonth() + 1;
-                let date    = dateVal.getDate();
-
-                month   < 10 && (month   = '0'+month);
-                date    < 10 && (date    = '0'+date);
-
-                return year + '-' + month + '-' + date;
+            test:function () {
+                if(this.form.execObjId == 0) {
+                    Toast('请选择执法对象');
+                    return false;
+                }
+                if(this.form.jointly == '') {
+                    Toast('请填写协办人员！');
+                    return false;
+                }
+                if(this.form.explain == '') {
+                    Toast('请填写办理说明！');
+                    return false;
+                }
+                return true;
             },
             sub:function () {
-                console.log(555);
-            },
-            captureImage: function () {
+                if(!this.test()) return;
                 let self = this;
-                let cmr  = plus.camera.getCamera();
-                let res  = cmr.supportedImageResolutions[0];
-                let fmt  = cmr.supportedImageFormats[0];
-                console.log("Resolution: "+res+", Format: "+fmt);
-                cmr.captureImage( function( path ){
-                        console.log( "Capture image success: " + path );
-                        let image      = new Image();
-                        image.src      = path;
-                        image.onload   = function(){
-                            let base64 = self.getBase64Image(image);
-                            result     = '<div class="delete">delete</div><div class="result"><img src="'+base64+'" alt=""/></div>';
-                            let div    = document.createElement('div');
-                            div.innerHTML    = result;
-                            div['className'] = 'add-img';
-                            document.getElementById("picture_content").insertBefore(div,document.getElementById("add"));  　　//插入dom树
-                            console.log(base64);
-                            div.onclick = function(){
-                                this.remove();                  // 在页面中删除该图片元素
-                            }
-                        }
-                    },
-                    function( error ) {
-                        console.log( "Capture image failed: " + error.message );
-                    },
-                    {resolution:res,format:fmt}
-                );
+                $.get(getUrl('sf_zhzf/msys/task/finish'), {
+                    id          : self.form.id,
+                    execObjId   : self.form.execObjId,
+                    officerName : self.form.jointly,
+                    doitTime    : self.form.time,
+                    attafile    : self.form.imgs,
+                }, function (data, status) {
+                    Indicator.close();
+                    if (data.statusCode == 200) {
+                        Toast('提交成功');
+                        self.$router.push({name: 'TaskRecord'});
+                    } else if (data.statusCode == 310) {
+                        //登录超时
+                        window.location.href = "login.html";
+                    } else {
+                        Toast(data.message);
+                    }
+                }, 'json');
             },
-            getBase64Image(img) {
-                var canvas      = document.createElement("canvas");
-                canvas.width    = img.width;
-                canvas.height   = img.height;
-                var ctx         = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0, img.width, img.height);
-                var ext         = img.src.substring(img.src.lastIndexOf(".")+1).toLowerCase();
-                var dataURL     = canvas.toDataURL("image/"+ext);
-                return dataURL;
-            }
         },
         mounted() {
-            this.type = this.$route.params.type;
-            // this.getCheckList();
-            this.form.time = this.myFormat(new Date());
+            this.form.id = this.$route.params.id;
+            this.getName();
         },
     }
 </script>
@@ -361,5 +308,20 @@
         height: 100%;
         text-align: center;
         box-sizing: border-box;
+    }
+
+    .block{
+        position: relative;
+        background-color: white;
+        border-bottom: 1px solid rgb(248,248,248);
+    }
+    .red-point{
+        color: red;
+        position: absolute;
+        z-index: 1;
+        height: 14px;
+        top: 50%;
+        margin-top: -10px;
+        left: 8px;
     }
 </style>

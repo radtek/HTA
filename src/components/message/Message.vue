@@ -2,7 +2,7 @@
     <div>
         <div style="width: 100%;height: 40px"><myHeard title="信息查询"></myHeard></div>
 
-        <img class="myImg" src="../../assets/img/new/ad.jpg" alt="">
+        <img class="myImg" src="../../assets/img/new/ad2.png" alt="">
 
         <el-row class="mySpan" :span="24">
             <router-link to="/CompanyRecord">

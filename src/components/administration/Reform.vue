@@ -12,9 +12,7 @@
 
         <div class="bmt">
             <myField label="整改内容" placeholder="请输入" v-model="form.reformContent" type="textarea" red-point="true"></myField>
-            <a @click="openPicker">
-                <myField label="整改期限" placeholder="请选择" v-model="form.limitDate" left-img="true" red-point="true"></myField>
-            </a>
+            <myTimeDate label="整改期限" placeholder="请选择" type="datetime" @changeTime="changeTime"></myTimeDate>
             <div class="block">
                 <span class="red-point">*</span>
                 <div style="padding-left: 8px">
@@ -64,13 +62,6 @@
 
         <div style="width: 100%;height: 53px;"><myFlaxSub title="提交" @click="sub"></myFlaxSub></div>
 
-        <mt-datetime-picker
-                v-model="dataValue"
-                ref="picker"
-                type="datetime"
-                @confirm="handleConfirm"
-        >
-        </mt-datetime-picker>
     </div>
 </template>
 
@@ -78,6 +69,7 @@
     import myHeard from "../customComponent/myHeard";
     import myField from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
+    import myTimeDate from "../customComponent/myTimeDate";
     import {Toast, Indicator} from 'mint-ui';
     export default {
         name: "reform",
@@ -85,6 +77,7 @@
             myHeard,
             myField,
             myFlaxSub,
+            myTimeDate,
             Toast,
             Indicator
         },
@@ -92,7 +85,6 @@
             return {
                 id          : 0,
                 popupVisible: false,
-                dataValue   : new Date(),
                 form:{
                     objId           : '',
                     inspVersion     : '',
@@ -112,6 +104,9 @@
             };
         },
         methods: {
+            changeTime:function (time) {
+                this.form.limitDate = time;
+            },
             getObj:function () {
                 Indicator.open();
                 let self = this;
@@ -147,28 +142,6 @@
                 this.company.name     = item.exeobjName;
                 this.company.add      = item.busiAddr;
                 this.popupVisible     = false;
-            },
-            openPicker:function () {
-                this.$refs.picker.open();
-            },
-            handleConfirm:function (value) {
-                let dateVal = new Date(value);
-                this.form.limitDate = this.myFormat(dateVal);
-            },
-            myFormat:function (dateVal) {
-
-                let year     = dateVal.getFullYear();
-                let month    = dateVal.getMonth() + 1;
-                let date     = dateVal.getDate();
-                let hours    = dateVal.getHours();
-                let minutes  = dateVal.getMinutes();
-
-                month    < 10 && (month   = '0'+month);
-                date     < 10 && (date    = '0'+date);
-                hours    < 10 && (hours   = '0'+hours);
-                minutes  < 10 && (minutes = '0'+minutes);
-
-                return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes;
             },
             test:function () {
                 if(this.form.inspVersion == ''){
@@ -211,7 +184,6 @@
         },
         mounted() {
             this.getName();
-            this.form.limitDate = this.myFormat(new Date());
         },
     }
 </script>
