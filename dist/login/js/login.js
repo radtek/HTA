@@ -39,7 +39,7 @@ function login() {
             pwd: password,
             imei: imei,
         }, function(data, status) {
-            $('#loading').hide();reaaqaawqaaa
+            $('#loading').hide();
             isLoad = false;
             if (data.statusCode == 200) {
 

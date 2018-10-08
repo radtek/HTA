@@ -130,7 +130,8 @@
         },
         data() {
             return {
-                id : 0,
+                id       : 0,
+                taskId   : 0,
                 filelst  : [],
                 files    : [],
                 imgs     : [],
@@ -154,10 +155,11 @@
 
                 slots: [
                     {
-                        values: ['weiyalin1','weiyalin2','weiyalin3','weiyalin4','weiyalin5']
+                        values: []
                     },
                 ],
                 showTransferPhoto : false,
+                transferList : [],
                 transferMan : '',
             };
         },
@@ -167,6 +169,7 @@
             },
             getData:function () {
                 let self = this;
+                Indicator.open();
                 $.get(getUrl('sf_zhzf/msys/task/taskinfo'), {
                     id  : self.id,
                 }, function (data, status) {
@@ -285,13 +288,14 @@
             },
             accept:function () {
                 let self = this;
+                Indicator.open();
                 $.get(getUrl('sf_zhzf/msys/task/accept'), {
                     id  : self.id,
                 }, function (data, status) {
                     Indicator.close();
                     if (data.statusCode == 200) {
                         Toast('成功接受该任务');
-                        self.$router.push({name: 'TaskInfor', params: { id : this.id }});
+                        self.$router.push({name: 'TaskInfor', params: { id : self.id ,taskId : self.taskId }});
                     } else if (data.statusCode == 310) {
                         window.location.href = "login.html";
                     } else {
@@ -301,16 +305,62 @@
             },
             transfer:function () {
                 this.showTransferPhoto = true;
+
+                let self = this;
+                Indicator.open();
+                $.get(getUrl('sf_zhzf/msys/task/deptuser'), {
+
+                }, function (data, status) {
+                    Indicator.close();
+                    if (data.statusCode == 200) {
+                        self.transferList = data.list;
+                        let values = [];
+                        data.list.forEach(function (value) {
+                            values.push(value.relName);
+                        });
+                        self.slots[0].values = values;
+                    } else if (data.statusCode == 310) {
+                        window.location.href = "login.html";
+                    } else {
+                        Toast(data.message);
+                    }
+                }, 'json');
             },
             transferConfirm:function () {
                 this.showTransferPhoto = false;
-
-                //TODO::转派
-                console.log(this.transferMan);
+                let userId = 0;
+                let self = this;
+                this.transferList.forEach(function (value) {
+                    if(value.relName == self.transferMan){
+                        userId = value.id;
+                        return;
+                    }
+                });
+                if(userId == 0) {
+                    Toast("转派人错误");
+                    return;
+                }
+                Indicator.open();
+                $.get(getUrl('sf_zhzf/msys/task/zhuanpai'), {
+                    id : self.id,
+                    taskId : self.taskId,
+                    userId : self.userId
+                }, function (data, status) {
+                    Indicator.close();
+                    if (data.statusCode == 200) {
+                        Toast('已成功转派');
+                        self.$router.push({name: 'TaskInfor', params: { id : self.id ,taskId : self.taskId }});
+                    } else if (data.statusCode == 310) {
+                        window.location.href = "login.html";
+                    } else {
+                        Toast(data.message);
+                    }
+                }, 'json');
             }
         },
         mounted() {
             this.id = this.$route.params.id;
+            this.taskId = this.$route.params.taskId;
             this.getData();
         },
     }

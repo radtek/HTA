@@ -26,25 +26,33 @@
             </el-col>
         </el-row>
         <div class="separate"></div>
-        <mt-cell title="个人信息" to="/PersonalInfo" is-link>
-            <span slot="icon" class="fa fa-user-o icon"></span>
-        </mt-cell>
-        <mt-cell title="消息提醒" to="/PersonalMessage" >
+        <div class="item">
+            <mt-cell title="个人信息" to="/PersonalInfo" is-link>
+                <span slot="icon" class="fa fa-user-o icon"></span>
+            </mt-cell>
+        </div>
+        <div class="item">
+            <mt-cell title="消息提醒" to="/PersonalMessage" >
             <span v-if="unreadMessageCount != 0">
                 未读消息
                 <mt-badge type="error">{{unreadMessageCount}}</mt-badge>
             </span>
-            <span v-if="unreadMessageCount == 0">
+                <span v-if="unreadMessageCount == 0">
                 无未读消息
             </span>
-            <span slot="icon" class="fa fa-commenting-o icon"></span>
-        </mt-cell>
-        <mt-cell title="修改密码" to="/ResetPassword" is-link>
-            <span slot="icon" class="fa fa-key icon" ></span>
-        </mt-cell>
-        <mt-cell title="系统设置" to="/Config" is-link>
-            <span slot="icon" class="fa fa-cogs icon" ></span>
-        </mt-cell>
+                <span slot="icon" class="fa fa-commenting-o icon"></span>
+            </mt-cell>
+        </div>
+        <div class="item">
+            <mt-cell title="修改密码" to="/ResetPassword" is-link>
+                <span slot="icon" class="fa fa-key icon" ></span>
+            </mt-cell>
+        </div>
+        <div class="item">
+            <mt-cell title="系统设置" to="/Config" is-link>
+                <span slot="icon" class="fa fa-cogs icon" ></span>
+            </mt-cell>
+        </div>
         <myMenu active="4"></myMenu>
     </div>
 </template>
@@ -143,4 +151,5 @@
     .phoneNum{
         color: #607D8B;
     }
+
 </style>

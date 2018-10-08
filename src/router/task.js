@@ -14,7 +14,7 @@ export default [
     },
     //任务详情
     {
-        path: '/TaskInfor/:id',
+        path: '/TaskInfor/:id/:taskId',
         name: 'TaskInfor',
         component: resolve => void(require(['../components/task/TaskInfor.vue'], resolve))
     },

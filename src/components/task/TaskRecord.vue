@@ -21,7 +21,7 @@
             <Loadmore :bottom-method="loadBottom"
                       bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
                       :bottom-all-loaded="searchCondition1.allLoaded" :auto-fill="false" ref="loadmore1">
-                <div class="myBlock" v-for="list in searchCondition1.pageList" @click="click(list.id)" :key="list.id">
+                <div class="myBlock" v-for="list in searchCondition1.pageList" @click="click(list.id,list.taskId)" :key="list.id">
                     <div class="qyInfo">
                         <p class="myP qyName">{{ list.taskName }}</p>
                         <p class="myP">完成期限：{{ list.limitDate }}</p>
@@ -41,7 +41,7 @@
             <Loadmore :bottom-method="loadBottom"
                       bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
                       :bottom-all-loaded="searchCondition2.allLoaded" :auto-fill="false" ref="loadmore2">
-                <div class="myBlock" v-for="list in searchCondition2.pageList" @click="click(list.id)" :key="list.id">
+                <div class="myBlock" v-for="list in searchCondition2.pageList" @click="click(list.id,list.taskId)" :key="list.id">
                     <div class="qyInfo">
                         <p class="myP qyName">{{ list.taskName }}</p>
                         <p class="myP">完成期限：{{ list.limitDate }}</p>
@@ -114,6 +114,7 @@
                 }, function (data, status) {
                     Indicator.close();
                     if (data.statusCode == 200) {
+                        console.log(data);
                         search.pageList = search.pageList.concat(data.list);
                         search.total = data.totalCount;
                         search.pageList.length >= search.total && (search.allLoaded = true);
@@ -125,8 +126,8 @@
                     }
                 }, 'json');
             },
-            click:function (id) {
-                this.$router.push({name: 'TaskInfor', params: { id : id }});
+            click:function (id,taskId) {
+                this.$router.push({name: 'TaskInfor', params: { id : id ,taskId : taskId}});
             },
         },
         mounted() {

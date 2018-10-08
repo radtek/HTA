@@ -28,6 +28,7 @@
     }
     .mint-cell-wrapper{
         font-size: 14px !important;
+        line-height: normal !important;
     }
     input,textarea{
         font-size: 14px !important;
