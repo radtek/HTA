@@ -21,7 +21,8 @@
     import myHeard   from  "../customComponent/myHeard";
     import myField   from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Toast} from 'mint-ui';
 
     export default {
         name: 'reset-password',
@@ -36,8 +37,7 @@
             myHeard,
             myField,
             myFlaxSub,
-            Toast,
-            Indicator
+            Toast
         },
         methods: {
             submitForm(formName) {
@@ -58,24 +58,16 @@
                     Toast('新密码与确认密码不一致！');
                     return;
                 }
-                Indicator.open();
-                $.get(getUrl('sf_zhzf/msys/user/resetpwd'), {
+                getRequest('sf_zhzf/msys/user/getinfo',{
                     oldpass: hex_md5(self.originalPassword),
                     newpass: hex_md5(self.newPassword),
-                    imei: plus.device.imei,
+                    imei    : plus.device.imei,
                     lastsend: localStorage.getItem("lastsend")
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        localStorage.setItem("token", hex_md5(self.newPassword));
-                        Toast('修改成功');
-                        self.$router.go(-1);
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    localStorage.setItem("token", hex_md5(self.newPassword));
+                    Toast('修改成功');
+                    self.$router.go(-1);
+                });
             },
         },
     }

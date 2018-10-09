@@ -66,15 +66,14 @@
     import myHeard   from  "../customComponent/myHeard";
     import myField   from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
-    import {Toast, Indicator, Loadmore} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Loadmore} from 'mint-ui';
     export default {
         name: "rectify-record",
         components:{
             myHeard,
             myField,
             myFlaxSub,
-            Toast,
-            Indicator,
             Loadmore,
         },
         data() {
@@ -108,28 +107,18 @@
                 this.activeIndex == 1 ? this.$refs.loadmore1.onBottomLoaded() : this.$refs.loadmore2.onBottomLoaded();
             },
             getData:function (isMore,index) {
-                Indicator.open();
-
                 let search = index == 1 ? this.searchCondition1 : this.searchCondition2;
                 search.pageNo = isMore ? parseInt(search.pageNo) + 1 : parseInt(search.pageNo);
 
-                $.get(getUrl('sf_zhzf/msys/rectify/list'), {
+                getRequest('sf_zhzf/msys/rectify/list',{
                     status      : index,
                     pageNum     : search.pageNo,
                     numPerPage  : search.pageSize
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        search.pageList = search.pageList.concat(data.list);
-                        search.total = data.totalCount;
-                        search.pageList.length >= search.total && (search.allLoaded = true);
-                    } else if (data.statusCode == 310) {
-                        //登录超时
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    search.pageList = search.pageList.concat(data.list);
+                    search.total = data.totalCount;
+                    search.pageList.length >= search.total && (search.allLoaded = true);
+                });
             },
             click1:function (list) {
                 this.$router.push({name: 'Supervise', params: { data : JSON.stringify(list) }});

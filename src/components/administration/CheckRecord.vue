@@ -33,13 +33,12 @@
 
 <script>
     import myHeard   from  "../customComponent/myHeard";
-    import {Toast, Indicator, Loadmore} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Loadmore} from 'mint-ui';
     export default {
         name: "check-record",
         components:{
             myHeard,
-            Toast,
-            Indicator,
             Loadmore
         },
         data() {
@@ -62,28 +61,17 @@
                 this.$refs.loadmore.onBottomLoaded();
             },
             getData:function (isMore) {
-                Indicator.open();
-
                 let search = this.searchCondition;
                 search.pageNo = isMore ? parseInt(search.pageNo) + 1 : parseInt(search.pageNo);
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/inspnotes/verlist2'), {
+                getRequest('sf_zhzf/msys/inspnotes/verlist2',{
                     pageNum     : search.pageNo,
                     numPerPage  : search.pageSize
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        console.log(data);
-                        search.pageList = search.pageList.concat(data.list);
-                        search.total = data.totalCount;
-                        search.pageList.length >= search.total && (search.allLoaded = true);
-                    } else if (data.statusCode == 310) {
-                        //登录超时
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    search.pageList = search.pageList.concat(data.list);
+                    search.total = data.totalCount;
+                    search.pageList.length >= search.total && (search.allLoaded = true);
+                });
             },
             click:function (id,inspVersion) {
                 this.$router.push({name: 'CheckDetail', params: { id : id ,inspVersion : inspVersion}});

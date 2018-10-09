@@ -17,6 +17,8 @@
 
 <script>
     import myHeard from "../customComponent/myHeard";
+    import {getRequest} from "../../assets/js/public";
+
     export default {
         name: "personal-info",
         data(){
@@ -29,14 +31,11 @@
         },
         methods:{
              getUserInfo:function(){
-                
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/user/getinfo'),function(data, status) {
-                    if(data.statusCode == 200){
-                        sessionStorage.setItem('userInfo', data);
-                        self.userInfo = data;
-                    }
-                }, 'json');
+                 getRequest('sf_zhzf/msys/user/getinfo',{},function (data) {
+                     sessionStorage.setItem('userInfo', data);
+                     self.userInfo = data;
+                 });
             }
         },
         mounted(){

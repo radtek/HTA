@@ -60,9 +60,9 @@
 
 <script>
     import myHeard   from  "../customComponent/myHeard";
-    import myMenu    from  "../customComponent/myMenu"
-    import {Loadmore} from 'mint-ui';
+    import myMenu    from  "../customComponent/myMenu";
     import {getRequest} from "../../assets/js/public";
+    import {Loadmore} from 'mint-ui';
     export default {
         name: "rectify-record",
         components:{

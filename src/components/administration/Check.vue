@@ -70,7 +70,8 @@
     import myField  from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
     import myTimeDate from "../customComponent/myTimeDate";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Toast} from 'mint-ui';
     export default {
         name: "check",
         components:{
@@ -79,7 +80,6 @@
             myFlaxSub,
             myTimeDate,
             Toast,
-            Indicator
         },
         data() {
             return {
@@ -114,53 +114,30 @@
                 this.all = [];
             },
             getCheckList:function () {
-                Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/inspnotes/inspitems'), {
+                getRequest('sf_zhzf/msys/inspnotes/inspitems',{
                     inspSpecial: self.type
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.tpCheckList = data.list;
-                        data.list.forEach(function (value,index) {
-                            self.checkOptions.push(value.inspName);
-                        })
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    self.tpCheckList = data.list;
+                    data.list.forEach(function (value,index) {
+                        self.checkOptions.push(value.inspName);
+                    })
+                });
             },
             getObj:function () {
-                Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname2'), {
+                getRequest('sf_zhzf/msys/enterprise/querybyname2',{
                     inspSpecial: self.type,
                     objName    : self.selectValue
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.objList = data.list;
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    self.objList = data.list;
+                });
             },
             getName(){
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
-                },function(data,status){
-                    if(data.statusCode == 200){
-                        self.form.checkMan = data.relName;
-                    }else if(data.statusCode == 310){
-                        window.location.href = "login.html";
-                    }else{
-                        Toast(data.message);
-                    }
-                },'json');
+                getRequest('sf_zhzf/msys/user/getinfo',{},function (data) {
+                    self.form.checkMan = data.relName;
+                });
             },
             selectedObj:function (obj,id) {
                 this.onjName = obj;

@@ -65,7 +65,8 @@
     import myFlaxSub from  "../customComponent/myFlaxSub";
     import myBase64Img from "../customComponent/myUploadImg";
     import myTimeDate from "../customComponent/myTimeDate";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Toast} from 'mint-ui';
     export default {
         name: "check",
         components:{
@@ -75,7 +76,6 @@
             myBase64Img,
             myTimeDate,
             Toast,
-            Indicator
         },
         data() {
             return {
@@ -103,33 +103,18 @@
             },
             getName(){
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
-                },function(data,status){
-                    if(data.statusCode == 200){
-                        self.form.checkMan = data.relName;
-                    }else if(data.statusCode == 310){
-                        window.location.href = "login.html";
-                    }else{
-                        Toast(data.message);
-                    }
-                },'json');
+                getRequest('sf_zhzf/msys/user/getinfo',{},function (data) {
+                    self.form.checkMan = data.relName;
+                });
             },
             getObj:function () {
-                Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname2'), {
+                getRequest('sf_zhzf/msys/enterprise/querybyname2',{
                     inspSpecial: self.type,
                     objName    : self.selectValue
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.objList = data.list;
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    self.objList = data.list;
+                });
             },
             selectedObj:function (execObjId,execObjName) {
                 this.form.execObjId = execObjId;
@@ -154,24 +139,16 @@
             sub:function () {
                 if(!this.test()) return;
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/task/finish'), {
+                getRequest('sf_zhzf/msys/task/finish',{
                     id          : self.form.id,
                     execObjId   : self.form.execObjId,
                     officerName : self.form.jointly,
                     doitTime    : self.form.time,
                     attafile    : self.form.imgs,
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        Toast('提交成功');
-                        self.$router.push({name: 'TaskRecord'});
-                    } else if (data.statusCode == 310) {
-                        //登录超时
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    Toast('提交成功');
+                    self.$router.push({name: 'TaskRecord'});
+                });
             },
         },
         mounted() {

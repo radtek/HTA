@@ -69,6 +69,7 @@
         },
         mounted() {
             this.time = this.myFormat(new Date());
+            this.$emit('changeTime', this.time);
         },
     }
 </script>

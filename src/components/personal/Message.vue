@@ -5,8 +5,8 @@
             <div id="myScr" class="test" style="height: 85vh; overflow:scroll; background-color: rgba(0,0,0,0);">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
-                            :bottom-all-loaded="allLoaded" :auto-fill="false" ref="loadmore">
-                    <div class="message-list" v-for="(item,index) in pageList">
+                            :bottom-all-loaded="searchCondition.allLoaded" :auto-fill="false" ref="loadmore">
+                    <div class="message-list" v-for="(item,index) in searchCondition.pageList">
                         <a @click="show(index,item.id,item.msgStatus,item.noticeId)"
                         style="height: 100%;width: 100%;display: block">
                             <el-badge v-if="item.msgStatus == unread" is-dot class="item">
@@ -36,7 +36,7 @@
                             </el-badge>
                         </a>
                     </div>
-                    <div v-if="pageList.length >= total" class="contentEnd">
+                    <div v-if="searchCondition.pageList.length >= searchCondition.total" class="contentEnd">
                         ————我是有底线的————
                     </div>
                 </v-loadmore>
@@ -248,6 +248,7 @@
 </style>
 <script>
     import myHeader from '../customComponent/myHeard.vue';
+    import {getRequest} from "../../assets/js/public";
     import {Header, Loadmore, Toast, Indicator, Cell, MessageBox} from 'mint-ui';
 
     export default {
@@ -258,14 +259,16 @@
                 read: 2, //已读为2
                 showPopup: false,
                 popupContent: '',
+
                 searchCondition: {  //分页属性
                     pageNo: "1",
-                    pageSize: "15"
+                    pageSize: "15",
+                    total: 0,
+                    pageList: [],
+                    allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
                 },
-                total: 0,
-                pageList: [],
-                allLoaded: false, //是否可以上拉属性，false可以上拉，true为禁止上拉，就是不让往上划加载数据了
                 scrollMode: "auto", //移动端弹性滚动效果，touch为弹性滚动，auto是非弹性滚动
+
                 appendixList: '',
                 showPhoto: false,//是否显示图片放大缩放
                 imgUrl: '',
@@ -292,112 +295,67 @@
         methods: {
             loadBottom() {
                 // 上拉加载
-                this.more();// 上拉触发的分页查询
+                this.getData(true);// 上拉触发的分页查询
                 this.$refs.loadmore.onBottomLoaded();// 固定方法，查询完要调用一次，用于重新定位
             },
-            loadPageList() {
-                Indicator.open();
-                let self = this;
-                $.get(getUrl('sf_zhzf/msys/notice/list'), {
-                    pageNum: self.searchCondition.pageNo,
-                    numPerPage: self.searchCondition.pageSize
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.pageList = data.list;
-                        self.total = data.totalCount;
-                        self.checkOver();
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
-            },
-            more() {
-                //分页查询
-                this.searchCondition.pageNo = parseInt(this.searchCondition.pageNo) + 1;
+            getData:function (isMore) {
+                let search = this.searchCondition;
+                search.pageNo = isMore ? parseInt(search.pageNo) + 1 : parseInt(search.pageNo);
 
-                let self = this;
-                $.get(getUrl('sf_zhzf/msys/notice/list'), {
-                    pageNum: self.searchCondition.pageNo,
-                    numPerPage: self.searchCondition.pageSize
-                }, function (data, status) {
-                    if (data.statusCode == 200) {
-                        self.pageList = self.pageList.concat(data.list);
-                        self.total = data.totalCount;
-                        self.checkOver();
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                getRequest('sf_zhzf/msys/notice/list',{
+                    pageNum     : search.pageNo,
+                    numPerPage  : search.pageSize
+                },function (data) {
+                    search.pageList = data.list;
+                    search.total = data.totalCount;
+                    search.pageList.length >= search.total && (search.allLoaded = true);
+                });
             },
             show(index, id, msgStatus, noticeId) {
                 let self = this;
-                self.popupContent = self.pageList[index].content;
+                self.popupContent = self.searchCondition.pageList[index].content;
                 self.showPopup = true;
 
                 //如果是未读的消息则更改消息状态
                 if (msgStatus == self.unread) {
-                    $.get(getUrl('sf_zhzf/msys/notice/reading'), {
+                    getRequest('sf_zhzf/msys/notice/reading',{
                         id: id
-                    }, function (data, status) {
-                        if (data.statusCode == 200) {
-
-                            self.pageList[index].msgStatus = self.read;
-
-                        } else if (data.statusCode == 310) {
-                            window.location.href = "login.html";
-                        } else {
-                            Toast(data.message);
-                        }
-                    }, 'json');
+                    },function (data) {
+                        self.searchCondition.pageList[index].msgStatus = self.read;
+                    });
                 }
                self.getAttachment(index,noticeId);
             },
             getAttachment(index,noticeId){
                 //获得附件
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/notice/attachfile'), {
+                getRequest('sf_zhzf/msys/notice/attachfile',{
                     noticeId: noticeId
-                }, function (data, status) {
-                    if (data.statusCode == 200) {
-                        if(data.list.length == 1){
-                            self.attachment[index] = true;
-                        }
-                        self.appendixList = data.list;
-                        self.appendixList.forEach(function (value, index, arr) {
-                            if (value.fileType == 2) {
-                                let exe = value.fileName.split('.');
-                                switch (exe[exe.length - 1].toLowerCase()) {
-                                    case 'docx':
-                                    case 'doc' :
-                                        arr[index].iconType = self.word;
-                                        break;
-                                    case 'xls' :
-                                    case 'xlsx':
-                                        arr[index].iconType = self.excel;
-                                        break;
-                                    case 'pdf' :
-                                        arr[index].iconType = self.pdf;
-                                        break;
-                                    default:
-                                        arr[index].iconType = self.unKnow;
-                                        break;
-                                }
+                },function (data) {
+                    if(data.list.length == 1) self.attachment[index] = true;
+                    self.appendixList = data.list;
+                    self.appendixList.forEach(function (value, index, arr) {
+                        if (value.fileType == 2) {
+                            let exe = value.fileName.split('.');
+                            switch (exe[exe.length - 1].toLowerCase()) {
+                                case 'docx':
+                                case 'doc' :
+                                    arr[index].iconType = self.word;
+                                    break;
+                                case 'xls' :
+                                case 'xlsx':
+                                    arr[index].iconType = self.excel;
+                                    break;
+                                case 'pdf' :
+                                    arr[index].iconType = self.pdf;
+                                    break;
+                                default:
+                                    arr[index].iconType = self.unKnow;
+                                    break;
                             }
-                        });
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
-            },
-            checkOver() {
-                this.pageList.length >= this.total && (this.allLoaded = true);
+                        }
+                    });
+                });
             },
             showDetail(path) {
                 this.showPhoto = true;
@@ -468,7 +426,7 @@
             }
         },
         mounted() {
-            this.loadPageList();
+            this.getData(false);
             check();
         }
     }

@@ -26,13 +26,11 @@
 
 <script>
     import myHeard   from  "../customComponent/myHeard";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
     export default {
         name: "reform-detail",
         components:{
             myHeard,
-            Toast,
-            Indicator,
         },
         data() {
             return {
@@ -61,19 +59,11 @@
         methods: {
             getData:function () {
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/rectify/info'), {
+                getRequest('sf_zhzf/msys/rectify/info',{
                     rectNoteId : self.id
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.data = data.rectNote;
-                    } else if (data.statusCode == 310) {
-                        //登录超时
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    self.data = data.rectNote;
+                });
             },
         },
         mounted() {

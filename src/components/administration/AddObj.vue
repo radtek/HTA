@@ -31,7 +31,8 @@
     import myHeard   from  "../customComponent/myHeard";
     import myField   from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Toast} from 'mint-ui';
     export default {
         name: "add-obj",
         components:{
@@ -39,7 +40,6 @@
             myField,
             myFlaxSub,
             Toast,
-            Indicator,
         },
         data() {
             return {
@@ -91,10 +91,9 @@
             },
             sub:function () {
                 let self = this;
-                if(self.test())
+                if(self.test()){
                     self.objType = self.objType == '企业' ? '1' : '2';
-                    Indicator.open();
-                    $.get(getUrl('sf_zhzf/msys/enterprise/add'),{
+                    getRequest('sf_zhzf/msys/enterprise/add',{
                         objName     : self.objName,
                         objType     : self.objType,
                         busiAddr    : self.objAdd,
@@ -103,17 +102,11 @@
                         farenPhone  : self.faPhone,
                         fuzeren     : self.fuName,
                         fuzerenPhone: self.fuPhone,
-                    },function(data,status){
-                        Indicator.close();
-                        if(data.statusCode == 200){
-                            Toast('新增执法对象成功');
-                            self.$router.push({name: 'Administration'});
-                        }else if(data.statusCode == 310){
-                            window.location.href = "login.html";
-                        }else{
-                            Toast(data.message);
-                        }
-                    },'json');
+                    },function (data) {
+                        Toast('新增执法对象成功');
+                        self.$router.push({name: 'Administration'});
+                    });
+                }
             },
         },
         mounted() {

@@ -71,7 +71,8 @@
 
 <script>
     import myHeard from  "../customComponent/myHeard";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Toast} from 'mint-ui';
     export default {
         name: 'append',
         data() {
@@ -94,47 +95,37 @@
         },
         components: {
             Toast,
-            Indicator,
             myHeard
         },
         methods: {
             getData() {
-
-                Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/enterprise/attachfile'), {
+                getRequest('sf_zhzf/msys/enterprise/attachfile',{
                     code: self.id
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.appendixList = data.list;
-                        self.appendixList.forEach(function (value, index, arr) {
-                            if (value.fileType == 2) {
-                                let exe = value.fileName.split('.');
-                                switch (exe[exe.length - 1].toLowerCase()) {
-                                    case 'docx':
-                                    case 'doc' :
-                                        arr[index].iconType = self.word;
-                                        break;
-                                    case 'xls' :
-                                    case 'xlsx':
-                                        arr[index].iconType = self.excel;
-                                        break;
-                                    case 'pdf' :
-                                        arr[index].iconType = self.pdf;
-                                        break;
-                                    default:
-                                        arr[index].iconType = self.unKnow;
-                                        break;
-                                }
+                },function (data) {
+                    self.appendixList = data.list;
+                    self.appendixList.forEach(function (value, index, arr) {
+                        if (value.fileType == 2) {
+                            let exe = value.fileName.split('.');
+                            switch (exe[exe.length - 1].toLowerCase()) {
+                                case 'docx':
+                                case 'doc' :
+                                    arr[index].iconType = self.word;
+                                    break;
+                                case 'xls' :
+                                case 'xlsx':
+                                    arr[index].iconType = self.excel;
+                                    break;
+                                case 'pdf' :
+                                    arr[index].iconType = self.pdf;
+                                    break;
+                                default:
+                                    arr[index].iconType = self.unKnow;
+                                    break;
                             }
-                        });
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                        }
+                    });
+                });
             },
             showDetail(path) {
                 this.showPhoto = true;

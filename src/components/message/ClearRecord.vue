@@ -81,8 +81,9 @@
         </mt-popup>
 
         <div class="landscape" v-if="showPhoto">
-            <a class="aClose" @click="closePhoto"><img class="myClose" src="../../assets/img/round_close.png"
-                                                       alt=""></a>
+            <a class="aClose" @click="closePhoto">
+                <img class="myClose" src="../../assets/img/new/round_close.png" alt="">
+            </a>
             <div class="myBoxDetail">
                 <img :src="imgUrl" alt="">
             </div>
@@ -92,15 +93,14 @@
 
 <script>
     import myHeard   from  "../customComponent/myHeard";
-    import {Loadmore, Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Loadmore} from 'mint-ui';
 
     export default {
         name: 'home',
         components: {
             myHeard,
-            Toast,
             Loadmore,
-            Indicator
         },
         data() {
             return {
@@ -134,28 +134,20 @@
                 this.$refs.loadmore.onBottomLoaded();
             },
             getData:function (isMore) {
-                Indicator.open();
 
                 let search = this.searchCondition;
                 search.pageNo = isMore ? parseInt(search.pageNo) + 1 : parseInt(search.pageNo);
+
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/cleanhist/list'), {
+                getRequest('sf_zhzf/msys/cleanhist/list',{
                     execobjId   : self.id,
                     pageNum     : search.pageNo,
                     numPerPage  : search.pageSize
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        search.pageList = search.pageList.concat(data.list);
-                        search.total = data.totalCount;
-                        search.pageList.length >= search.total && (search.allLoaded = true);
-                    } else if (data.statusCode == 310) {
-                        //登录超时
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    search.pageList = search.pageList.concat(data.list);
+                    search.total = data.totalCount;
+                    search.pageList.length >= search.total && (search.allLoaded = true);
+                });
             },
             click(clearId, index, status) {
                 //审核需要
@@ -165,17 +157,12 @@
 
                 this.showPopup = true;
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/cleanhist/photolst'), {
+
+                getRequest('sf_zhzf/msys/cleanhist/photolst',{
                     releId: clearId,
-                }, function (data, status) {
-                    if (data.statusCode == 200) {
-                        self.imgList = data.list;
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    self.imgList = data.list;
+                });
             },
             showDetail(path) {
                 this.showPhoto = true;
@@ -202,26 +189,17 @@
                 this.answer = '2';
             },
             examine() {
-                Indicator.open();
                 let self = this;
-
-                $.get(getUrl('sf_zhzf/msys/cleanhist/ckverify'), {
+                getRequest('sf_zhzf/msys/cleanhist/ckverify',{
                     id: self.clearId,
                     status: self.answer,
                     explain: self.formal,
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.showAuditing = false;
-                        (self.answer == 2) ? self.searchCondition.pageList[self.clearIndex].statusName = '合格' : self.searchCondition.pageList[self.clearIndex].statusName = '不合格';
-                        self.searchCondition.pageList[self.clearIndex].status = self.answer;
-                        self.checkR(self.answer);
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    self.showAuditing = false;
+                    (self.answer == 2) ? self.searchCondition.pageList[self.clearIndex].statusName = '合格' : self.searchCondition.pageList[self.clearIndex].statusName = '不合格';
+                    self.searchCondition.pageList[self.clearIndex].status = self.answer;
+                    self.checkR(self.answer);
+                });
             },
             checkR(status) {
                 if (status == 1) this.isReply = false;   // 1 为未审核，false显示

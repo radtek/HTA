@@ -13,14 +13,14 @@
             <el-col :span="17">
                 <div class="grid-content bg-purple">
                     <el-row type="flex" class="row-bg">
-                        <el-col :span="10"><div class="grid-content bg-purple">{{uesrInfo.relName}}</div></el-col>
-                        <el-col :span="8"><div class="grid-content bg-purple-light department">{{uesrInfo.deptName}}</div></el-col>
-                        <el-col :span="8"><div class="grid-content bg-purple post">{{uesrInfo.roleName}}</div></el-col>
+                        <el-col :span="10"><div class="grid-content bg-purple">{{userInfo.relName}}</div></el-col>
+                        <el-col :span="8"><div class="grid-content bg-purple-light department">{{userInfo.deptName}}</div></el-col>
+                        <el-col :span="8"><div class="grid-content bg-purple post">{{userInfo.roleName}}</div></el-col>
                     </el-row>
 
                     <el-row type="flex" class="row-bg">
                         <el-col :span="10"><div class="grid-content bg-purple phone">联系方式</div></el-col>
-                        <el-col :span="14"><div class="grid-content bg-purple-light phoneNum">{{uesrInfo.phone}}</div></el-col>
+                        <el-col :span="14"><div class="grid-content bg-purple-light phoneNum">{{userInfo.phone}}</div></el-col>
                     </el-row>
                 </div>
             </el-col>
@@ -60,12 +60,14 @@
 <script>
     import myMenu from "../customComponent/myMenu";
     import myHeard from "../customComponent/myHeard";
+    import {getRequest} from "../../assets/js/public";
+
     export default {
         name: "personal",
         data(){
             return {
                 unreadMessageCount: 0,
-                uesrInfo: {relName: ''},
+                userInfo: {relName: ''},
             }
         },
         components:{
@@ -75,29 +77,22 @@
         methods:{
             getUserInfo:function(){
                 let self = this;
-                let uesrInfo = sessionStorage.getItem("personInfo");
+                let userInfo = sessionStorage.getItem("personInfo");
+                if (userInfo != null && userInfo.relName) {
+                    self.userInfo = userInfo;
+                    return;
+                }
 
-                $.get(getUrl('sf_zhzf/msys/user/getinfo'),function(data, status) {
-                    if(data.statusCode == 200){
-                        self.uesrInfo = data;
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                getRequest('sf_zhzf/msys/user/getinfo',{},function (data) {
+                    self.unreadMessageCount = data.count;
+                    self.userInfo = data;
+                });
             },
             getMessageCount:function(){
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/notice/unreadcnt'),function(data,status) {
-                    if (data.statusCode == 200) {
-                        self.unreadMessageCount = data.count;
-                    }else if(data.statusCode == 310){
-                        window.location.href = "login.html";
-                    }else{
-                        Toast(data.message);
-                    }
-                },'json');
+                getRequest('sf_zhzf/msys/notice/unreadcnt',{},function (data) {
+                    self.unreadMessageCount = data.count;
+                });
             }
         },
         mounted() {

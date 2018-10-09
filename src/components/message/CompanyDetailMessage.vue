@@ -43,6 +43,8 @@
 
 <script>
     import myHeard from  "../customComponent/myHeard";
+    import {getRequest} from "../../assets/js/public";
+
     export default {
         name: "company-detail-message",
         data() {
@@ -68,20 +70,12 @@
                 this.$router.push({name: 'Append', params: { id : this.data.id }});
             },
             getData:function () {
-                Indicator.open();
                 let self = this;
-                $.get( getUrl('sf_zhzf/msys/enterprise/qrcode'),{
+                getRequest('sf_zhzf/msys/enterprise/qrcode',{
                     code : self.id
-                },function(data,status){
-                    Indicator.close();
-                    if(data.statusCode == 200){
-                        self.data = data;
-                    }else if(data.statusCode == 310){
-                        window.location.href = "login.html";
-                    }else{
-                        Toast(data.message);
-                    }
-                },'json');
+                },function (data) {
+                    self.data = data;
+                });
             },
         },
         mounted(){

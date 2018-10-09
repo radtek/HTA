@@ -120,12 +120,12 @@
 
 <script>
     import myHeard   from  "../customComponent/myHeard";
-    import {Toast, Indicator, MessageBox } from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import { Toast,MessageBox } from 'mint-ui';
     export default {
         components:{
             myHeard,
             Toast,
-            Indicator,
             MessageBox
         },
         data() {
@@ -169,52 +169,42 @@
             },
             getData:function () {
                 let self = this;
-                Indicator.open();
-                $.get(getUrl('sf_zhzf/msys/task/taskinfo'), {
+                getRequest('sf_zhzf/msys/task/taskinfo',{
                     id  : self.id,
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        console.log(data);
-                        self.filelst  = data.filelst;
-                        self.taskFlow = data.taskFlow;
-                        self.taskInfo = data.taskInfo;
+                },function (data) {
 
-                        self.status = data.taskInfo.status;
+                    self.filelst  = data.filelst;
+                    self.taskFlow = data.taskFlow;
+                    self.taskInfo = data.taskInfo;
 
-                        self.filelst.forEach(function (value, index, arr) {
-                            let exe = value.fileName.split('.');
-                            switch (exe[exe.length - 1].toLowerCase()) {
-                                case 'docx':
-                                case 'doc' :
-                                    arr[index].iconType = self.word;
-                                    self.files.push(arr[index]);
-                                    break;
-                                case 'xls' :
-                                case 'xlsx':
-                                    arr[index].iconType = self.excel;
-                                    self.files.push(arr[index]);
-                                    break;
-                                case 'pdf' :
-                                    arr[index].iconType = self.pdf;
-                                    self.files.push(arr[index]);
-                                    break;
-                                default:
-                                    self.imgs.push(arr[index]);
-                                    break;
-                            }
-                        });
+                    self.status = data.taskInfo.status;
 
-                        let len = (self.taskFlow.length-1)*40;
-                        $("#line").css("height",len+"px");
+                    self.filelst.forEach(function (value, index, arr) {
+                        let exe = value.fileName.split('.');
+                        switch (exe[exe.length - 1].toLowerCase()) {
+                            case 'docx':
+                            case 'doc' :
+                                arr[index].iconType = self.word;
+                                self.files.push(arr[index]);
+                                break;
+                            case 'xls' :
+                            case 'xlsx':
+                                arr[index].iconType = self.excel;
+                                self.files.push(arr[index]);
+                                break;
+                            case 'pdf' :
+                                arr[index].iconType = self.pdf;
+                                self.files.push(arr[index]);
+                                break;
+                            default:
+                                self.imgs.push(arr[index]);
+                                break;
+                        }
+                    });
 
-                    } else if (data.statusCode == 310) {
-                        //登录超时
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                    let len = (self.taskFlow.length-1)*40;
+                    $("#line").css("height",len+"px");
+                });
             },
             showDetail:function (path) {
                 this.showPhoto = true;
@@ -288,43 +278,26 @@
             },
             accept:function () {
                 let self = this;
-                Indicator.open();
-                $.get(getUrl('sf_zhzf/msys/task/accept'), {
+
+                getRequest('sf_zhzf/msys/task/accept',{
                     id  : self.id,
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        Toast('成功接受该任务');
-                        self.$router.push({name: 'TaskInfor', params: { id : self.id ,taskId : self.taskId }});
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    Toast('成功接受该任务');
+                    self.$router.push({name: 'TaskInfor', params: { id : self.id ,taskId : self.taskId }});
+                });
             },
             transfer:function () {
                 this.showTransferPhoto = true;
 
                 let self = this;
-                Indicator.open();
-                $.get(getUrl('sf_zhzf/msys/task/deptuser'), {
-
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.transferList = data.list;
-                        let values = [];
-                        data.list.forEach(function (value) {
-                            values.push(value.relName);
-                        });
-                        self.slots[0].values = values;
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                getRequest('sf_zhzf/msys/task/deptuser',{},function (data) {
+                    self.transferList = data.list;
+                    let values = [];
+                    data.list.forEach(function (value) {
+                        values.push(value.relName);
+                    });
+                    self.slots[0].values = values;
+                });
             },
             transferConfirm:function () {
                 this.showTransferPhoto = false;
@@ -340,22 +313,14 @@
                     Toast("转派人错误");
                     return;
                 }
-                Indicator.open();
-                $.get(getUrl('sf_zhzf/msys/task/zhuanpai'), {
+                getRequest('sf_zhzf/msys/task/zhuanpai',{
                     id : self.id,
                     taskId : self.taskId,
                     userId : self.userId
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        Toast('已成功转派');
-                        self.$router.push({name: 'TaskInfor', params: { id : self.id ,taskId : self.taskId }});
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    Toast('已成功转派');
+                    self.$router.push({name: 'TaskInfor', params: { id : self.id ,taskId : self.taskId }});
+                });
             }
         },
         mounted() {

@@ -35,7 +35,8 @@
     import myField   from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
     import myBase64Img from "../customComponent/myUploadImg";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Toast} from 'mint-ui';
     export default {
         name: "scene-check",
         components:{
@@ -44,7 +45,6 @@
             myFlaxSub,
             myBase64Img,
             Toast,
-            Indicator
         },
         data() {
             return {
@@ -65,24 +65,16 @@
                 this.imgs = imgs;
             },
             getProblem:function () {
-                Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/inspnotes/inspstandard2'),{
+                getRequest('sf_zhzf/msys/inspnotes/inspstandard2',{
                     items: self.form.items
-                },function(data,status){
-                    Indicator.close();
-                    if(data.statusCode == 200){
-                        self.problems = data.list;
-                        self.problems.forEach(function (value) {
-                            self.answer[value.inspCode] = '';
-                            self.result[value.inspCode] = '';
-                        });
-                    }else if(data.statusCode == 310){
-                        window.location.href = "login.html";
-                    }else{
-                        Toast(data.message);
-                    }
-                },'json');
+                },function (data) {
+                    self.problems = data.list;
+                    self.problems.forEach(function (value) {
+                        self.answer[value.inspCode] = '';
+                        self.result[value.inspCode] = '合格';
+                    });
+                });
             },
             test:function () {
                 let select = true;
@@ -107,7 +99,6 @@
 
                 if(!this.test()) return;
 
-                Indicator.open();
                 let self = this;
                 let list = [];
 
@@ -129,21 +120,12 @@
                     imgBase64    : self.imgs
                 };
 
-                console.log(jsonData);
-
-                $.get(getUrl('sf_zhzf/msys/inspnotes/noteadd2'),{
+                getRequest('sf_zhzf/msys/inspnotes/noteadd2',{
                     jsonData : JSON.stringify(jsonData)
-                },function(data,status){
-                    Indicator.close();
-                    if(data.statusCode == 200){
-                        Toast('提交成功');
-                        self.$router.push({name: 'AdminCheckRecord'});
-                    }else if(data.statusCode == 310){
-                        window.location.href = "login.html";
-                    }else{
-                        Toast(data.message);
-                    }
-                },'json');
+                },function (data) {
+                    Toast('提交成功');
+                    self.$router.push({name: 'AdminCheckRecord'});
+                });
             },
         },
         mounted() {

@@ -42,7 +42,7 @@
 
 <script>
     import myHeard   from  "../customComponent/myHeard";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
 
     export default {
         name: 'check-detail',
@@ -56,39 +56,22 @@
         },
         components: {
             myHeard,
-            Toast,
-            Indicator,
         },
         methods: {
             loadPageList() {
-                Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/inspnotes/list'), {
+                getRequest('sf_zhzf/msys/inspnotes/list',{
                     execobjId   : self.id,
                     inspVersion : self.inspVersion
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.pageList = data.list.reverse();
-                    } else if (data.statusCode == 310) {
-                        //登录超时
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    self.pageList = data.list.reverse();
+                });
             },
             getName() {
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/user/getinfo'), {}, function (data, status) {
-                    if (data.statusCode == 200) {
-                        self.relName = data.relName;
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                getRequest('sf_zhzf/msys/user/getinfo',{},function (data) {
+                    self.relName = data.relName;
+                });
             },
         },
         mounted() {

@@ -45,15 +45,14 @@
     import myHeard   from  "../customComponent/myHeard";
     import myField   from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
-    import {Toast, Indicator, Loadmore} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Loadmore} from 'mint-ui';
     export default {
         name: "company-record",
         components:{
             myHeard,
             myField,
             myFlaxSub,
-            Toast,
-            Indicator,
             Loadmore
         },
         data() {
@@ -107,28 +106,19 @@
                 this.$refs.loadmore.onBottomLoaded();
             },
             getData:function (isMore) {
-                Indicator.open();
-
                 let search = this.searchCondition;
                 search.pageNo = isMore ? parseInt(search.pageNo) + 1 : parseInt(search.pageNo);
 
-                $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
+                let self = this;
+                getRequest('sf_zhzf/msys/enterprise/querybyname',{
                     objName     : self.objName,
                     // pageNum     : search.pageNo,
                     // numPerPage  : search.pageSize
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        search.pageList = data.list;
-                        search.total = data.totalCount;
-                        search.pageList.length >= search.total && (search.allLoaded = true);
-                    } else if (data.statusCode == 310) {
-                        //登录超时
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    search.pageList = data.list;
+                    search.total = data.totalCount;
+                    search.pageList.length >= search.total && (search.allLoaded = true);
+                });
             },
             click:function (list) {
                 this.$router.push({name: 'CompanyMessage', params: {

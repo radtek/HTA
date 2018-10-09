@@ -39,7 +39,6 @@
 
 <script>
     import myHeard from  "../customComponent/myHeard";
-    import {Toast} from 'mint-ui';
     export default {
         name: "company-message",
         data() {
@@ -51,7 +50,6 @@
         },
         components:{
             myHeard,
-            Toast,
         },
         methods: {
             click1:function () {

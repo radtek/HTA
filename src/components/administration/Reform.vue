@@ -70,7 +70,8 @@
     import myField from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
     import myTimeDate from "../customComponent/myTimeDate";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Toast} from 'mint-ui';
     export default {
         name: "reform",
         components:{
@@ -79,7 +80,6 @@
             myFlaxSub,
             myTimeDate,
             Toast,
-            Indicator
         },
         data() {
             return {
@@ -108,33 +108,18 @@
                 this.form.limitDate = time;
             },
             getObj:function () {
-                Indicator.open();
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/inspnotes/verlist2'), {
+                getRequest('sf_zhzf/msys/inspnotes/verlist2',{
                     objName    : self.selectValue
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        self.objList = data.list;
-                    } else if (data.statusCode == 310) {
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    self.objList = data.list;
+                });
             },
             getName(){
                 let self = this;
-                $.get(getUrl('sf_zhzf/msys/user/getinfo'),{
-                },function(data,status){
-                    if(data.statusCode == 200){
-                        self.form.checkMan = data.relName;
-                    }else if(data.statusCode == 310){
-                        window.location.href = "login.html";
-                    }else{
-                        Toast(data.message);
-                    }
-                },'json');
+                getRequest('sf_zhzf/msys/user/getinfo',{},function (data) {
+                    self.form.checkMan = data.relName;
+                });
             },
             selectedObj:function (item) {
                 this.form.objId       = item.exeobjId;
@@ -161,25 +146,17 @@
             sub:function () {
                 let self = this;
                 if(this.test())
-                    $.get(getUrl('sf_zhzf/msys/rectify/addNote'), {
+                    getRequest('sf_zhzf/msys/rectify/addNote',{
                         inspVersion     : self.form.inspVersion,
                         execObjId       : self.form.objId,
                         reformContent   : self.form.reformContent,
                         limitDate       : self.form.limitDate,
                         offiName        : self.form.offiName,
                         remark          : self.form.remark,
-                    }, function (data, status) {
-                        Indicator.close();
-                        if (data.statusCode == 200) {
-                            Toast('下达限期整改成功');
-                            self.$router.push({name: 'RectifyRecord'});
-                        } else if (data.statusCode == 310) {
-                            //登录超时
-                            window.location.href = "login.html";
-                        } else {
-                            Toast(data.message);
-                        }
-                    }, 'json');
+                    },function (data) {
+                        Toast('下达限期整改成功');
+                        self.$router.push({name: 'RectifyRecord'});
+                    });
             },
         },
         mounted() {

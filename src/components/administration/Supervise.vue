@@ -35,7 +35,8 @@
     import myFlaxSub from  "../customComponent/myFlaxSub";
     import myBase64Img from "../customComponent/myUploadImg";
     import myTimeDate from "../customComponent/myTimeDate";
-    import {Toast, Indicator} from 'mint-ui';
+    import {getRequest} from "../../assets/js/public";
+    import {Toast} from 'mint-ui';
     export default {
         name: "supervise",
         components:{
@@ -45,7 +46,6 @@
             myBase64Img,
             myTimeDate,
             Toast,
-            Indicator,
         },
         data() {
             return {
@@ -83,25 +83,17 @@
                 if(!this.test()) return;
                 let self = this;
                 let status = self.reformResult == '通过' ? '1' : '2';
-                $.get(getUrl('sf_zhzf/msys/rectify/recheck'), {
+                getRequest('sf_zhzf/msys/rectify/recheck',{
                     id          : self.data.id,
                     status      : status,
                     explain     : self.remarks,
                     offiName    : self.jointly,
                     doitTime    : self.time,
                     attafile    : self.imgs
-                }, function (data, status) {
-                    Indicator.close();
-                    if (data.statusCode == 200) {
-                        Toast('提交成功');
-                        self.$router.push({name: 'RectifyRecord'});
-                    } else if (data.statusCode == 310) {
-                        //登录超时
-                        window.location.href = "login.html";
-                    } else {
-                        Toast(data.message);
-                    }
-                }, 'json');
+                },function (data) {
+                    Toast('提交成功');
+                    self.$router.push({name: 'RectifyRecord'});
+                });
             },
         },
         mounted() {
