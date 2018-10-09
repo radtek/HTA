@@ -29,8 +29,8 @@ function login() {
 
         $('#loading').show();
         isLoad = true;
-        let imei = plus.device.imei;
-        // let imei = '867541032157567,867541032551835';
+        // let imei = plus.device.imei;
+        let imei = '867541032157567,867541032551835';
 
         (localStorage.getItem("lastsend") && localStorage.getItem("ukey")) ? {} : password = hex_md5(password);
 

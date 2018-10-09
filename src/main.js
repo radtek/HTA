@@ -9,6 +9,8 @@ import './assets/css/element-#089593/index.css';
 import Mint from 'mint-ui';
 import 'mint-ui/lib/style.css';
 
+import './assets/css/public.css'
+
 Vue.use(ElementUI);
 Vue.use(Mint);
 Vue.config.productionTip = false;
