@@ -2,7 +2,7 @@
     <div>
         <mt-header fixed :title="title">
             <router-link v-if="back" to="" slot="left">
-                <mt-button class="myColor" icon="back" @click="$router.go(-1);"></mt-button>
+                <mt-button class="myColor" icon="back" @click="backTo"></mt-button>
             </router-link>
             <mt-button v-if="reform" slot="right">
                 <router-link to="/Reform" class="myColor" style="font-size: 12px">
@@ -22,11 +22,24 @@
     export default {
         name : "my-heard",
         props:{
-            back : false,
-            title:'',
+            back  : false,
+            title :'',
             reform: false,
-            scan : false
-        }
+            scan  : false,
+            to    : false
+        },
+        methods: {
+            backTo:function () {
+                console.log(this.to);
+                if(this.to){
+                    console.log(1);
+                    this.$router.push({name: 'Administration'});
+                }else{
+                    console.log(2);
+                    this.$router.back(-1);
+                }
+            }
+        },
     }
 </script>
 

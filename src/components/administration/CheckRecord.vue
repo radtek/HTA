@@ -1,6 +1,6 @@
 <template>
     <div>
-        <myHeard title="已完成检查" back="true"></myHeard>
+        <myHeard title="已完成检查" back="true" to="Administration"></myHeard>
 
         <div class="lm">
 
@@ -23,7 +23,7 @@
             <div class="mt" style="width: 100%;height: 40px;"></div>
         </div>
 
-        <a @click="$router.go(-1);">
+        <a @click="backToMain">
             <div class="myReturn">
                 返回
             </div>
@@ -76,6 +76,9 @@
             click:function (id,inspVersion) {
                 this.$router.push({name: 'CheckDetail', params: { id : id ,inspVersion : inspVersion}});
             },
+            backToMain:function () {
+                this.$router.push({name: 'Administration'});
+            }
         },
         mounted() {
             this.getData(false);
