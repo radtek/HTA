@@ -84,7 +84,6 @@
                 }
 
                 getRequest('sf_zhzf/msys/user/getinfo',{},function (data) {
-                    self.unreadMessageCount = data.count;
                     self.userInfo = data;
                 });
             },

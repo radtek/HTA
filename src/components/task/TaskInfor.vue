@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="test">
         <div style="width: 100%;height: 40px;"><myHeard back="true" title="任务详情"></myHeard></div>
 
         <div class="bmt">
@@ -332,6 +332,10 @@
 </script>
 
 <style scoped>
+    .test .mint-popup {
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0) !important;
+    }
     .list{
         height: 80px;
         background-color: white;
@@ -413,7 +417,7 @@
         top: 50%;
         left: 6.8%;
         padding: 10px;
-        border: 2px solid rgba(0, 0, 0, 0.2);
+        border: 2px solid rgba(0, 0, 0, 0);
         border-radius: 5px;
         background-color: rgba(255, 255, 255, 1);
     }

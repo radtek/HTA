@@ -35,7 +35,7 @@
     import myFlaxSub from  "../customComponent/myFlaxSub";
     import myBase64Img from "../customComponent/myUploadImg";
     import myTimeDate from "../customComponent/myTimeDate";
-    import {getRequest} from "../../assets/js/public";
+    import {postRequest} from "../../assets/js/public";
     import {Toast} from 'mint-ui';
     export default {
         name: "supervise",
@@ -83,14 +83,16 @@
                 if(!this.test()) return;
                 let self = this;
                 let status = self.reformResult == '通过' ? '1' : '2';
-                getRequest('sf_zhzf/msys/rectify/recheck',{
+                let jsonData = {
                     id          : self.data.id,
                     status      : status,
                     explain     : self.remarks,
-                    offiName    : self.jointly,
+                    officerName : self.jointly,
                     doitTime    : self.time,
-                    attafile    : self.imgs
-                },function (data) {
+                    imgBase64   : self.imgs
+                };
+
+                postRequest('sf_zhzf/msys/rectify/recheck',jsonData,function (data) {
                     Toast('提交成功');
                     self.$router.push({name: 'RectifyRecord'});
                 });

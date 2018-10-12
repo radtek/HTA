@@ -65,8 +65,8 @@
     import myFlaxSub from  "../customComponent/myFlaxSub";
     import myBase64Img from "../customComponent/myUploadImg";
     import myTimeDate from "../customComponent/myTimeDate";
-    import {getRequest} from "../../assets/js/public";
-    import {Toast} from 'mint-ui';
+    import {getRequest,postRequest} from "../../assets/js/public";
+    import {Toast,Indicator} from 'mint-ui';
     export default {
         name: "check",
         components:{
@@ -76,6 +76,7 @@
             myBase64Img,
             myTimeDate,
             Toast,
+            Indicator
         },
         data() {
             return {
@@ -139,13 +140,15 @@
             sub:function () {
                 if(!this.test()) return;
                 let self = this;
-                getRequest('sf_zhzf/msys/task/finish',{
+                let jsonData = {
                     id          : self.form.id,
                     execObjId   : self.form.execObjId,
                     officerName : self.form.jointly,
                     doitTime    : self.form.time,
-                    attafile    : self.form.imgs,
-                },function (data) {
+                    explain     : self.form.explain,
+                    imgBase64   : self.form.imgs,
+                };
+                postRequest('sf_zhzf/msys/task/finish',jsonData,function (data) {
                     Toast('提交成功');
                     self.$router.push({name: 'TaskRecord'});
                 });

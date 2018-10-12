@@ -4,23 +4,23 @@
 
         <div v-for="item in problems" class="mt">
             <mt-radio
-                v-if="item.replyOption.length !== 0"
-                :title="item.inspDesc"
-                v-model="answer[item.inspCode]"
-                :options="item.replyOption.split(',')">
+                    v-if="item.replyOption.length !== 0"
+                    :title="item.inspDesc"
+                    v-model="item.answer"
+                    :options="item.replyOption.split(',')">
             </mt-radio>
             <myField
-                v-else
-                red-point="true"
-                :label="item.inspDesc"
-                placeholder="请输入"
-                v-model="answer[item.inspCode]"
-                type="textarea">
+                    v-else
+                    red-point="true"
+                    :label="item.inspDesc"
+                    placeholder="请输入"
+                    v-model="item.answer"
+                    type="textarea">
             </myField>
             <mt-radio
-                title="检查结果"
-                v-model="result[item.inspCode]"
-                :options="['合格','不合格']">
+                    title="检查结果"
+                    v-model="item.result"
+                    :options="['合格','不合格']">
             </mt-radio>
         </div>
 
@@ -35,8 +35,8 @@
     import myField   from  "../customComponent/myField";
     import myFlaxSub from  "../customComponent/myFlaxSub";
     import myBase64Img from "../customComponent/myUploadImg";
-    import {getRequest} from "../../assets/js/public";
-    import {Toast} from 'mint-ui';
+    import {getRequest,postRequest} from "../../assets/js/public";
+    import {Toast,Indicator} from 'mint-ui';
     export default {
         name: "scene-check",
         components:{
@@ -45,6 +45,7 @@
             myFlaxSub,
             myBase64Img,
             Toast,
+            Indicator
         },
         data() {
             return {
@@ -55,8 +56,6 @@
                     items   : ''
                 },
                 problems    : [],
-                answer      : [],
-                result      : [],
                 imgs        : null,
             };
         },
@@ -70,24 +69,16 @@
                     items: self.form.items
                 },function (data) {
                     self.problems = data.list;
-                    self.problems.forEach(function (value) {
-                        self.answer[value.inspCode] = '';
-                        self.result[value.inspCode] = '合格';
+                    self.problems.forEach(function (value,index,arr) {
+                        arr[index].answer = '';
+                        arr[index].result = '合格';
                     });
                 });
             },
             test:function () {
                 let select = true;
-                this.answer.forEach(function (value,index) {
-                    if(value == ''  && index != '1240005'){
-                        Toast('有选项未选择！');
-                        select = false;
-                        return;
-                    }
-                });
-                if(!select) return select;
-                this.result.forEach(function (value) {
-                    if(value == ''){
+                this.problems.forEach(function (value) {
+                    if(value.answer == ''  && value.inspCode != '1240005'){
                         Toast('有选项未选择！');
                         select = false;
                         return;
@@ -106,8 +97,8 @@
                     let obj = {
                         id         : value.id,
                         code       : value.inspCode,
-                        inspResult : self.answer[value.inspCode],
-                        inspStatus : self.result[value.inspCode] === '合格' ? 1 : 2
+                        inspResult : value.answer,
+                        inspStatus : value.result === '合格' ? 1 : 2
                     };
                     list.push(obj);
                 });
@@ -120,9 +111,7 @@
                     imgBase64    : self.imgs
                 };
 
-                getRequest('sf_zhzf/msys/inspnotes/noteadd2',{
-                    jsonData : JSON.stringify(jsonData)
-                },function (data) {
+                postRequest('sf_zhzf/msys/inspnotes/noteadd2',jsonData,function (data) {
                     Toast('提交成功');
                     self.$router.push({name: 'AdminCheckRecord'});
                 });

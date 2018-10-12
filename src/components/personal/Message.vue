@@ -2,7 +2,7 @@
     <div>
         <myHeader back=true title="消息"></myHeader>
         <div>
-            <div id="myScr" class="test" style="height: 85vh; overflow:scroll; background-color: rgba(0,0,0,0);">
+            <div id="myScr"  style="height: 85vh; overflow:scroll; background-color: rgba(0,0,0,0);">
                 <v-loadmore :bottom-method="loadBottom"
                             bottomPullText="下拉加载" bottomDropText="释放加载更多" bottomLoadingText="加载中···"
                             :bottom-all-loaded="searchCondition.allLoaded" :auto-fill="false" ref="loadmore">
@@ -40,6 +40,8 @@
                         ————我是有底线的————
                     </div>
                 </v-loadmore>
+            </div>
+            <div class="test">
                 <mt-popup
                         v-model="showPopup" position="right">
                     <div class="msg" style="max-height: 70vh; overflow:scroll;">
@@ -164,7 +166,6 @@
     .test .mint-popup {
         width: 100%;
         background-color: rgba(0, 0, 0, 0) !important;
-        margin-top: -30px;
     }
 
     .msg .myBox {
@@ -232,12 +233,13 @@
 
     .innerBox {
         position: fixed;
-        width: 70%;
+        width: 80%;
         height: 100px;
-        margin-top: -100px;
+        margin-top: -50px;
         top: 50%;
         left: 6.8%;
-        padding: 20px;
+        padding: 10px;
+        border: 2px solid rgba(0, 0, 0, 0);
         border-radius: 5px;
         background-color: rgba(255, 255, 255, 1);
     }
