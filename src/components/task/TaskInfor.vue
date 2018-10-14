@@ -1,5 +1,5 @@
 <template>
-    <div class="test">
+    <div>
         <div style="width: 100%;height: 40px;"><myHeard back="true" title="任务详情"></myHeard></div>
 
         <div class="bmt">
@@ -58,25 +58,27 @@
             </div>
         </div>
 
-        <mt-popup
-                v-model="isShowDown"
-                position="right"
-                popup-transition="popup-fade">
-            <div class="downBox">
-                <div class="innerBox">
-                    <mt-progress :value="downValue">
-                        <div slot="end">{{ downValue }}%</div>
-                    </mt-progress>
+        <div class="test">
+            <mt-popup
+                    v-model="isShowDown"
+                    position="right"
+                    popup-transition="popup-fade">
+                <div class="downBox">
+                    <div class="innerBox">
+                        <mt-progress :value="downValue">
+                            <div slot="end">{{ downValue }}%</div>
+                        </mt-progress>
 
-                    <mt-button plain type="primary" style="float: left;margin: 10px 0 0 10px;width: 30%"
-                               @click="suspend">{{ butTest }}
-                    </mt-button>
-                    <mt-button plain type="danger" style="float: right;margin: 10px 10px 0 0;width: 30%"
-                               @click="canl">取消
-                    </mt-button>
+                        <mt-button plain type="primary" style="float: left;margin: 10px 0 0 10px;width: 30%"
+                                   @click="suspend">{{ butTest }}
+                        </mt-button>
+                        <mt-button plain type="danger" style="float: right;margin: 10px 10px 0 0;width: 30%"
+                                   @click="canl">取消
+                        </mt-button>
+                    </div>
                 </div>
-            </div>
-        </mt-popup>
+            </mt-popup>
+        </div>
 
         <div class="landscape" v-if="showPhoto">
             <a class="aClose" @click="closePhoto">
@@ -114,7 +116,6 @@
                 </mt-picker>
             </div>
         </mt-popup>
-
     </div>
 </template>
 

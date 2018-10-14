@@ -1,6 +1,6 @@
 <template>
     <div>
-        <myHeard title="已完成检查" back="true" to="Administration"></myHeard>
+        <myHeard title="已完成检查" back="true" backTo="Administration"></myHeard>
 
         <div class="lm">
 

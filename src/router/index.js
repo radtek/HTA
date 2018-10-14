@@ -4,10 +4,6 @@ import Router from 'vue-router'
 Vue.use(Router);
 let myRouter = [];
 
-//改版之前
-// import old from "./old.js";
-// myRouter = myRouter.concat(old);
-
 //任务管理
 import task from "./task.js";
 myRouter = myRouter.concat(task);

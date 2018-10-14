@@ -1,6 +1,6 @@
 <template>
     <div>
-        <myHeard back="true" title="企业信息" scan="true"></myHeard>
+        <myHeard back="true" title="企业信息"></myHeard>
         <div class="lm">
             <div style="width: 100%;height: 40px;"></div>
 

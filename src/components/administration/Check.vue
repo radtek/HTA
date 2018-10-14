@@ -6,8 +6,20 @@
         </div>
 
         <div class="bmt">
-            <a @click="popupVisible = true;getObj();">
-                <myField label="执法对象" placeholder="请选择" v-model="onjName" left-img="true" red-point="true"></myField>
+            <div v-if="form.objId && objName" class="block">
+                <span class="red-point">*</span>
+                <div style="padding-left: 8px">
+                    <mt-field
+                            label="执法对象"
+                            v-model="objName"
+                            readonly
+                            disableClear>
+                    </mt-field>
+                </div>
+            </div>
+
+            <a v-else @click="popupVisible = true;getObj();">
+                <myField label="执法对象" placeholder="请选择" v-model="objName" left-img="true" red-point="true"></myField>
             </a>
 
             <div class="block">
@@ -90,7 +102,7 @@
                 checkList   : [],
                 selectValue : '',
                 objList     : [],
-                onjName     : '',
+                objName     : '',
                 form : {
                     objId   : '',
                     checkMan: null,
@@ -140,7 +152,7 @@
                 });
             },
             selectedObj:function (obj,id) {
-                this.onjName = obj;
+                this.objName = obj;
                 this.form.objId = id;
                 this.popupVisible = false;
             },
@@ -183,7 +195,11 @@
             },
         },
         mounted() {
-            this.type = this.$route.params.type;
+            this.type       = this.$route.params.type;
+            let  name       = this.$route.params.name;
+            let  id         = this.$route.params.id;
+            this.objName    = name != 0 ? name : '';
+            this.form.objId = id != 0 ? id : '';
             this.getCheckList();
             this.getName();
         },

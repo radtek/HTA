@@ -8,7 +8,7 @@ export default [
     },
     //日常检查、专项检查
     {
-        path: '/Check/:type',
+        path: '/Check/:type/:id/:name',
             name: 'Check',
         component: resolve => void(require(['../components/administration/Check.vue'], resolve))
     },

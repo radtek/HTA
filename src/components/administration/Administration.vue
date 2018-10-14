@@ -5,13 +5,13 @@
         <img class="myImg" src="../../assets/img/new/ad.jpg" alt="">
 
         <el-row class="mySpan" :span="24">
-            <router-link to="/Check/1">
+            <router-link to="/Check/1/0/0">
                 <el-col class="spanContent" :span="6">
                     <img src="../../assets/img/new/check1.png" alt="">
                     <p class="title">日常检查</p>
                 </el-col>
             </router-link>
-            <router-link to="/Check/2">
+            <router-link to="/Check/2/0/0">
                 <el-col class="spanContent" :span="6">
                     <img src="../../assets/img/new/check2.png" alt="">
                     <p class="title">专项检查</p>

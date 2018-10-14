@@ -27,6 +27,14 @@
                     </mt-cell>
                 </a>
             </div>
+
+            <div class="item">
+                <a @click="click4">
+                    <mt-cell title="日常检查" is-link>
+                        <img slot="icon" src="../../assets/img/profile_fill.png" width="24" height="24">
+                    </mt-cell>
+                </a>
+            </div>
         </div>
 
         <a @click="$router.go(-1);">
@@ -60,6 +68,9 @@
             },
             click3:function () {
                 this.$router.push({name: 'ClearRecord', params: { id : this.data2.id }});
+            },
+            click4:function () {
+                this.$router.push({name: 'Check', params: { type : 1, id : this.data2.id, name : this.data2.objName }});
             }
         },
         mounted() {
