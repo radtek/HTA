@@ -78,6 +78,7 @@
         },
         data() {
             return {
+                objId: 0,
                 activeIndex : '1',
                 searchCondition1: {  //分页属性
                     pageNo: "1",
@@ -110,11 +111,15 @@
                 let search = index == 1 ? this.searchCondition1 : this.searchCondition2;
                 search.pageNo = isMore ? parseInt(search.pageNo) + 1 : parseInt(search.pageNo);
 
-                getRequest('sf_zhzf/msys/rectify/list',{
+                let params = {
                     status      : index,
                     pageNum     : search.pageNo,
                     numPerPage  : search.pageSize
-                },function (data) {
+                };
+
+                if(this.objId != 0) params.objId = this.objId;
+
+                getRequest('sf_zhzf/msys/rectify/list',params,function (data) {
                     search.pageList = search.pageList.concat(data.list);
                     search.total = data.totalCount;
                     search.pageList.length >= search.total && (search.allLoaded = true);
@@ -128,6 +133,7 @@
             },
         },
         mounted() {
+            this.objId = this.$route.params.objId;
             this.getData(false,1);
             this.getData(false,2);
         },

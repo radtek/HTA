@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div style="width: 100%;height: 40px"><myHeard title="企业信息附件" back="true"></myHeard></div>
+        <div style="width: 100%;height: 40px"><myHeard title="附件" back="true"></myHeard></div>
         <div class="bmt">
             <p style="text-align: center; font-size: 12px" v-if="appendixList.length == 0">暂无附件</p>
 
@@ -78,6 +78,7 @@
         data() {
             return {
                 id: '',
+                type: 1,
                 appendixList: [],
 
                 showPhoto: false,//是否显示图片放大缩放
@@ -99,10 +100,21 @@
         },
         methods: {
             getData() {
+                let url,params;
+                if( this.type == 1 ){
+                    url = 'sf_zhzf/msys/enterprise/attachfile';
+                    params = {
+                        code: this.id
+                    }
+                } else if ( this.type == 2 ){
+                    url = 'sf_zhzf/msys/inspnotes/attachfile';
+                    params = {
+                        inspVersion: this.id
+                    }
+                }
+
                 let self = this;
-                getRequest('sf_zhzf/msys/enterprise/attachfile',{
-                    code: self.id
-                },function (data) {
+                getRequest(url,params,function (data) {
                     self.appendixList = data.list;
                     self.appendixList.forEach(function (value, index, arr) {
                         if (value.fileType == 2) {
@@ -196,7 +208,8 @@
             }
         },
         mounted() {
-            this.id = this.$route.params.id;
+            this.id   = this.$route.params.id;
+            this.type = this.$route.params.type;
             this.getData();
         }
     }

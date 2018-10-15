@@ -67,7 +67,7 @@
         },
         methods: {
             click:function () {
-                this.$router.push({name: 'Append', params: { id : this.data.id }});
+                this.$router.push({name: 'Append', params: { id : this.data.id,type : 1 }});
             },
             getData:function () {
                 let self = this;

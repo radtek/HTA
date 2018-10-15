@@ -31,7 +31,15 @@
             </div>
         </div>
 
-        <div style="width: 100%;height: 41px"></div>
+        <div class="bmt">
+            <div class="item">
+                <a @click="click">
+                    <mt-cell title="查看附件" is-link></mt-cell>
+                </a>
+            </div>
+        </div>
+
+        <div class="mt" style="width: 100%;height: 41px"></div>
         <a @click="$router.go(-1);">
             <div class="myReturn">
                 返回
@@ -72,6 +80,9 @@
                 getRequest('sf_zhzf/msys/user/getinfo',{},function (data) {
                     self.relName = data.relName;
                 });
+            },
+            click:function () {
+                this.$router.push({name: 'Append', params: { id : this.inspVersion,type : 2 }});
             },
         },
         mounted() {

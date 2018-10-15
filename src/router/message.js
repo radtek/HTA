@@ -32,7 +32,7 @@ export default [
     },
     //企业附件
     {
-        path: '/Append/:data',
+        path: '/Append/:id/:type',
         name: 'Append',
         component: resolve => void(require(['../components/message/Append.vue'], resolve))
     },

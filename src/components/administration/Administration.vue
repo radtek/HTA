@@ -17,7 +17,7 @@
                     <p class="title">专项检查</p>
                 </el-col>
             </router-link>
-            <router-link to="/RectifyRecord">
+            <router-link to="/RectifyRecord/0">
                 <el-col class="spanContent" :span="6">
                     <img src="../../assets/img/new/supervise.png" alt="">
                     <p class="title">后督察</p>

@@ -110,7 +110,7 @@
                 search.pageNo = isMore ? parseInt(search.pageNo) + 1 : parseInt(search.pageNo);
 
                 let self = this;
-                getRequest('sf_zhzf/msys/enterprise/querybyname',{
+                getRequest('sf_zhzf/msys/enterprise/querybyname2',{
                     objName     : self.objName,
                     // pageNum     : search.pageNo,
                     // numPerPage  : search.pageSize
