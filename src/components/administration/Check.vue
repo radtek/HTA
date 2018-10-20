@@ -6,7 +6,7 @@
         </div>
 
         <div class="bmt">
-            <div v-if="form.objId && objName" class="block">
+            <div v-if="form.objId && alreadySelectName" class="block">
                 <span class="red-point">*</span>
                 <div style="padding-left: 8px">
                     <mt-field
@@ -67,7 +67,10 @@
                     <div class="mt">
                         <a v-for="item in objList" :key="item.id" @click="selectedObj(item.objName,item.id)">
                             <div class="myObj">
-                                <p>{{ item.objName }}</p>
+                                <p>
+                                    <span class="left">{{ item.objName }}</span>
+                                    <span class="right">{{ departments[item.deptId] }}</span>
+                                </p>
                             </div>
                         </a>
                     </div>
@@ -102,7 +105,9 @@
                 checkList   : [],
                 selectValue : '',
                 objList     : [],
+                departments : ['未知','环保','国土','安全生产','食药监','执法大队','城管','城管110'],
                 objName     : '',
+                alreadySelectName : '',
                 form : {
                     objId   : '',
                     checkMan: null,
@@ -198,8 +203,8 @@
             this.type       = this.$route.params.type;
             let  name       = this.$route.params.name;
             let  id         = this.$route.params.id;
-            this.objName    = name != 0 ? name : '';
             this.form.objId = id != 0 ? id : '';
+            this.alreadySelectName = this.objName = name != 0 ? name : '';
             this.getCheckList();
             this.getName();
         },
@@ -251,5 +256,13 @@
         top: 50%;
         margin-top: -10px;
         left: 8px;
+    }
+    .myObj .left{
+        float: left;
+        color: orange;
+    }
+    .myObj .right{
+        float: right;
+        color: rgb(0,149,147);
     }
 </style>

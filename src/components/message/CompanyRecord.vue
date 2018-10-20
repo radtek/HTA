@@ -25,6 +25,7 @@
                         <p v-if="list.deptId == 4" class="myP">经营类别：{{ list.busiType1 }}</p>
 
                         <p class="myP">地址：{{ list.busiAddr }}</p>
+                        <p class="myP">所属部门：<span>{{ departments[list.deptId] }}</span></p>
                     </div>
                     <img class="myLinkImg" src="../../assets/img/into.png" alt="无法加载">
                 </div>
@@ -57,36 +58,37 @@
         },
         data() {
             return {
-                departments:[
-                    {
-                        id  :1,
-                        name:'环保'
-                    },
-                    {
-                        id  :2,
-                        name:'国土'
-                    },
-                    {
-                        id  :3,
-                        name:'安全生产'
-                    },
-                    {
-                        id  :4,
-                        name:'食药监'
-                    },
-                    {
-                        id  :5,
-                        name:'执法大队'
-                    },
-                    {
-                        id  :6,
-                        name:'城管'
-                    },
-                    {
-                        id  :7,
-                        name:'城管110'
-                    },
-                ],
+                // departments:[
+                //     {
+                //         id  :1,
+                //         name:'环保'
+                //     },
+                //     {
+                //         id  :2,
+                //         name:'国土'
+                //     },
+                //     {
+                //         id  :3,
+                //         name:'安全生产'
+                //     },
+                //     {
+                //         id  :4,
+                //         name:'食药监'
+                //     },
+                //     {
+                //         id  :5,
+                //         name:'执法大队'
+                //     },
+                //     {
+                //         id  :6,
+                //         name:'城管'
+                //     },
+                //     {
+                //         id  :7,
+                //         name:'城管110'
+                //     },
+                // ],
+                departments  : ['未知','环保','国土','安全生产','食药监','执法大队','城管','城管110'],
                 searchCondition: {  //分页属性
                     pageNo   : "1",
                     pageSize : "15",
@@ -161,6 +163,9 @@
         height: 25px;
         line-height: 25px;
         color: #8C8888;
+    }
+    .myP span{
+        color: rgba(0,149,147,0.8);
     }
     .qyInfo{
         width: 80%;
