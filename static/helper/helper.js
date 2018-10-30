@@ -9,7 +9,7 @@ document.addEventListener('plusready', addMainBackListener);
  * @returns {string}
  */
 function getUrl(url) {
-    return 'http://www.iotshifang.com/' + url + '?jsonp=?';
+    return 'https://61.54.107.162/' + url + '?jsonp=?';
 }
 
 /**
