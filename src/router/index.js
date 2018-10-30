@@ -70,5 +70,15 @@ export default new Router({
             name: 'Append',
             component: resolve => void(require(['../components/Append.vue'], resolve))
         },
+        {
+            path: '/Score/:id',
+            name: 'Score',
+            component: resolve => void(require(['../components/Score.vue'], resolve))
+        },
+        {
+            path: '/ScoreRecord/:id',
+            name: 'ScoreRecord',
+            component: resolve => void(require(['../components/ScoreRecord.vue'], resolve))
+        },
     ]
 })

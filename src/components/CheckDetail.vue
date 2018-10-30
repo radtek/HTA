@@ -17,6 +17,7 @@
                 <mt-cell title="检查人" :value="relName"></mt-cell>
                 <mt-cell title="陪同人" :value="pageList[0].officerName"></mt-cell>
                 <mt-cell title="检查日期" :value="pageList[0].inspdate.split(' ')[0]"></mt-cell>
+                <mt-cell title="整改日期" :value="limitDate"></mt-cell>
                 <mt-button type="primary"
                            style="width: 100%;margin: 10px 0"
                            @click="$router.go(-1);">
@@ -37,6 +38,7 @@
                 id: '',
                 inspVersion: '',
                 pageList: [{exeobjName: '', inspSpecial: '', inspdate: ''}],
+                limitDate: '',
                 relName: '',
             }
         },
@@ -56,6 +58,8 @@
                     Indicator.close();
                     if (data.statusCode == 200) {
                         self.pageList = data.list.reverse();
+                        self.limitDate = data.limitDate;
+                        console.log(data);
                     } else if (data.statusCode == 310) {
                         //登录超时
                         window.location.href = "login.html";

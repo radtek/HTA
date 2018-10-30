@@ -10,23 +10,28 @@
                 <div class="content" v-for="item in problems">
                     <mt-radio v-if="item.inspCode != '1240005'"
                             :title="'【必选】'+item.inspDesc"
-                            v-model="answer[item.inspCode]"
+                            v-model="item.answer"
                             :options="item.replyOption.split(',')">
                     </mt-radio>
                 </div>
-                <mt-field label="其他" placeholder="有其他特殊情况时填写，如没有请忽略" type="textarea" rows="4" v-model.trim="other"></mt-field>
-                <hr style="border-color: rgba(0,0,0,0.1);border-top: 0;">
-                <mt-cell title="检查人" :value="relName"></mt-cell>
-                <mt-field label="陪同人" :attr="{ maxlength: 10 }" placeholder="请输入陪同人姓名" v-model.trim="officerName"></mt-field>
-                <a @click="openPicker">
-                    <mt-cell title="检查日期" :value="time" is-link></mt-cell>
-                </a>
-                <mt-button type="primary" style="width: 100%;margin: 20px 0" @click="sub">提交</mt-button>
+               <div v-if="show">
+                   <mt-field label="其他" placeholder="有其他特殊情况时填写，如没有请忽略" type="textarea" rows="4" v-model.trim="other"></mt-field>
+                   <hr style="border-color: rgba(0,0,0,0.1);border-top: 0;">
+                   <mt-cell title="检查人" :value="relName"></mt-cell>
+                   <mt-field label="陪同人" :attr="{ maxlength: 10 }" placeholder="请输入陪同人姓名" v-model.trim="officerName"></mt-field>
+                   <a @click="openPicker(1)">
+                       <mt-cell title="检查日期" :value="time" is-link></mt-cell>
+                   </a>
+                   <a @click="openPicker(2)">
+                       <mt-cell title="整改日期" :value="time2" is-link></mt-cell>
+                   </a>
+                   <mt-button type="primary" style="width: 100%;margin: 20px 0" @click="sub">提交</mt-button>
+               </div>
             </div>
             <mt-datetime-picker
                     v-model="dataValuel"
                     ref="picker"
-                    type="date"
+                    :type="datetimeType"
                     @confirm="handleConfirm"
             >
             </mt-datetime-picker>
@@ -59,11 +64,14 @@
                 other:'',
                 officerName:'',
                 value: '',
-                answer:[],
                 problems:[],
                 relName:'',
                 time:'',
+                time2:'',
                 dataValuel:new Date(),
+                datetimeType : 'date',
+                show:false,
+                pickerType : 1,//1：检查日期，2：整改日期
             }
         },
         components:{
@@ -73,12 +81,16 @@
         },
         methods: {
             sub(){
+                let self = this;
                 let unSelect = false;
-                this.answer.forEach(function (value,index) {
-                    if(value == '' && index != '1240005'){
+                this.problems.forEach(function (value) {
+                    if(value.answer == '' && value.inspCode != '1240005'){
                         Toast('有选项未选择！');
                         unSelect = true;
                         return;
+                    }else if(value.inspCode == '1240005' && value.answer != ''){
+                        //中文逗号替换为英文逗号
+                        value.answer = self.other.replace(/,/g,'，');
                     }
                 });
                 if(unSelect) return;
@@ -87,25 +99,21 @@
                     return;
                 }
 
-                //中文逗号替换为英文逗号
-                this.answer['1240005'] = this.other.replace(/,/g,'，');
-
-                let self = this;
                 let inspCodes  = '';
                 let inspResult = '';
                 let inspStatus = '';
-                self.answer.forEach(function (value, index) {
-                    if(index == '1240005'){
-                        if(value.length != 0){
+                this.problems.forEach(function (value) {
+                    if(value.inspCode == '1240005'){
+                        if(value.answer.length != 0){
                             //不能将inspCodes和inspResult的赋值提取到外面，因为当其他的长度为0时不做任何操作，这三个字段分割后的长度要保持一致
-                            inspCodes  += index+',';
-                            inspResult += value+',';
+                            inspCodes  += value.inspCode+',';
+                            inspResult += value.answer+',';
                             inspStatus += self.bad+',';
                         }
                     }else{
-                        inspCodes  += index+',';
-                        inspResult += value+',';
-                        if(index == '1240003' || index == '1240004'){
+                        inspCodes  += value.inspCode+',';
+                        inspResult += value.answer+',';
+                        if(value.inspCode == '1240003' || value.inspCode == '1240004'){
                             value == '是' ? (inspStatus += self.bad +',') : (inspStatus += self.good +',');
                         }else{
                             value == '是' ? (inspStatus += self.good +',') : (inspStatus += self.bad +',');
@@ -123,7 +131,8 @@
                     inspResult : inspResult,
                     inspStatus : inspStatus,
                     officerName: self.officerName,
-                    inspdate   : self.time
+                    inspdate   : self.time,
+                    limitDate  : self.time2
                 },function(data,status){
                     Indicator.close();
                     if(data.statusCode == 200){
@@ -146,8 +155,9 @@
                     if(data.statusCode == 200){
                         self.problems = data.list;
                         self.problems.forEach(function (value) {
-                            self.answer[value.inspCode] = '';
+                            value.answer = '';
                         });
+                        self.show = true;
                     }else if(data.statusCode == 310){
                         window.location.href = "login.html";
                     }else{
@@ -168,12 +178,16 @@
                     }
                 },'json');
             },
-            openPicker() {
+            openPicker(type) {
+                this.pickerType = type;
+                if(this.pickerType == 1) this.datetimeType = 'date';
+                else if(this.pickerType == 2) this.datetimeType = 'datetime';
                 this.$refs.picker.open();
             },
             handleConfirm(value){
                 let dateVal = new Date(value);
-                this.time = this.myFormat(dateVal);
+                if(this.pickerType == 1) this.time = this.myFormat(dateVal);
+                else if(this.pickerType == 2) this.time2 = this.myFormatDateTime(dateVal);
             },
             myFormat(dateVal){
 
@@ -185,6 +199,18 @@
                 date    < 10 && (date    = '0'+date);
 
                 return year + '-' + month + '-' + date;
+            },
+            myFormatDateTime: function (dateVal) {
+                let year     = dateVal.getFullYear();
+                let month    = dateVal.getMonth() + 1;
+                let date     = dateVal.getDate();
+                let hours    = dateVal.getHours();
+                let minutes  = dateVal.getMinutes();
+                month    < 10 && (month   = '0'+month);
+                date     < 10 && (date    = '0'+date);
+                hours    < 10 && (hours   = '0'+hours);
+                minutes  < 10 && (minutes = '0'+minutes);
+                return year + '-' + month + '-' + date + ' ' + hours + ':' + minutes;
             }
         },
         mounted() {

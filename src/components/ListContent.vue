@@ -1,8 +1,8 @@
 <template>
     <div>
         <mt-header title="一企一档">
-            <router-link to="" slot="left">
-                <mt-button icon="back" @click="$router.go(-1);"></mt-button>
+            <router-link to="/" slot="left">
+                <mt-button icon="back"></mt-button>
             </router-link>
         </mt-header>
         <div class="content" style="padding:0 7%;">
@@ -32,6 +32,20 @@
                     <el-col :span="24">
                         <el-card shadow="hover" style="background:#909399">
                             <p style="color: #fff !important;">检查记录</p>
+                        </el-card>
+                    </el-col>
+                </router-link>
+                <router-link :to="{ name: 'Score', params: { id: id}}">
+                    <el-col :span="24">
+                        <el-card shadow="hover" style="background:rgba(118,88,249,0.85)">
+                            <p style="color: #fff !important;">商户评分</p>
+                        </el-card>
+                    </el-col>
+                </router-link>
+                <router-link :to="{ name: 'ScoreRecord', params: { id: id}}">
+                    <el-col :span="24">
+                        <el-card shadow="hover" style="background:rgba(255,50,150,0.85)">
+                            <p style="color: #fff !important;">评分记录 </p>
                         </el-card>
                     </el-col>
                 </router-link>

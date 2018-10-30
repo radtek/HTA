@@ -10,9 +10,20 @@
         </mt-header>
         <div class="" style="padding:0 7%;">
             <div class="demo-input-suffix">
-                <el-input maxlength="10" clearable placeholder="请输入内容" v-model.trim="objName" class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search" @click="loadPageList"></el-button>
-                </el-input>
+                <!--<el-input maxlength="10" clearable placeholder="请输入内容" v-model.trim="objName" class="input-with-select">-->
+                    <!--<el-button slot="append" icon="el-icon-search" @click="loadPageList"></el-button>-->
+                <!--</el-input>-->
+                <el-row :span="24">
+                    <el-col :span="10" class="nameInput">
+                        <el-input maxlength="10" clearable placeholder="企业名称" v-model.trim="objName"></el-input>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-input maxlength="10" clearable placeholder="企业位置" v-model.trim="objAddr"></el-input>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-button  icon="el-icon-search" @click="loadPageList"></el-button>
+                    </el-col>
+                </el-row>
             </div>
             <div id="myScr" style="height: 70vh; overflow:scroll;">
                 <v-loadmore :bottom-method="loadBottom"
@@ -42,6 +53,20 @@
         width: 100%;
     }
 
+    .demo-input-suffix input{
+        border-radius: 0;
+
+    }
+    .nameInput input{
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+    }
+    .demo-input-suffix .el-button{
+        border-radius: 0;
+        background-color: #f5f7fa;
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+    }
     .list {
         width: 100%;
         overflow: hidden;
@@ -94,6 +119,7 @@
         data() {
             return {
                 objName: "",
+                objAddr: "",
                 title: '新乡海滨有限公司',
                 data: '行政区划分：好几百的后视镜到哪里好几百的后视镜到哪里',
                 searchCondition: {  //分页属性
@@ -121,7 +147,8 @@
                 Indicator.open();
                 let self = this;
                 $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
-                    objName: self.objName,
+                    objName : self.objName,
+                    busiAddr: self.objAddr,
                     // pageNum:self.searchCondition.pageNo,
                     // numPerPage:self.searchCondition.pageSize
                 }, function (data, status) {
@@ -141,7 +168,8 @@
 
                 let self = this;
                 $.get(getUrl('sf_zhzf/msys/enterprise/querybyname'), {
-                    objName: self.objName,
+                    objName : self.objName,
+                    busiAddr: self.objAddr,
                     // pageNum:self.searchCondition.pageNo,
                     // numPerPage:self.searchCondition.pageSize
                 }, function (data, status) {
