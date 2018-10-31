@@ -1,5 +1,5 @@
 document.addEventListener('plusready', function(){});
 
 function getUrl(url) {
-    return 'https://61.54.107.162/' + url + '?jsonp=?';
+    return 'http://61.54.107.162:8089/' + url + '?jsonp=?';
 }

@@ -133,9 +133,11 @@
             getCheckList:function () {
                 let self = this;
                 getRequest('sf_zhzf/msys/inspnotes/inspitems',{
-                    inspSpecial: self.type
+                    inspSpecial: self.type,
+                    objId      : self.form.objId
                 },function (data) {
                     self.tpCheckList = data.list;
+                    self.checkOptions= [];
                     data.list.forEach(function (value,index) {
                         self.checkOptions.push(value.inspName);
                     })
@@ -160,6 +162,7 @@
                 this.objName = obj;
                 this.form.objId = id;
                 this.popupVisible = false;
+                this.getCheckList();
             },
             test:function () {
                 if(this.form.objId.length == 0){
@@ -205,7 +208,7 @@
             let  id         = this.$route.params.id;
             this.form.objId = id != 0 ? id : '';
             this.alreadySelectName = this.objName = name != 0 ? name : '';
-            this.getCheckList();
+            if(this.form.objId && this.alreadySelectName) this.getCheckList();
             this.getName();
         },
     }

@@ -193,29 +193,30 @@
         data() {
             return {
                 id  : 0,
+                json:{
+                    guimo            :'',
+                    seatNum          :'',
+                    yyjhqNum         :'',
+                    yanshouNo        :'',
+                    localAddr        :'',
+                    zaotouNum        :'',
+                    cleanCycle       :'',
+                    huanpingNo       :'',
+                    reportFirm       :'',
+                    yanshouDate      :'',
+                    paiwuxukeNo      :'',
+                    weixianyuan      :'',
+                    huanpingDate     :'',
+                    danweileibie     :'',
+                    jingyingxuke     :'',
+                    jianguanjigou    :'',
+                    paiwuxukeDate    :'',
+                    jianguancengji   :'',
+                    jingyingxukeDate :'',
+                    yingyezhizhaoDate:'',
+                },
                 data:{
-                    json:{
-                        guimo            :'',
-                        seatNum          :'',
-                        yyjhqNum         :'',
-                        yanshouNo        :'',
-                        localAddr        :'',
-                        zaotouNum        :'',
-                        cleanCycle       :'',
-                        huanpingNo       :'',
-                        reportFirm       :'',
-                        yanshouDate      :'',
-                        paiwuxukeNo      :'',
-                        weixianyuan      :'',
-                        huanpingDate     :'',
-                        danweileibie     :'',
-                        jingyingxuke     :'',
-                        jianguanjigou    :'',
-                        paiwuxukeDate    :'',
-                        jianguancengji   :'',
-                        jingyingxukeDate :'',
-                        yingyezhizhaoDate:'',
-                    }
+
                 }
             }
         },
@@ -242,7 +243,7 @@
             else
                 this.data = JSON.parse(this.$route.params.data);
 
-            console.log(this.data);
+            if(!this.data.json) this.data.json = this.json;
         }
     }
 </script>

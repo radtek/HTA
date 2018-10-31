@@ -17,7 +17,7 @@ function getRequest(url,params,callBack) {
 
 function postRequest(url,jsonData,callBack) {
     Indicator.open();
-    let task = plus.uploader.createUpload( "http://www.iotshifang.com/"+url,
+    let task = plus.uploader.createUpload( getUrl(url,true),
         { method:"POST",blocksize:204800,priority:100 },
         function ( t, status ) {
             // 上传完成

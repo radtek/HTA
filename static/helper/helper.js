@@ -8,8 +8,8 @@ document.addEventListener('plusready', addMainBackListener);
  * @param url
  * @returns {string}
  */
-function getUrl(url) {
-    return 'https://61.54.107.162/' + url + '?jsonp=?';
+function getUrl(url,isPost) {
+    return isPost ? 'http://61.54.107.162:8089/' + url : 'http://61.54.107.162:8089/' + url + '?jsonp=?';
 }
 
 /**
