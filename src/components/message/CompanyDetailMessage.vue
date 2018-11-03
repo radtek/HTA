@@ -8,7 +8,7 @@
                 <div class="item"><mt-cell title="行政区划" :value="data.regionCode"></mt-cell></div>
                 <div class="item"><mt-cell title="企业地址" :value="data.busiAddr"></mt-cell></div>
                 <div class="item"><mt-cell title="组织机构代码证" :value="data.identityNo"></mt-cell></div>
-                <div class="item"><mt-cell title="污染类型" :value="data.infraction"></mt-cell></div>
+                <div class="item"><mt-cell title="污染类型" :value="data.infractionName"></mt-cell></div>
                 <div class="item"><mt-cell title="关注程度" :value="data.heedLevel"></mt-cell></div>
             </div>
 
@@ -69,7 +69,7 @@
                 <div class="item"><mt-cell title="企业名称" :value="data.objName"></mt-cell></div>
                 <div class="item"><mt-cell title="行政区划" :value="data.regionCode"></mt-cell></div>
                 <div class="item"><mt-cell title="生产经营地址" :value="data.busiAddr"></mt-cell></div>
-                <div class="item"><mt-cell title="代码证类型" :value="data.identityType"></mt-cell></div>
+                <div class="item"><mt-cell title="代码证类型" :value="data.identityTypeName"></mt-cell></div>
                 <div class="item"><mt-cell title="代码证号" :value="data.identityNo"></mt-cell></div>
                 <div class="item"><mt-cell title="所属行业" :value="data.busiType1+' '+data.busiType2"></mt-cell></div>
             </div>

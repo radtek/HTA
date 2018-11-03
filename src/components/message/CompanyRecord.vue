@@ -19,8 +19,8 @@
                     <div class="qyInfo">
                         <p class="myP qyName">{{ list.objName }}</p>
 
-                        <p v-if="list.deptId == 1" class="myP">涉污类型：{{ list.infraction }}</p>
-                        <p v-if="list.deptId == 2 || list.deptId == 6" class="myP">对象类型：{{ list.objType == 1 ? "企业" : "个人" }}</p>
+                        <p v-if="list.deptId == 1" class="myP">涉污类型：{{ list.infractionName }}</p>
+                        <p v-if="list.deptId == 2 || list.deptId == 6" class="myP">对象类型：{{ list.objTypeName }}</p>
                         <p v-if="list.deptId == 3" class="myP">所属行业：{{ list.busiType1+" "+list.busiType2 }}</p>
                         <p v-if="list.deptId == 4" class="myP">经营类别：{{ list.busiType1 }}</p>
 
@@ -118,6 +118,7 @@
                     // numPerPage  : search.pageSize
                 },function (data) {
                     search.pageList = data.list;
+                    console.log(data);
                     search.total = data.totalCount;
                     search.pageList.length >= search.total && (search.allLoaded = true);
                 });

@@ -36,23 +36,7 @@
             return {
                 id  : 0,
                 data: {
-                    "creatorId":"8",
-                    "creatorName":"食药监01,李四",
-                    "cretime":"2018-09-18 21:26:17",
-                    "deptId":"4",
-                    "exeobjId":"4",
-                    "exeobjName":"河南新飞电器股份有限公司",
-                    "id":"1",
-                    "inspdate":"2018-09-17 18:00:00",
-                    "inspnoteId":"0",
-                    "inspnoteSeral":"201809130959464948",
-                    "limitDate":"2018-09-18 22:18:29",
-                    "officerId":"8",
-                    "officerName":"张三",
-                    "rectifyStatus":"2",
-                    "reformContent":"整改内容全部整改内容全部",
-                    "remark":"整改合格",
-                    "updtime":"2018-09-18 22:18:29"
+
                 },
             };
         },
@@ -68,7 +52,7 @@
         },
         mounted() {
             this.id = this.$route.params.id;
-            // this.getData();
+            this.getData();
         },
     }
 </script>
